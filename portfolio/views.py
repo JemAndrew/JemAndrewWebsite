@@ -104,6 +104,35 @@ def education_view(request):
     
     return render(request, 'portfolio/education.html', context)
 
+def experience_view(request):
+    """
+    Professional experience page
+    """
+    context = get_site_context()
+    
+    # Get all experience ordered by date
+    experience_list = Experience.objects.all()
+    
+    # Calculate total months of experience (with safety check)
+    total_months = 0
+    for exp in experience_list:
+        if hasattr(exp, 'duration_months'):
+            total_months += exp.duration_months
+    
+    total_years = total_months / 12 if total_months > 0 else 0
+    
+    # Get current position
+    current_position = Experience.objects.filter(is_current=True).first()
+    
+    context.update({
+        'experience_list': experience_list,
+        'total_years': round(total_years, 1),
+        'current_position': current_position,
+        'page_title': 'Experience',
+        'meta_description': 'Professional work experience and career progression.',
+    })
+    
+    return render(request, 'portfolio/experience.html', context)
 
 def cv_view(request):
     """
