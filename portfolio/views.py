@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect  # Add redirect import
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -34,15 +34,6 @@ def get_site_context():
         'site_settings': site_settings,
     }
 
-def home_view(request):
-    context = {
-        'page_title': 'Home',
-        'personal_info': {
-            'name': 'James Andrew',
-            'title': 'Computer Science Graduate',
-        }
-    }
-    return render(request, 'portfolio/home.html', context)
 
 def home_view(request):
     """
@@ -423,4 +414,3 @@ def api_projects_view(request):
     ]
     
     return JsonResponse({'projects': data})
-# Create your views here.

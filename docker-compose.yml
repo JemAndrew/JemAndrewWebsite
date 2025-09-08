@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: cv-website
+    ports:
+      - "8001:8000"  # Host port 8001 → Container port 8000
+    volumes:
+      - .:/app  # Sync code changes
+      - media_volume:/app/media  # Persist uploaded files
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=docker-secret-key-for-development
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+    depends_on:
+      - db
+    networks:
+      - cv-network
+
+  db:
+    image: postgres:15
+    container_name: cv-database
+    environment:
+      POSTGRES_DB: cv_website
+      POSTGRES_USER: cv_user
+      POSTGRES_PASSWORD: cv_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - cv-network
+
+volumes:
+  postgres_data:
+  media_volume:
+
+networks:
+  cv-network:
+    driver: bridge

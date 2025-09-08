@@ -3,18 +3,20 @@ Django settings for website_project.
 """
 
 from pathlib import Path
+from decouple import config  # Add this import
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-your-secret-key-change-this-in-production'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -116,10 +118,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# Email Configuration (for contact form)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@jamesandrew.dev'
-CONTACT_EMAIL = 'andrewjem8@gmail.com'
+# Email Configuration (using environment variables)
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@jamesandrew.dev')
+CONTACT_EMAIL = config('CONTACT_EMAIL', default='andrewjem8@gmail.com')
 
 # REST Framework
 REST_FRAMEWORK = {
@@ -131,3 +133,19 @@ REST_FRAMEWORK = {
     ],
     'PAGE_SIZE': 20
 }
+
+# GitHub Integration (optional)
+GITHUB_USERNAME = config('GITHUB_USERNAME', default='')
+
+# Override database for Docker
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+
+# Docker-specific settings
+if os.environ.get('DOCKER_CONTAINER'):
+    ALLOWED_HOSTS = ['*']  # More permissive for containers
+    
+    # Use whitenoise for static files in container
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
