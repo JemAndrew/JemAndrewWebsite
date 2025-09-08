@@ -65,6 +65,14 @@ def home_view(request):
     
     return render(request, 'portfolio/home.html', context)
 
+def about_view(request):
+    """About page view"""
+    context = get_site_context()
+    context.update({
+        'page_title': 'About',
+        'meta_description': 'Learn more about James Andrew - Software Engineer, MSc Computer Science graduate, and full-stack developer.',
+    })
+    return render(request, 'portfolio/about.html', context)
 
 def education_view(request):
     """
