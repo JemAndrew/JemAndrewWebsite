@@ -1,9 +1,7 @@
-"""
-Django settings for website_project.
-"""
+# Here's your cleaned-up settings.py - copy this to fix the syntax error:
 
 from pathlib import Path
-from decouple import config  # Add this import
+from decouple import config
 import os
 import dj_database_url
 
@@ -20,9 +18,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(','
 
 # Application definition
 INSTALLED_APPS = [
-    'jazzmin',  
-    'django.contrib.admin',
-    'django.contrib.admin',
+    'django.contrib.admin',           # Only ONE admin entry
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -34,9 +30,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'rest_framework',
-    
-    # Local apps
     'portfolio',
+
 ]
 
 MIDDLEWARE = [
@@ -80,6 +75,12 @@ DATABASES = {
     }
 }
 
+# Override database for Docker
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,34 +121,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# Email Configuration (using environment variables)
+# Email Configuration
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@jamesandrew.dev')
 CONTACT_EMAIL = config('CONTACT_EMAIL', default='andrewjem8@gmail.com')
 
-# REST Framework
+# REST Framework - FIXED
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
-    'PAGE_SIZE': 20
 }
-
-# GitHub Integration (optional)
-GITHUB_USERNAME = config('GITHUB_USERNAME', default='')
-
-# Override database for Docker
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }
 
 # Docker-specific settings
 if os.environ.get('DOCKER_CONTAINER'):
-    ALLOWED_HOSTS = ['*']  # More permissive for containers
-    
-    # Use whitenoise for static files in container
+    ALLOWED_HOSTS = ['*']
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+

@@ -8,10 +8,20 @@ ENV PYTHONUNBUFFERED 1
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies including image processing libraries
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
+        libjpeg-dev \
+        libpng-dev \
+        libwebp-dev \
+        zlib1g-dev \
+        libfreetype6-dev \
+        liblcms2-dev \
+        libopenjp2-7-dev \
+        libtiff5-dev \
+        gcc \
+        g++ \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies

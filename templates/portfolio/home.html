@@ -91,17 +91,18 @@
                 </div>
             </div>
             
-            <!-- Profile Image -->
-            <div class="col-lg-5 order-1 order-lg-2 text-center mb-5 mb-lg-0">
-                <div class="profile-image-container position-relative">
-                    {% if personal_info.profile_image %}
-                        <img src="{{ personal_info.profile_image.url }}" alt="{{ personal_info.name }}" 
-                             class="profile-image rounded-circle shadow-lg animate-fadeInRight">
-                    {% else %}
-                        <div class="profile-placeholder rounded-circle shadow-lg animate-fadeInRight d-flex align-items-center justify-content-center">
-                            <i class="fas fa-user fa-5x text-primary"></i>
-                        </div>
-                    {% endif %}
+            {% load thumbnail %}
+
+            <div class="profile-image-container position-relative">
+                {% if personal_info.profile_image %}
+                    {% thumbnail personal_info.profile_image 400x400 crop detail as cropped_image %}
+                    <img src="{{ cropped_image.url }}" alt="{{ personal_info.name }}" 
+                        class="profile-image rounded-circle shadow-lg animate-fadeInRight">
+                {% else %}
+                    <div class="profile-placeholder rounded-circle shadow-lg animate-fadeInRight d-flex align-items-center justify-content-center">
+                        <i class="fas fa-user fa-5x text-primary"></i>
+                    </div>
+                {% endif %}
                     
                     <!-- Floating Tech Icons -->
                     <div class="floating-element floating-element-1">

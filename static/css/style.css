@@ -291,6 +291,17 @@ code {
   color: var(--gray-500);
 }
 
+.profile-image-custom {
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    object-position: center center; /* Start with this, then adjust */
+    border: 4px solid var(--white);
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+}
+
 /* Floating Elements */
 .floating-element {
   position: absolute;

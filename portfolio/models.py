@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 from PIL import Image
+from django.db import models
+from image_cropping import ImageRatioField
 import os
 
 
@@ -193,9 +195,11 @@ class PersonalInfo(models.Model):
     location = models.CharField(max_length=200)
     bio = models.TextField()
     profile_image = models.ImageField(upload_to='profile/', blank=True)
+    cropping = ImageRatioField('profile_image', '400x400', size_warning=True)
     github_url = models.URLField(blank=True)
     linkedin_url = models.URLField(blank=True)
     cv_file = models.FileField(upload_to='documents/', blank=True)
+
     
     # Typing animation texts
     typing_texts = models.TextField(
@@ -212,8 +216,6 @@ class PersonalInfo(models.Model):
     
     def save(self, *args, **kwargs):
         # Ensure only one instance exists
-        if not self.pk and PersonalInfo.objects.exists():
-            raise ValueError("Only one PersonalInfo instance is allowed")
         super().save(*args, **kwargs)
         
         # Resize profile image
