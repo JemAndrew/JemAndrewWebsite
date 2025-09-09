@@ -186,7 +186,7 @@ class Skill(models.Model):
 
 
 class PersonalInfo(models.Model):
-    """Singleton model for personal information"""
+    """Model for personal information"""
     
     name = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
@@ -195,13 +195,10 @@ class PersonalInfo(models.Model):
     location = models.CharField(max_length=200)
     bio = models.TextField()
     profile_image = models.ImageField(upload_to='profile/', blank=True)
-    cropping = ImageRatioField('profile_image', '400x400', size_warning=True)
+    # DELETE image_position field - not needed with Cloudinary
     github_url = models.URLField(blank=True)
     linkedin_url = models.URLField(blank=True)
     cv_file = models.FileField(upload_to='documents/', blank=True)
-
-    
-    # Typing animation texts
     typing_texts = models.TextField(
         blank=True,
         help_text="Comma-separated phrases for typing animation"
@@ -215,16 +212,15 @@ class PersonalInfo(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        # Ensure only one instance exists
+        # Keep this singleton logic - it's useful
+        if not self.pk and PersonalInfo.objects.exists():
+            existing = PersonalInfo.objects.first()
+            for field in self._meta.fields:
+                if field.name != 'id':
+                    setattr(existing, field.name, getattr(self, field.name))
+            existing.save()
+            return existing
         super().save(*args, **kwargs)
-        
-        # Resize profile image
-        if self.profile_image:
-            img = Image.open(self.profile_image.path)
-            if img.height > 400 or img.width > 400:
-                output_size = (400, 400)
-                img.thumbnail(output_size)
-                img.save(self.profile_image.path)
     
     @property
     def typing_phrases(self):

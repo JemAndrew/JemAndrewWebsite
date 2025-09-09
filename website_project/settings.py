@@ -1,9 +1,9 @@
-# Here's your cleaned-up settings.py - copy this to fix the syntax error:
-
 from pathlib import Path
 from decouple import config
 import os
 import dj_database_url
+import cloudinary
+import cloudinary_storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,7 +18,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(','
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',           # Only ONE admin entry
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -26,12 +26,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     
-    # Third party apps
+    # Third party apps - IMAGE CROPPING ADDED
+    'cloudinary_storage',
+    'cloudinary',
     'crispy_forms',
     'crispy_bootstrap5',
     'rest_framework',
+    
+    # Local apps
     'portfolio',
-
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'website_project.wsgi.application'
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=''),
+    'API_KEY': config('CLOUDINARY_API_KEY', default=''),
+    'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
+}
+
 # Database
 DATABASES = {
     'default': {
@@ -79,6 +88,19 @@ DATABASES = {
 if os.environ.get('DATABASE_URL'):
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+
+# For Docker environment
+if os.environ.get('DOCKER_CONTAINER') or 'db' in os.environ.get('DATABASE_URL', ''):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'cv_website',
+            'USER': 'cv_user',
+            'PASSWORD': 'cv_password',
+            'HOST': 'db',
+            'PORT': '5432',
+        }
     }
 
 # Password validation
@@ -126,7 +148,7 @@ EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.conso
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@jamesandrew.dev')
 CONTACT_EMAIL = config('CONTACT_EMAIL', default='andrewjem8@gmail.com')
 
-# REST Framework - FIXED
+# REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
@@ -142,4 +164,3 @@ REST_FRAMEWORK = {
 if os.environ.get('DOCKER_CONTAINER'):
     ALLOWED_HOSTS = ['*']
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-

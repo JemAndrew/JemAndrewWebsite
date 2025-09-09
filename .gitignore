@@ -1,6 +1,31 @@
+# Django
 db.sqlite3 
-cv_website_env/ 
-__pycache__/ 
-*.pyc 
-.env 
-staticfiles/ 
+*.pyc
+__pycache__/
+staticfiles/
+media/
+
+# Environment
+cv_website_env/
+venv/
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cloudinary/Secrets
+*secret*
+*SECRET*
+.env.*
+config.py
+secrets.py
