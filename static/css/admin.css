@@ -1,0 +1,369 @@
+/* static/css/admin-enhancements.css
+   Enhances Django's default admin without template changes
+   Just include this CSS and it works! */
+
+/* ============================================
+   Color Variables & Theme
+   ============================================ */
+:root {
+    --admin-primary: #4A90E2;
+    --admin-primary-dark: #357ABD;
+    --admin-success: #5CB85C;
+    --admin-warning: #F0AD4E;
+    --admin-danger: #D9534F;
+    --admin-info: #5BC0DE;
+    --admin-dark: #2C3E50;
+    --admin-light: #ECF0F1;
+    --admin-border: #DEE2E6;
+    --admin-radius: 6px;
+}
+
+/* ============================================
+   Fix Huge Profile Images
+   ============================================ */
+/* PersonalInfo profile image */
+.field-profile_image img,
+.field-image img {
+    max-width: 200px !important;
+    max-height: 200px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    border: 2px solid var(--admin-border) !important;
+    padding: 4px !important;
+    background: white !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Make profile images circular in list view */
+td.field-has_photo img,
+td.field-profile_thumbnail img {
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+
+/* ============================================
+   Enhanced Header & Branding
+   ============================================ */
+#header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    padding: 20px 40px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+#branding h1 {
+    font-weight: 600 !important;
+    letter-spacing: -0.5px !important;
+}
+
+#user-tools a {
+    background: rgba(255,255,255,0.1) !important;
+    padding: 6px 12px !important;
+    border-radius: 20px !important;
+    margin-left: 8px !important;
+    transition: all 0.3s !important;
+}
+
+#user-tools a:hover {
+    background: rgba(255,255,255,0.2) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ============================================
+   Modern Form Inputs
+   ============================================ */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    border: 2px solid #E1E8ED !important;
+    border-radius: var(--admin-radius) !important;
+    padding: 8px 12px !important;
+    transition: all 0.3s !important;
+    font-size: 14px !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--admin-primary) !important;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1) !important;
+    outline: none !important;
+}
+
+/* Make textareas more usable */
+textarea {
+    min-height: 100px !important;
+    resize: vertical !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    line-height: 1.5 !important;
+}
+
+/* ============================================
+   Better Buttons
+   ============================================ */
+.submit-row input,
+.submit-row a.deletelink,
+input[type="submit"],
+.button,
+a.button {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
+    border: none !important;
+    border-radius: var(--admin-radius) !important;
+    padding: 10px 24px !important;
+    color: white !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    text-transform: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.submit-row input:hover,
+input[type="submit"]:hover,
+.button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+.submit-row input.default {
+    background: linear-gradient(135deg, var(--admin-success) 0%, #4CAE4C 100%) !important;
+}
+
+.submit-row a.deletelink {
+    background: linear-gradient(135deg, var(--admin-danger) 0%, #C9302C 100%) !important;
+}
+
+/* ============================================
+   Enhanced Tables
+   ============================================ */
+#changelist table {
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+    border-radius: var(--admin-radius) !important;
+    overflow: hidden !important;
+}
+
+#changelist thead th {
+    background: linear-gradient(to bottom, #F8F9FA, #E9ECEF) !important;
+    border-bottom: 2px solid var(--admin-border) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+    letter-spacing: 0.5px !important;
+    padding: 12px !important;
+}
+
+#changelist tbody tr {
+    transition: background-color 0.2s !important;
+}
+
+#changelist tbody tr:hover {
+    background-color: #F8F9FA !important;
+}
+
+#changelist tbody tr.selected {
+    background-color: #E7F3FF !important;
+}
+
+/* ============================================
+   Better Fieldsets
+   ============================================ */
+fieldset.module {
+    border: 1px solid var(--admin-border) !important;
+    border-radius: var(--admin-radius) !important;
+    margin-bottom: 20px !important;
+    background: white !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+fieldset.module h2 {
+    background: linear-gradient(90deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    border-radius: var(--admin-radius) var(--admin-radius) 0 0 !important;
+}
+
+/* ============================================
+   Success Messages
+   ============================================ */
+.messagelist li {
+    border-radius: var(--admin-radius) !important;
+    padding: 12px 20px !important;
+    margin-bottom: 10px !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.messagelist li.success {
+    background: linear-gradient(135deg, var(--admin-success) 0%, #4CAE4C 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.messagelist li.warning {
+    background: linear-gradient(135deg, var(--admin-warning) 0%, #EC971F 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.messagelist li.error {
+    background: linear-gradient(135deg, var(--admin-danger) 0%, #C9302C 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+/* ============================================
+   Better Sidebar
+   ============================================ */
+#changelist-filter {
+    background: #F8F9FA !important;
+    border-left: 1px solid var(--admin-border) !important;
+}
+
+#changelist-filter h2 {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
+    color: white !important;
+    padding: 10px 15px !important;
+    margin: 0 0 15px 0 !important;
+    font-size: 13px !important;
+}
+
+#changelist-filter ul {
+    padding: 0 15px !important;
+}
+
+#changelist-filter li {
+    margin-bottom: 8px !important;
+}
+
+#changelist-filter a {
+    display: block !important;
+    padding: 6px 10px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s !important;
+}
+
+#changelist-filter a:hover {
+    background: white !important;
+    color: var(--admin-primary) !important;
+}
+
+#changelist-filter a.selected {
+    background: var(--admin-primary) !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+/* ============================================
+   Help Text Improvements
+   ============================================ */
+.help,
+p.help {
+    background: #F8F9FA !important;
+    padding: 10px !important;
+    border-radius: 4px !important;
+    border-left: 3px solid var(--admin-primary) !important;
+    color: #666 !important;
+    font-size: 13px !important;
+    margin: 10px 0 !important;
+}
+
+/* Description text in fieldsets */
+.description {
+    background: #E7F3FF !important;
+    padding: 10px 15px !important;
+    border-radius: 4px !important;
+    color: #004085 !important;
+    margin: 10px 0 !important;
+    font-size: 13px !important;
+}
+
+/* ============================================
+   Boolean Field Icons
+   ============================================ */
+img[src*="icon-yes"],
+img[alt="True"] {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%235CB85C'/%3E%3Cpath d='M6.5 10.5L3.5 7.5L4.5 6.5L6.5 8.5L11.5 3.5L12.5 4.5L6.5 10.5z' fill='white'/%3E%3C/svg%3E") !important;
+}
+
+img[src*="icon-no"],
+img[alt="False"] {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23D9534F'/%3E%3Cpath d='M10.5 5.5L8 8L5.5 5.5L4.5 6.5L7 9L4.5 11.5L5.5 12.5L8 10L10.5 12.5L11.5 11.5L9 9L11.5 6.5L10.5 5.5z' fill='white'/%3E%3C/svg%3E") !important;
+}
+
+/* ============================================
+   Dashboard Cards
+   ============================================ */
+#content-related .module {
+    background: white !important;
+    border: 1px solid var(--admin-border) !important;
+    border-radius: var(--admin-radius) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+    margin-bottom: 20px !important;
+}
+
+#content-related .module h2 {
+    background: linear-gradient(90deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%) !important;
+    color: white !important;
+    padding: 10px 15px !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+}
+
+/* ============================================
+   Auto-save Notification Styling
+   ============================================ */
+#auto-save-notification {
+    position: fixed !important;
+    top: 70px !important;
+    right: 20px !important;
+    background: var(--admin-success) !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    border-radius: var(--admin-radius) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    z-index: 9999 !important;
+    font-weight: 500 !important;
+    animation: slideInRight 0.3s ease !important;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   Responsive Improvements
+   ============================================ */
+@media (max-width: 767px) {
+    #header {
+        padding: 15px 20px !important;
+    }
+    
+    .submit-row input {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+    
+    input[type="text"],
+    select,
+    textarea {
+        width: 100% !important;
+    }
+}

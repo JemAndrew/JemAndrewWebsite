@@ -881,10 +881,6 @@ function initContactPage() {
     }
 }
 
-// ============================================================================
-// INITIALIZE APPLICATION
-// ============================================================================
-
 // Initialize the CV Website when DOM is ready
 const cvWebsite = new CVWebsite();
 
@@ -904,3 +900,243 @@ if (typeof module !== 'undefined' && module.exports) {
         PerformanceMonitor
     };
 }
+
+// ============================================================================
+// DJANGO ADMIN AUTO-SAVE FUNCTIONALITY
+// Add this section to the end of your existing main.js file
+// ============================================================================
+
+class AdminAutoSave {
+    constructor() {
+        this.AUTO_SAVE_DELAY = 2000; // 2 seconds after user stops typing
+        this.NOTIFICATION_DURATION = 3000; // 3 seconds
+        this.saveTimeout = null;
+        this.hasChanges = false;
+        this.isAdminPage = false;
+        
+        this.init();
+    }
+    
+    init() {
+        // Check if we're in Django admin
+        this.isAdminPage = window.location.pathname.includes('/admin/');
+        if (!this.isAdminPage) return;
+        
+        // Only enable for specific models
+        const modelName = document.body.className.match(/model-(\w+)/);
+        if (!modelName) return;
+        
+        const autoSaveModels = ['personalinfo', 'education', 'experience', 'project', 'skill'];
+        if (!autoSaveModels.includes(modelName[1])) return;
+        
+        this.setupAutoSave();
+        console.log('Admin auto-save initialized for', modelName[1]);
+    }
+    
+    createNotification() {
+        const notification = document.createElement('div');
+        notification.id = 'auto-save-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 9999;
+            display: none;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        `;
+        document.body.appendChild(notification);
+        return notification;
+    }
+    
+    showNotification(message, type = 'success') {
+        let notification = document.getElementById('auto-save-notification');
+        if (!notification) {
+            notification = this.createNotification();
+        }
+        
+        notification.textContent = message;
+        notification.style.background = type === 'success' ? '#28a745' : 
+                                       type === 'error' ? '#dc3545' : '#17a2b8';
+        notification.style.display = 'block';
+        notification.style.opacity = '1';
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 300);
+        }, this.NOTIFICATION_DURATION);
+    }
+    
+    autoSave() {
+        const form = document.querySelector('#content-main form');
+        if (!form || !this.hasChanges) return;
+        
+        // Don't auto-save if there are validation errors visible
+        if (form.querySelector('.errorlist')) {
+            console.log('Form has errors, skipping auto-save');
+            return;
+        }
+        
+        const formData = new FormData(form);
+        formData.append('_ajax', '1');
+        
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            return;
+        }
+        
+        // Save via AJAX
+        fetch(form.action || window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                this.showNotification('Auto-saved successfully!', 'success');
+                this.hasChanges = false;
+                
+                // Update the "last saved" indicator if it exists
+                const lastSaved = document.getElementById('last-saved-time');
+                if (lastSaved) {
+                    const now = new Date();
+                    lastSaved.textContent = `Last saved: ${now.toLocaleTimeString()}`;
+                }
+            } else {
+                throw new Error('Save failed');
+            }
+        })
+        .catch(error => {
+            console.error('Auto-save error:', error);
+            this.showNotification('Auto-save failed. Please save manually.', 'error');
+        });
+    }
+    
+    debouncedAutoSave() {
+        clearTimeout(this.saveTimeout);
+        this.hasChanges = true;
+        
+        // Show saving indicator
+        const indicator = document.getElementById('auto-save-indicator');
+        if (indicator) {
+            indicator.style.display = 'inline';
+        }
+        
+        this.saveTimeout = setTimeout(() => {
+            this.autoSave();
+            if (indicator) {
+                indicator.style.display = 'none';
+            }
+        }, this.AUTO_SAVE_DELAY);
+    }
+    
+    setupAutoSave() {
+        // Add auto-save indicator to submit row
+        const submitRow = document.querySelector('.submit-row');
+        if (submitRow) {
+            const indicator = document.createElement('span');
+            indicator.id = 'auto-save-indicator';
+            indicator.style.cssText = `
+                margin-left: 10px;
+                color: #666;
+                font-style: italic;
+                display: none;
+            `;
+            indicator.textContent = 'Saving...';
+            submitRow.appendChild(indicator);
+            
+            // Add last saved time
+            const lastSaved = document.createElement('span');
+            lastSaved.id = 'last-saved-time';
+            lastSaved.style.cssText = `
+                margin-left: 10px;
+                color: #666;
+                font-size: 12px;
+            `;
+            submitRow.appendChild(lastSaved);
+        }
+        
+        // Get the form
+        const form = document.querySelector('#content-main form');
+        if (!form) return;
+        
+        // Bind auto-save to form inputs
+        const bindAutoSave = this.debouncedAutoSave.bind(this);
+        
+        // Text inputs and textareas
+        form.querySelectorAll('input[type="text"], input[type="email"], input[type="url"], input[type="number"], textarea, select').forEach(element => {
+            element.addEventListener('input', bindAutoSave);
+            element.addEventListener('change', bindAutoSave);
+        });
+        
+        // Checkboxes and radio buttons
+        form.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(element => {
+            element.addEventListener('change', bindAutoSave);
+        });
+        
+        // Date inputs
+        form.querySelectorAll('input[type="date"], input[type="datetime-local"]').forEach(element => {
+            element.addEventListener('change', bindAutoSave);
+        });
+        
+        // File uploads - just notify, don't auto-save
+        form.querySelectorAll('input[type="file"]').forEach(element => {
+            element.addEventListener('change', () => {
+                this.hasChanges = true;
+                this.showNotification('File selected. Click Save to upload.', 'info');
+            });
+        });
+        
+        // Warn before leaving if there are unsaved changes
+        window.addEventListener('beforeunload', (e) => {
+            if (this.hasChanges) {
+                e.preventDefault();
+                e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+            }
+        });
+        
+        // Mark as saved when form is submitted normally
+        form.addEventListener('submit', () => {
+            this.hasChanges = false;
+        });
+        
+        // Add visual feedback for auto-save enabled
+        this.showNotification('Auto-save enabled for this form', 'info');
+    }
+}
+
+// ============================================================================
+// INITIALIZE ALL COMPONENTS INCLUDING ADMIN AUTO-SAVE
+// ============================================================================
+
+// Update the CVWebsite class initialization to include AdminAutoSave
+const originalInitializeComponents = CVWebsite.prototype.initializeComponents;
+CVWebsite.prototype.initializeComponents = function() {
+    // Call original initialization
+    originalInitializeComponents.call(this);
+    
+    // Add admin auto-save if we're in admin
+    if (window.location.pathname.includes('/admin/')) {
+        this.components.adminAutoSave = new AdminAutoSave();
+    }
+};
+
+// Or if you prefer, just initialize it separately at the bottom:
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize admin auto-save if we're in the admin area
+    if (window.location.pathname.includes('/admin/')) {
+        new AdminAutoSave();
+    }
+});
