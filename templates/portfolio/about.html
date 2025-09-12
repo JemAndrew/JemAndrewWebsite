@@ -19,8 +19,9 @@
             </div>
             <div class="col-lg-6 text-center">
                 {% if personal_info.profile_image %}
-                    <img src="{{ personal_info.profile_image.url }}" alt="{{ personal_info.name }}" 
-                         class="img-fluid rounded-circle shadow-lg" style="max-width: 300px;">
+                    <img src="{{ personal_info.profile_image.url }}?w=400&h=400&c=fill&g=face&q_auto&f_auto" 
+                        alt="{{ personal_info.name }}" 
+                        class="img-fluid rounded-circle shadow-lg" style="max-width: 300px;">
                 {% else %}
                     <div class="bg-primary-subtle rounded-circle mx-auto d-flex align-items-center justify-content-center" 
                          style="width: 300px; height: 300px;">

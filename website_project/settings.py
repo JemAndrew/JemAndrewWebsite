@@ -18,6 +18,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(','
 
 # Application definition
 INSTALLED_APPS = [
+    'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,14 +27,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     
-    # Third party apps - IMAGE CROPPING ADDED
+    # Third party apps 
     'cloudinary_storage',
     'cloudinary',
     'crispy_forms',
     'crispy_bootstrap5',
     'rest_framework',
-    
-    # Local apps
+    'import_export',  
+    'adminsortable2',  
+    'rangefilter',  
+
+
+    # local apps
     'portfolio',
 ]
 
@@ -79,8 +84,12 @@ CLOUDINARY_STORAGE = {
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cv_website',
+        'USER': 'cv_user',
+        'PASSWORD': 'cv_password',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -164,3 +173,5 @@ REST_FRAMEWORK = {
 if os.environ.get('DOCKER_CONTAINER'):
     ALLOWED_HOSTS = ['*']
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+

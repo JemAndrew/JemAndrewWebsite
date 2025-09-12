@@ -93,10 +93,9 @@
             <div class="col-lg-5 order-1 order-lg-2 text-center">
                 <div class="profile-image-container position-relative">
                     {% if personal_info.profile_image %}
-                        <!-- This will auto-detect and zoom in on YOUR face -->
-                        <img src="{{ personal_info.profile_image.url }}?c_crop,g_face,h_800,w_800/c_fill,h_400,w_400" 
+                        <img src="{{ personal_info.profile_image.url }}?w=400&h=400&c=fill&g=face&q_auto&f_auto" 
                             alt="{{ personal_info.name }}" 
-                            class="profile-image rounded-circle shadow-lg animate-fadeInRight">
+                            class="img-fluid rounded-circle shadow-lg" style="max-width: 300px;">
                     {% else %}
                         <div class="profile-placeholder rounded-circle shadow-lg animate-fadeInRight d-flex align-items-center justify-content-center">
                             <i class="fas fa-user fa-5x text-primary"></i>

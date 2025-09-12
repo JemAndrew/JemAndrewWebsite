@@ -6,7 +6,9 @@ services:
       - "8001:8000"  # Host port 8001 → Container port 8000
     volumes:
       - .:/app  # Sync code changes
-      - media_volume:/app/media  # Persist uploaded files
+      - media_volume:/app/media
+      - ./static:/app/static
+      - ./staticfiles:/app/staticfiles  # Persist uploaded files
     environment:
       - DEBUG=True
       - SECRET_KEY=docker-secret-key-for-development
