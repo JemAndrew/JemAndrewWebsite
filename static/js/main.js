@@ -1,428 +1,213 @@
 /**
- * Modern CV Website JavaScript - Complete Update
- * Features: Smooth animations, theme switching, typing effects, interactive charts
+ * Professional Portfolio JavaScript
+ * Clean, minimal functionality for professional portfolio
  */
 
-// ============================================================================
-// CONSTANTS AND CONFIGURATION
-// ============================================================================
-
-const CONFIG = {
-    TYPING_SPEED: 100,
-    TYPING_DELAY: 2000,
-    SCROLL_THRESHOLD: 100,
-    ANIMATION_DURATION: 800,
-    CHART_ANIMATION_DURATION: 1000,
-};
-
-const SELECTORS = {
-    navbar: '#mainNav',
-    backToTopBtn: '#backToTopBtn',
-    themeToggle: '#themeToggle',
-    themeIcon: '#themeIcon',
-    typedText: '#typed-text',
-    loadingOverlay: '#loadingOverlay',
-    skillProgressBars: '.skill-progress-bar',
-    contactForm: '#contactForm',
-    animateElements: '.animate-on-scroll'
-};
-
-// ============================================================================
-// UTILITY FUNCTIONS
-// ============================================================================
-
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-}
-
-function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-}
-
-function animateNumber(element, start, end, duration) {
-    const startTime = performance.now();
-    
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        const current = start + (end - start) * easeOutCubic(progress);
-        element.textContent = Math.round(current);
-        
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        }
-    }
-    
-    requestAnimationFrame(update);
-}
-
-// ============================================================================
-// THEME MANAGEMENT
-// ============================================================================
-
-class ThemeManager {
+class ProfessionalPortfolio {
     constructor() {
-        this.currentTheme = localStorage.getItem('theme') || 'light';
-        this.themeToggle = document.querySelector(SELECTORS.themeToggle);
-        this.themeIcon = document.querySelector(SELECTORS.themeIcon);
-        
         this.init();
     }
-    
+
     init() {
-        this.setTheme(this.currentTheme);
-        this.bindEvents();
-    }
-    
-    bindEvents() {
-        if (this.themeToggle) {
-            this.themeToggle.addEventListener('click', () => this.toggleTheme());
-        }
+        this.setupNavigation();
+        this.setupScrollEffects();
+        this.setupFormHandling();
+        this.setupAnimations();
+        this.setupMobileMenu();
         
-        // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem('theme')) {
-                this.setTheme(e.matches ? 'dark' : 'light');
+        console.log('Professional Portfolio initialized');
+    }
+
+    /**
+     * Navigation functionality
+     */
+    setupNavigation() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navbar = document.getElementById('navbar');
+        
+        // Smooth scrolling for navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Update active link
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Smooth scroll to section
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 80; // Account for fixed navbar
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active navigation on scroll
+        window.addEventListener('scroll', () => {
+            this.updateActiveNavigation();
+            this.updateNavbarAppearance();
+        });
+    }
+
+    updateActiveNavigation() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const scrollPos = window.scrollY + 100;
+
+        sections.forEach(section => {
+            const top = section.offsetTop;
+            const bottom = top + section.offsetHeight;
+            const id = section.getAttribute('id');
+            
+            if (scrollPos >= top && scrollPos <= bottom) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
             }
         });
     }
-    
-    setTheme(theme) {
-        this.currentTheme = theme;
-        document.body.classList.toggle('dark-theme', theme === 'dark');
-        document.documentElement.setAttribute('data-bs-theme', theme);
-        localStorage.setItem('theme', theme);
-        
-        if (this.themeIcon) {
-            this.themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
-        
-        // Dispatch custom event
-        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
-    }
-    
-    toggleTheme() {
-        const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-        this.setTheme(newTheme);
-        
-        // Add visual feedback
-        this.themeToggle.style.transform = 'scale(0.9)';
-        setTimeout(() => {
-            this.themeToggle.style.transform = 'scale(1)';
-        }, 150);
-    }
-    
-    getTheme() {
-        return this.currentTheme;
-    }
-}
 
-// ============================================================================
-// TYPING ANIMATION
-// ============================================================================
-
-class TypingAnimation {
-    constructor(element, phrases, options = {}) {
-        this.element = element;
-        this.phrases = phrases;
-        this.options = {
-            typeSpeed: options.typeSpeed || CONFIG.TYPING_SPEED,
-            backSpeed: options.backSpeed || 60,
-            backDelay: options.backDelay || CONFIG.TYPING_DELAY,
-            loop: options.loop !== false,
-            showCursor: options.showCursor !== false,
-            ...options
-        };
-        
-        this.currentPhraseIndex = 0;
-        this.currentCharIndex = 0;
-        this.isDeleting = false;
-        this.isWaiting = false;
-        
-        if (this.phrases.length > 0) {
-            this.start();
-        }
-    }
-    
-    start() {
-        this.type();
-    }
-    
-    type() {
-        const currentPhrase = this.phrases[this.currentPhraseIndex];
-        
-        if (this.isWaiting) {
-            setTimeout(() => {
-                this.isWaiting = false;
-                this.isDeleting = true;
-                this.type();
-            }, this.options.backDelay);
-            return;
-        }
-        
-        if (this.isDeleting) {
-            this.currentCharIndex--;
-            this.element.textContent = currentPhrase.substring(0, this.currentCharIndex);
-            
-            if (this.currentCharIndex === 0) {
-                this.isDeleting = false;
-                this.currentPhraseIndex = (this.currentPhraseIndex + 1) % this.phrases.length;
-            }
-            
-            setTimeout(() => this.type(), this.options.backSpeed);
+    updateNavbarAppearance() {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
         } else {
-            this.currentCharIndex++;
-            this.element.textContent = currentPhrase.substring(0, this.currentCharIndex);
-            
-            if (this.currentCharIndex === currentPhrase.length) {
-                if (this.options.loop) {
-                    this.isWaiting = true;
-                } else {
-                    return;
-                }
-            }
-            
-            setTimeout(() => this.type(), this.options.typeSpeed);
+            navbar.classList.remove('scrolled');
         }
     }
-}
 
-// ============================================================================
-// SCROLL ANIMATIONS
-// ============================================================================
+    /**
+     * Mobile menu functionality
+     */
+    setupMobileMenu() {
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileMenuBtn && navMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                mobileMenuBtn.classList.toggle('active');
+            });
 
-class ScrollAnimations {
-    constructor() {
-        this.navbar = document.querySelector(SELECTORS.navbar);
-        this.backToTopBtn = document.querySelector(SELECTORS.backToTopBtn);
-        this.skillBars = document.querySelectorAll(SELECTORS.skillProgressBars);
-        this.animatedElements = new Set();
-        
-        this.init();
+            // Close mobile menu when clicking on nav link
+            const navLinks = navMenu.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuBtn.contains(e.target) && !navMenu.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.classList.remove('active');
+                }
+            });
+        }
     }
-    
-    init() {
-        this.bindScrollEvents();
-        this.initIntersectionObserver();
-    }
-    
-    bindScrollEvents() {
-        const throttledScroll = throttle(() => {
-            this.handleNavbarScroll();
-            this.handleBackToTopButton();
-        }, 16); // ~60fps
+
+    /**
+     * Scroll effects and back to top button
+     */
+    setupScrollEffects() {
+        const backToTop = document.getElementById('backToTop');
         
-        window.addEventListener('scroll', throttledScroll, { passive: true });
-        
-        if (this.backToTopBtn) {
-            this.backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ 
-                    top: 0, 
-                    behavior: 'smooth' 
+        if (backToTop) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
                 });
             });
         }
     }
-    
-    handleNavbarScroll() {
-        if (!this.navbar) return;
-        
-        const scrolled = window.pageYOffset > CONFIG.SCROLL_THRESHOLD;
-        this.navbar.classList.toggle('scrolled', scrolled);
-    }
-    
-    handleBackToTopButton() {
-        if (!this.backToTopBtn) return;
-        
-        const show = window.pageYOffset > CONFIG.SCROLL_THRESHOLD * 3;
-        this.backToTopBtn.classList.toggle('show', show);
-    }
-    
-    initIntersectionObserver() {
-        const options = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.animateElement(entry.target);
-                }
-            });
-        }, options);
-        
-        // Observe skill progress bars
-        this.skillBars.forEach(bar => observer.observe(bar));
-        
-        // Observe elements with animate-on-scroll class
-        document.querySelectorAll(SELECTORS.animateElements).forEach(el => observer.observe(el));
-        
-        // Observe cards for stagger animation
-        document.querySelectorAll('.card, .project-card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-            observer.observe(card);
-        });
-    }
-    
-    animateElement(element) {
-        if (this.animatedElements.has(element)) return;
-        this.animatedElements.add(element);
-        
-        if (element.classList.contains('skill-progress-bar')) {
-            this.animateSkillBar(element);
-        }
-        
-        if (element.classList.contains('animate-on-scroll')) {
-            element.classList.add('animate-in');
-        }
-        
-        // Add stagger animation to cards
-        if (element.classList.contains('card') || element.classList.contains('project-card')) {
-            element.style.animation = 'fadeInUp 0.6s ease-out forwards';
-        }
-    }
-    
-    animateSkillBar(bar) {
-        const targetWidth = bar.dataset.progress || '0';
-        bar.style.width = '0%';
-        
-        setTimeout(() => {
-            bar.style.width = `${targetWidth}%`;
-        }, 200);
-    }
-}
 
-// ============================================================================
-// FORM HANDLING
-// ============================================================================
+    /**
+     * Form handling
+     */
+    setupFormHandling() {
+        const contactForm = document.getElementById('contactForm');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                this.handleFormSubmission(e, contactForm);
+            });
 
-class FormHandler {
-    constructor() {
-        this.contactForm = document.querySelector(SELECTORS.contactForm);
-        this.init();
-    }
-    
-    init() {
-        if (this.contactForm) {
-            this.bindFormEvents();
-            this.setupModernFormLabels();
+            // Real-time validation
+            const inputs = contactForm.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', () => this.validateField(input));
+                input.addEventListener('input', () => this.clearFieldError(input));
+            });
         }
     }
-    
-    setupModernFormLabels() {
-        // Convert regular forms to modern floating label forms
-        const formGroups = this.contactForm.querySelectorAll('.form-group, .mb-3');
-        formGroups.forEach(group => {
-            const input = group.querySelector('input, textarea');
-            const label = group.querySelector('label');
-            
-            if (input && label && !input.classList.contains('form-control-modern')) {
-                // Add modern classes
-                input.classList.add('form-control-modern');
-                label.classList.add('form-label-modern');
-                group.classList.add('form-group-modern');
-                
-                // Add placeholder for floating effect
-                input.setAttribute('placeholder', ' ');
-            }
-        });
-    }
-    
-    bindFormEvents() {
-        this.contactForm.addEventListener('submit', (e) => this.handleFormSubmit(e));
-        
-        // Add real-time validation
-        const inputs = this.contactForm.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('blur', () => this.validateField(input));
-            input.addEventListener('input', () => this.clearFieldError(input));
-            
-            // Enhanced focus effects
-            input.addEventListener('focus', () => {
-                input.parentElement.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', () => {
-                input.parentElement.classList.remove('focused');
-            });
-        });
-    }
-    
-    async handleFormSubmit(e) {
+
+    handleFormSubmission(e, form) {
         e.preventDefault();
         
-        if (!this.validateForm()) {
+        // Validate form
+        if (!this.validateForm(form)) {
             return;
         }
-        
-        const formData = new FormData(this.contactForm);
-        const submitBtn = this.contactForm.querySelector('[type="submit"]');
+
+        // Show loading state
+        const submitBtn = form.querySelector('.btn-submit');
         const originalText = submitBtn.innerHTML;
         
-        try {
-            this.setSubmitButtonState(submitBtn, true);
-            
-            // Use Django's form submission for now
-            this.contactForm.submit();
-            
-        } catch (error) {
-            this.showNotification('An error occurred. Please try again.', 'error');
-            console.error('Form submission error:', error);
-        } finally {
-            setTimeout(() => {
-                this.setSubmitButtonState(submitBtn, false, originalText);
-            }, 1000);
-        }
+        this.setButtonLoading(submitBtn, true);
+
+        // Simulate form submission (replace with actual submission)
+        setTimeout(() => {
+            this.setButtonLoading(submitBtn, false, originalText);
+            this.showMessage('Thank you for your message! I\'ll get back to you soon.', 'success');
+            form.reset();
+        }, 2000);
     }
-    
-    validateForm() {
-        const inputs = this.contactForm.querySelectorAll('input[required], textarea[required]');
+
+    validateForm(form) {
+        const requiredFields = form.querySelectorAll('input[required], textarea[required]');
         let isValid = true;
-        
-        inputs.forEach(input => {
-            if (!this.validateField(input)) {
+
+        requiredFields.forEach(field => {
+            if (!this.validateField(field)) {
                 isValid = false;
             }
         });
-        
+
         return isValid;
     }
-    
+
     validateField(field) {
         const value = field.value.trim();
         const fieldName = field.name;
         let isValid = true;
         let errorMessage = '';
-        
+
         // Required field validation
         if (field.required && !value) {
             isValid = false;
             errorMessage = 'This field is required.';
         }
-        
+
         // Email validation
         if (fieldName === 'email' && value) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -431,444 +216,456 @@ class FormHandler {
                 errorMessage = 'Please enter a valid email address.';
             }
         }
-        
+
         // Message length validation
         if (fieldName === 'message' && value && value.length < 10) {
             isValid = false;
             errorMessage = 'Message must be at least 10 characters long.';
         }
-        
+
         this.showFieldError(field, isValid ? '' : errorMessage);
         return isValid;
     }
-    
+
     showFieldError(field, message) {
         this.clearFieldError(field);
         
         if (message) {
-            field.classList.add('is-invalid');
-            const errorElement = document.createElement('div');
-            errorElement.className = 'invalid-feedback';
-            errorElement.textContent = message;
-            field.parentNode.appendChild(errorElement);
+            field.style.borderColor = 'var(--danger-color)';
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'form-error';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
         }
     }
-    
+
     clearFieldError(field) {
-        field.classList.remove('is-invalid');
-        const errorElement = field.parentNode.querySelector('.invalid-feedback');
-        if (errorElement) {
-            errorElement.remove();
+        field.style.borderColor = '';
+        const existingError = field.parentNode.querySelector('.form-error');
+        if (existingError) {
+            existingError.remove();
         }
     }
-    
-    setSubmitButtonState(button, loading, originalText = '') {
+
+    setButtonLoading(button, loading, originalText = '') {
         if (loading) {
             button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-            button.classList.add('loading');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         } else {
             button.disabled = false;
-            button.innerHTML = originalText || '<i class="fas fa-paper-plane me-2"></i>Send Message';
-            button.classList.remove('loading');
+            button.innerHTML = originalText || '<i class="fas fa-paper-plane"></i> Send Message';
         }
     }
-    
-    showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
-        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; animation: slideInRight 0.3s ease;';
-        notification.innerHTML = `
+
+    showMessage(message, type = 'info') {
+        const messageContainer = document.querySelector('.messages-container') || this.createMessageContainer();
+        
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.innerHTML = `
             ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button class="alert-close" onclick="this.parentElement.remove()">×</button>
         `;
         
-        document.body.appendChild(notification);
+        messageContainer.appendChild(alertDiv);
         
         // Auto remove after 5 seconds
         setTimeout(() => {
-            if (notification.parentNode) {
-                notification.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
             }
         }, 5000);
     }
+
+    createMessageContainer() {
+        const container = document.createElement('div');
+        container.className = 'messages-container';
+        document.body.appendChild(container);
+        return container;
+    }
+
+    /**
+     * Scroll animations
+     */
+    setupAnimations() {
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements with fade-in class
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add fade-in class to sections and cards
+        document.querySelectorAll('section, .about-card, .project-card, .skill-category').forEach(el => {
+            el.classList.add('fade-in');
+            observer.observe(el);
+        });
+    }
+
+    /**
+     * Utility functions
+     */
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
 }
 
-// ============================================================================
-// INTERACTIVE FEATURES
-// ============================================================================
-
+/**
+ * Additional interactive features
+ */
 class InteractiveFeatures {
     constructor() {
         this.init();
     }
-    
-    init() {
-        this.initSmoothScrolling();
-        this.initCardInteractions();
-        this.initSkillBars();
-        this.initParallaxEffects();
-    }
-    
-    initSmoothScrolling() {
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    }
-    
-    initCardInteractions() {
-        // Enhanced card hover effects
-        document.querySelectorAll('.card, .project-card').forEach(card => {
-            card.addEventListener('mouseenter', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-    }
-    
-    initSkillBars() {
-        // Animate skill percentage numbers
-        document.querySelectorAll('.skill-progress-bar').forEach(bar => {
-            const percentage = parseInt(bar.dataset.progress || '0');
-            const numberElement = bar.parentElement.querySelector('.skill-percentage');
-            
-            if (numberElement) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            animateNumber(numberElement, 0, percentage, 1500);
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
-                
-                observer.observe(bar);
-            }
-        });
-    }
-    
-    initParallaxEffects() {
-        // Subtle parallax for hero elements
-        const heroElements = document.querySelectorAll('.floating-element');
-        
-        window.addEventListener('scroll', throttle(() => {
-            const scrollY = window.pageYOffset;
-            
-            heroElements.forEach((element, index) => {
-                const speed = 0.5 + (index * 0.1);
-                const yPos = -(scrollY * speed);
-                element.style.transform = `translateY(${yPos}px)`;
-            });
-        }, 16));
-    }
-}
 
-// ============================================================================
-// PROJECT FILTERING
-// ============================================================================
-
-class ProjectFilter {
-    constructor() {
-        this.filterButtons = document.querySelectorAll('[data-filter]');
-        this.projectItems = document.querySelectorAll('[data-category]');
-        this.searchInput = document.querySelector('#project-search');
-        
-        this.init();
-    }
-    
     init() {
-        this.bindFilterEvents();
-        this.bindSearchEvents();
+        this.setupProjectFiltering();
+        this.setupSkillInteractions();
+        this.setupKeyboardNavigation();
     }
-    
-    bindFilterEvents() {
-        this.filterButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const filter = button.dataset.filter;
-                this.filterProjects(filter);
-                this.updateActiveFilter(button);
-            });
-        });
-    }
-    
-    bindSearchEvents() {
-        if (this.searchInput) {
-            const debouncedSearch = debounce((term) => {
-                this.searchProjects(term);
-            }, 300);
-            
-            this.searchInput.addEventListener('input', (e) => {
-                debouncedSearch(e.target.value);
+
+    setupProjectFiltering() {
+        const showAllBtn = document.getElementById('showAllProjects');
+        if (showAllBtn) {
+            showAllBtn.addEventListener('click', () => {
+                this.loadMoreProjects();
             });
         }
     }
-    
-    filterProjects(category) {
-        this.projectItems.forEach((item, index) => {
-            const itemCategory = item.dataset.category;
-            const show = category === 'all' || itemCategory === category;
+
+    loadMoreProjects() {
+        // This would typically load more projects via AJAX
+        // For now, show a placeholder message
+        console.log('Loading more projects...');
+        
+        // You can implement AJAX call to load more projects
+        // Example implementation:
+        /*
+        fetch('/api/projects/')
+            .then(response => response.json())
+            .then(data => {
+                this.renderAdditionalProjects(data.projects);
+            })
+            .catch(error => {
+                console.error('Error loading projects:', error);
+            });
+        */
+    }
+
+    setupSkillInteractions() {
+        const skillItems = document.querySelectorAll('.skill-item');
+        
+        skillItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                this.showSkillTooltip(item);
+            });
             
-            if (show) {
-                item.style.display = 'block';
-                item.style.animationDelay = `${index * 0.1}s`;
-                item.classList.add('animate-in');
-            } else {
-                item.style.display = 'none';
-                item.classList.remove('animate-in');
+            item.addEventListener('mouseleave', () => {
+                this.hideSkillTooltip();
+            });
+        });
+    }
+
+    showSkillTooltip(skillItem) {
+        const skillName = skillItem.querySelector('.skill-name').textContent;
+        const skillExperience = skillItem.querySelector('.skill-experience').textContent;
+        
+        // Create tooltip (basic implementation)
+        const tooltip = document.createElement('div');
+        tooltip.className = 'skill-tooltip';
+        tooltip.innerHTML = `<strong>${skillName}</strong><br>${skillExperience}`;
+        tooltip.style.cssText = `
+            position: absolute;
+            background: var(--bg-dark);
+            color: white;
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            z-index: 1000;
+            pointer-events: none;
+        `;
+        
+        document.body.appendChild(tooltip);
+        
+        // Position tooltip
+        const rect = skillItem.getBoundingClientRect();
+        tooltip.style.left = (rect.right + 10) + 'px';
+        tooltip.style.top = (rect.top + rect.height / 2 - tooltip.offsetHeight / 2) + 'px';
+        
+        this.currentTooltip = tooltip;
+    }
+
+    hideSkillTooltip() {
+        if (this.currentTooltip) {
+            this.currentTooltip.remove();
+            this.currentTooltip = null;
+        }
+    }
+
+    setupKeyboardNavigation() {
+        // Add keyboard navigation for accessibility
+        document.addEventListener('keydown', (e) => {
+            // Escape key closes mobile menu and tooltips
+            if (e.key === 'Escape') {
+                const navMenu = document.getElementById('navMenu');
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                
+                if (navMenu && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.classList.remove('active');
+                }
+                
+                this.hideSkillTooltip();
             }
         });
     }
-    
-    searchProjects(term) {
-        const searchTerm = term.toLowerCase();
-        
-        this.projectItems.forEach(item => {
-            const title = item.querySelector('.project-title, .card-title')?.textContent.toLowerCase() || '';
-            const description = item.querySelector('.project-description, .card-text')?.textContent.toLowerCase() || '';
-            const technologies = item.querySelector('.project-technologies')?.textContent.toLowerCase() || '';
-            
-            const matches = title.includes(searchTerm) || 
-                          description.includes(searchTerm) || 
-                          technologies.includes(searchTerm);
-            
-            item.style.display = matches ? 'block' : 'none';
-        });
-    }
-    
-    updateActiveFilter(activeButton) {
-        this.filterButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        activeButton.classList.add('active');
-    }
 }
 
-// ============================================================================
-// PERFORMANCE MONITORING
-// ============================================================================
-
+/**
+ * Performance and analytics
+ */
 class PerformanceMonitor {
     constructor() {
-        this.metrics = {
-            loadTime: 0,
-            domContentLoaded: 0,
-            firstPaint: 0,
-            firstContentfulPaint: 0
-        };
-        
+        this.metrics = {};
         this.init();
     }
-    
+
     init() {
-        this.measureLoadTimes();
-        this.observePerformance();
+        this.measurePageLoad();
+        this.trackUserInteractions();
     }
-    
-    measureLoadTimes() {
+
+    measurePageLoad() {
         window.addEventListener('load', () => {
             const perfData = performance.getEntriesByType('navigation')[0];
-            this.metrics.loadTime = perfData.loadEventEnd - perfData.loadEventStart;
-            this.metrics.domContentLoaded = perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart;
             
-            // Log performance metrics in development
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                console.group('🚀 Performance Metrics');
-                console.log(`Page Load Time: ${this.metrics.loadTime.toFixed(2)}ms`);
-                console.log(`DOM Content Loaded: ${this.metrics.domContentLoaded.toFixed(2)}ms`);
+            this.metrics = {
+                pageLoadTime: perfData.loadEventEnd - perfData.loadEventStart,
+                domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+                firstPaint: 0,
+                firstContentfulPaint: 0
+            };
+
+            // Log performance in development
+            if (this.isDevelopment()) {
+                console.group('📊 Performance Metrics');
+                console.log(`Page Load: ${this.metrics.pageLoadTime.toFixed(2)}ms`);
+                console.log(`DOM Ready: ${this.metrics.domContentLoaded.toFixed(2)}ms`);
                 console.groupEnd();
             }
         });
     }
-    
-    observePerformance() {
-        if ('PerformanceObserver' in window) {
-            const observer = new PerformanceObserver((list) => {
-                list.getEntries().forEach((entry) => {
-                    if (entry.name === 'first-paint') {
-                        this.metrics.firstPaint = entry.startTime;
-                    } else if (entry.name === 'first-contentful-paint') {
-                        this.metrics.firstContentfulPaint = entry.startTime;
-                    }
-                });
+
+    trackUserInteractions() {
+        // Track form submissions
+        document.addEventListener('submit', (e) => {
+            if (e.target.id === 'contactForm') {
+                this.trackEvent('form_submit', 'contact');
+            }
+        });
+
+        // Track navigation clicks
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const section = e.target.getAttribute('href').replace('#', '');
+                this.trackEvent('navigation', section);
             });
-            
-            observer.observe({ entryTypes: ['paint'] });
-        }
+        });
+
+        // Track external link clicks
+        document.querySelectorAll('a[target="_blank"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const url = e.target.href;
+                this.trackEvent('external_link', url);
+            });
+        });
     }
-    
+
+    trackEvent(category, action) {
+        if (this.isDevelopment()) {
+            console.log(`Event: ${category} - ${action}`);
+        }
+        
+        // Here you would integrate with your analytics service
+        // Example: Google Analytics, Plausible, etc.
+        /*
+        gtag('event', action, {
+            event_category: category,
+            event_label: action
+        });
+        */
+    }
+
+    isDevelopment() {
+        return window.location.hostname === 'localhost' || 
+               window.location.hostname === '127.0.0.1';
+    }
+
     getMetrics() {
         return { ...this.metrics };
     }
 }
 
-// ============================================================================
-// MAIN APPLICATION CLASS
-// ============================================================================
-
-class ModernCVWebsite {
+/**
+ * Accessibility enhancements
+ */
+class AccessibilityEnhancements {
     constructor() {
-        this.components = {};
         this.init();
     }
-    
+
     init() {
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.initializeComponents());
-        } else {
-            this.initializeComponents();
-        }
+        this.setupFocusManagement();
+        this.setupAriaLabels();
+        this.setupReducedMotion();
     }
-    
-    initializeComponents() {
-        try {
-            // Initialize core components
-            this.components.themeManager = new ThemeManager();
-            this.components.scrollAnimations = new ScrollAnimations();
-            this.components.formHandler = new FormHandler();
-            this.components.projectFilter = new ProjectFilter();
-            this.components.interactiveFeatures = new InteractiveFeatures();
-            this.components.performanceMonitor = new PerformanceMonitor();
-            
-            // Initialize typing animation if element exists
-            const typedElement = document.querySelector(SELECTORS.typedText);
-            if (typedElement && window.typingPhrases) {
-                this.components.typingAnimation = new TypingAnimation(
-                    typedElement, 
-                    window.typingPhrases
-                );
+
+    setupFocusManagement() {
+        // Ensure focus visibility
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                document.body.classList.add('using-keyboard');
             }
-            
-            // Hide loading overlay with smooth transition
-            this.hideLoadingOverlay();
-            
-            // Add CSS animations
-            this.addCSSpAnimations();
-            
-            console.log('✅ Modern CV Website initialized successfully');
-        } catch (error) {
-            console.error('❌ Error initializing CV Website:', error);
-            this.hideLoadingOverlay();
-        }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('using-keyboard');
+        });
+
+        // Skip to main content link
+        this.addSkipLink();
     }
-    
-    hideLoadingOverlay() {
-        const overlay = document.querySelector(SELECTORS.loadingOverlay);
-        if (overlay) {
-            overlay.classList.add('fade-out');
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 300);
-        }
-    }
-    
-    addCSSpAnimations() {
-        // Add keyframe animations dynamically
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            
-            @keyframes slideInRight {
-                from {
-                    opacity: 0;
-                    transform: translateX(100%);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-            
-            @keyframes slideOutRight {
-                from {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-                to {
-                    opacity: 0;
-                    transform: translateX(100%);
-                }
-            }
+
+    addSkipLink() {
+        const skipLink = document.createElement('a');
+        skipLink.href = '#main-content';
+        skipLink.textContent = 'Skip to main content';
+        skipLink.className = 'skip-link';
+        skipLink.style.cssText = `
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1000;
+            transition: top 0.3s;
         `;
-        document.head.appendChild(style);
+
+        skipLink.addEventListener('focus', () => {
+            skipLink.style.top = '6px';
+        });
+
+        skipLink.addEventListener('blur', () => {
+            skipLink.style.top = '-40px';
+        });
+
+        document.body.insertBefore(skipLink, document.body.firstChild);
     }
-}
 
-// ============================================================================
-// GLOBAL FUNCTIONS (for template usage)
-// ============================================================================
-
-/**
- * Filter skills by category (called from template)
- */
-function filterSkills() {
-    const category = document.getElementById('skill-category')?.value;
-    const skillItems = document.querySelectorAll('[data-skill-category]');
-    
-    skillItems.forEach((item, index) => {
-        const itemCategory = item.dataset.skillCategory;
-        const show = !category || category === '' || itemCategory === category;
-        
-        if (show) {
-            item.style.display = 'block';
-            item.style.animationDelay = `${index * 0.1}s`;
-            item.classList.add('animate-in');
-        } else {
-            item.style.display = 'none';
-            item.classList.remove('animate-in');
+    setupAriaLabels() {
+        // Add aria labels to interactive elements without text
+        const backToTop = document.getElementById('backToTop');
+        if (backToTop && !backToTop.getAttribute('aria-label')) {
+            backToTop.setAttribute('aria-label', 'Back to top');
         }
-    });
-}
 
-/**
- * Update proficiency label (called from template)
- */
-function updateProficiencyLabel(value) {
-    const labels = ['', 'Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert'];
-    const label = document.getElementById('proficiency-label');
-    if (label) {
-        label.textContent = labels[value] || '';
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        if (mobileMenuBtn && !mobileMenuBtn.getAttribute('aria-label')) {
+            mobileMenuBtn.setAttribute('aria-label', 'Toggle mobile menu');
+        }
+    }
+
+    setupReducedMotion() {
+        // Respect user's motion preferences
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const style = document.createElement('style');
+            style.textContent = `
+                *, *::before, *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
 }
 
-// Initialize the Modern CV Website when DOM is ready
-const modernCVWebsite = new ModernCVWebsite();
+/**
+ * Initialize everything when DOM is ready
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize main portfolio functionality
+    new ProfessionalPortfolio();
+    
+    // Initialize additional features
+    new InteractiveFeatures();
+    
+    // Initialize performance monitoring
+    new PerformanceMonitor();
+    
+    // Initialize accessibility enhancements
+    new AccessibilityEnhancements();
+    
+    // Add CSS for keyboard focus
+    const style = document.createElement('style');
+    style.textContent = `
+        body:not(.using-keyboard) *:focus {
+            outline: none;
+        }
+        
+        body.using-keyboard *:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+    `;
+    document.head.appendChild(style);
+});
 
-// Export for potential module usage
+// Export for module usage if needed
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        ModernCVWebsite,
-        ThemeManager,
-        TypingAnimation,
-        ScrollAnimations,
-        FormHandler,
+        ProfessionalPortfolio,
         InteractiveFeatures,
-        ProjectFilter,
-        PerformanceMonitor
+        PerformanceMonitor,
+        AccessibilityEnhancements
     };
 }
