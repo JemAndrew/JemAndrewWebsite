@@ -13,8 +13,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <!-- Custom CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     
@@ -29,38 +27,35 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-modern" id="mainNav">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'portfolio:home' %}">
                 <i class="fas fa-code me-2"></i>{{ personal_info.name|default:"James Andrew" }}
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'portfolio:home' %}">Home</a>
+                        <a class="nav-link nav-link-modern" href="#hero">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'portfolio:about' %}">About</a>
+                        <a class="nav-link nav-link-modern" href="#about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'experience' %}active{% endif %}" href="{% url 'portfolio:experience' %}">Experience</a>
+                        <a class="nav-link nav-link-modern" href="#experience">Experience</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'education' %}active{% endif %}" href="{% url 'portfolio:education' %}">Education</a>
+                        <a class="nav-link nav-link-modern" href="#projects">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'projects' %}active{% endif %}" href="{% url 'portfolio:projects' %}">Projects</a>
+                        <a class="nav-link nav-link-modern" href="#skills">Skills</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'skills' %}active{% endif %}" href="{% url 'portfolio:skills' %}">Skills</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'portfolio:contact' %}">Contact</a>
+                        <a class="nav-link nav-link-modern" href="#contact">Contact</a>
                     </li>
                     <li class="nav-item">
                         <button id="themeToggle" class="btn nav-link border-0">
@@ -81,10 +76,10 @@
     <!-- Footer -->
     <footer class="bg-dark text-light py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
                     <h5 class="fw-bold">{{ personal_info.name|default:"James Andrew" }}</h5>
-                    <p class="text-muted">{{ personal_info.title|default:"Software Engineer | MSc Computer Science" }}</p>
+                    <p class="text-muted mb-3">{{ personal_info.title|default:"Software Engineer | MSc Computer Science" }}</p>
                     <div class="social-links">
                         {% if personal_info.linkedin_url %}
                         <a href="{{ personal_info.linkedin_url }}" target="_blank" class="text-light me-3">
@@ -101,38 +96,15 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-4 mb-4">
-                    <h6 class="fw-bold">Quick Links</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'portfolio:home' %}" class="text-muted text-decoration-none">Home</a></li>
-                        <li><a href="{% url 'portfolio:about' %}" class="text-muted text-decoration-none">About</a></li>
-                        <li><a href="{% url 'portfolio:projects' %}" class="text-muted text-decoration-none">Projects</a></li>
-                        <li><a href="{% url 'portfolio:contact' %}" class="text-muted text-decoration-none">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <h6 class="fw-bold">Latest Projects</h6>
-                    <ul class="list-unstyled">
-                        <li class="text-muted">Cryptocurrency Exchange Platform</li>
-                        <li class="text-muted">BuildChorus SaaS Development</li>
-                        <li class="text-muted">Medical AI Research (MSc)</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="text-muted mb-0">&copy; {% now "Y" %} {{ personal_info.name|default:"James Andrew" }}. All rights reserved.</p>
-                </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="text-muted mb-0">Built with Django & Bootstrap</p>
+                    <p class="text-muted mb-0">&copy; {% now "Y" %} {{ personal_info.name|default:"James Andrew" }}. Built with Django.</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Back to Top Button -->
-    <button id="backToTopBtn" class="btn btn-primary btn-floating">
+    <button id="backToTopBtn" class="btn-floating">
         <i class="fas fa-chevron-up"></i>
     </button>
 

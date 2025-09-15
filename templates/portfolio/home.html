@@ -15,13 +15,13 @@
             <div class="col-lg-7 order-2 order-lg-1">
                 <div class="hero-content animate-fadeInLeft">
                     <div class="mb-3">
-                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+                        <span class="badge badge-modern">
                             <i class="fas fa-laptop-code me-2"></i>Software Engineer
                         </span>
                     </div>
                     
                     <h1 class="display-4 fw-bold mb-4">
-                        Hi, I'm <span class="text-primary">{{ personal_info.name|default:"James Andrew" }}</span>
+                        Hi, I'm <span class="gradient-text">{{ personal_info.name|default:"James Andrew" }}</span>
                     </h1>
                     
                     <div class="typing-container mb-4">
@@ -38,13 +38,13 @@
                     </p>
                     
                     <div class="d-flex flex-wrap gap-3 mb-4">
-                        <a href="{% url 'portfolio:contact' %}" class="btn btn-primary btn-lg">
+                        <a href="#contact" class="btn-modern">
                             <i class="fas fa-envelope me-2"></i>Get In Touch
                         </a>
-                        <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-light btn-lg">
+                        <a href="#projects" class="btn-modern btn-modern-outline">
                             <i class="fas fa-rocket me-2"></i>View Projects
                         </a>
-                        <a href="{% url 'portfolio:about' %}" class="btn btn-outline-light btn-lg">
+                        <a href="#about" class="btn-modern btn-modern-outline">
                             <i class="fas fa-user me-2"></i>About Me
                         </a>
                     </div>
@@ -53,7 +53,7 @@
                     <div class="row g-3 mb-4">
                         <div class="col-4">
                             <div class="text-center">
-                                <div class="h4 text-primary mb-0">5+</div>
+                                <div class="h4 text-primary mb-0">{{ projects|length }}+</div>
                                 <small class="text-light-emphasis">Projects</small>
                             </div>
                         </div>
@@ -90,14 +90,15 @@
                 </div>
             </div>
 
+            <!-- Profile Image -->
             <div class="col-lg-5 order-1 order-lg-2 text-center">
                 <div class="profile-image-container position-relative">
                     {% if personal_info.profile_image %}
-                        <img src="{{ personal_info.profile_image.url }}?w=400&h=400&c=fill&g=face&q_auto&f_auto" 
+                        <img src="{{ personal_info.profile_image.url }}" 
                             alt="{{ personal_info.name }}" 
-                            class="img-fluid rounded-circle shadow-lg" style="max-width: 300px;">
+                            class="profile-image">
                     {% else %}
-                        <div class="profile-placeholder rounded-circle shadow-lg animate-fadeInRight d-flex align-items-center justify-content-center">
+                        <div class="profile-placeholder d-flex align-items-center justify-content-center">
                             <i class="fas fa-user fa-5x text-primary"></i>
                         </div>
                     {% endif %}
@@ -122,265 +123,344 @@
     
     <!-- Scroll Indicator -->
     <div class="scroll-indicator">
-        <a href="#current-work" class="scroll-arrow">
+        <a href="#about" class="scroll-arrow">
             <i class="fas fa-chevron-down"></i>
         </a>
     </div>
 </section>
 
-<!-- Current Work Section -->
-<section id="current-work" class="py-5 bg-light">
+<!-- About Section -->
+<section id="about" class="py-5 animate-on-scroll">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5">
-                <h2 class="section-title">Currently Working On</h2>
-                <p class="lead">Building the future of construction management software</p>
+                <h2 class="section-title gradient-text">About Me</h2>
+                <p class="lead">Software engineer passionate about building scalable solutions</p>
+            </div>
+        </div>
+        
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto">
+                <div class="card glass-card p-5">
+                    <p class="mb-4">
+                        {{ personal_info.bio|default:"I'm a software engineer with a passion for creating efficient, scalable solutions that solve real-world problems. My journey in technology started during my BSc in Biology, where I discovered the power of computational approaches to biological research. This led me to pursue an MSc in Computer Science, where I specialized in machine learning and developed expertise in medical AI applications." }}
+                    </p>
+                    
+                    <p class="mb-4">
+                        Currently, I work at BuildChorus, where I develop enterprise-grade SaaS construction management platforms. 
+                        My role involves working with Django, PostgreSQL, and Google OR-Tools to create optimization solutions that 
+                        serve the multi-billion pound construction industry.
+                    </p>
+                    
+                    <div class="row g-4 mt-4">
+                        <div class="col-md-3 text-center">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 mx-auto mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-lightbulb fa-lg"></i>
+                            </div>
+                            <h6 class="fw-bold">Problem Solver</h6>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 mx-auto mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-code fa-lg"></i>
+                            </div>
+                            <h6 class="fw-bold">Clean Code</h6>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="bg-info bg-opacity-10 text-info rounded-circle p-3 mx-auto mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-users fa-lg"></i>
+                            </div>
+                            <h6 class="fw-bold">Team Player</h6>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3 mx-auto mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-chart-line fa-lg"></i>
+                            </div>
+                            <h6 class="fw-bold">Always Learning</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section id="experience" class="py-5 bg-light animate-on-scroll">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title gradient-text">Experience</h2>
+                <p class="lead">Building enterprise solutions at scale</p>
             </div>
         </div>
         
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <div class="card border-0 shadow-lg overflow-hidden">
+                {% if current_position %}
+                <div class="card glass-card">
                     <div class="card-body p-0">
                         <div class="row g-0">
                             <div class="col-md-4 bg-primary d-flex align-items-center justify-content-center">
                                 <div class="text-center text-white p-4">
                                     <i class="fas fa-building fa-3x mb-3"></i>
-                                    <h4 class="fw-bold">BuildChorus</h4>
+                                    <h4 class="fw-bold">{{ current_position.company }}</h4>
                                     <span class="badge bg-light text-primary">Current Role</span>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="p-4">
-                                    <h5 class="fw-bold text-primary mb-3">Software Engineer</h5>
-                                    <p class="mb-3">
-                                        Engineering enterprise-grade SaaS construction management platform serving 
-                                        the £10+ billion construction software market with Django, PostgreSQL, and 
-                                        Google OR-Tools optimization.
-                                    </p>
+                                    <h5 class="fw-bold text-primary mb-1">{{ current_position.position }}</h5>
+                                    <div class="text-muted mb-3">
+                                        <i class="fas fa-calendar me-2"></i>
+                                        {{ current_position.start_date|date:"M Y" }} - Present
+                                        {% if current_position.location %}
+                                        <span class="ms-3"><i class="fas fa-map-marker-alt me-2"></i>{{ current_position.location }}</span>
+                                        {% endif %}
+                                    </div>
                                     
-                                    <div class="row g-3">
-                                        <div class="col-sm-6">
-                                            <h6 class="fw-bold mb-2">Tech Stack</h6>
-                                            <div class="d-flex flex-wrap gap-1">
-                                                <span class="badge bg-primary-subtle text-primary">Django 5.0.6</span>
-                                                <span class="badge bg-primary-subtle text-primary">PostgreSQL 17</span>
-                                                <span class="badge bg-primary-subtle text-primary">Google OR-Tools</span>
-                                                <span class="badge bg-primary-subtle text-primary">Auth0</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h6 class="fw-bold mb-2">Key Achievements</h6>
-                                            <ul class="list-unstyled small mb-0">
-                                                <li><i class="fas fa-check text-success me-2"></i>User configurability features</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>Multi-tenant architecture</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>Enterprise client deployment</li>
-                                            </ul>
-                                        </div>
+                                    <p class="mb-3">{{ current_position.description }}</p>
+                                    
+                                    <div class="d-flex flex-wrap gap-1">
+                                        {% for skill in current_position.skills_list %}
+                                            <span class="badge badge-modern">{{ skill }}</span>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endif %}
+                
+                <!-- Education -->
+                <div class="row mt-5">
+                    <div class="col-12 text-center mb-4">
+                        <h3 class="fw-bold">Education</h3>
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    {% for education in education_list %}
+                    <div class="col-md-6">
+                        <div class="card glass-card h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h5 class="fw-bold mb-0">{{ education.get_degree_type_display }} {{ education.subject }}</h5>
+                                    {% if education.grade %}
+                                    <span class="badge badge-modern">{{ education.grade }}</span>
+                                    {% endif %}
+                                </div>
+                                <h6 class="text-primary mb-2">{{ education.institution }}</h6>
+                                <p class="text-muted small mb-3">
+                                    {{ education.start_date|date:"Y" }} - 
+                                    {% if education.is_current %}Present{% else %}{{ education.end_date|date:"Y" }}{% endif %}
+                                </p>
+                                <p class="mb-0">{{ education.description|truncatewords:20 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Featured Projects Preview -->
-<section id="featured-projects" class="py-5">
+<!-- Projects Section -->
+<section id="projects" class="py-5 animate-on-scroll">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5">
-                <h2 class="section-title">Featured Projects</h2>
+                <h2 class="section-title gradient-text">Featured Projects</h2>
                 <p class="lead">Showcasing technical expertise and problem-solving</p>
             </div>
         </div>
         
         <div class="row g-4">
-            <!-- Crypto Exchange -->
+            {% for project in featured_projects %}
             <div class="col-lg-4 mb-4">
-                <div class="card h-100 border-0 shadow project-card">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="feature-icon bg-warning bg-opacity-10 text-warning rounded-circle p-3 me-3">
-                                <i class="fab fa-bitcoin fa-lg"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title fw-bold mb-1">Cryptocurrency Exchange</h5>
-                                <small class="text-muted">Personal Project</small>
-                            </div>
+                <div class="card h-100 glass-card project-card animate-on-scroll">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" class="card-img-top project-image" alt="{{ project.title }}">
+                    {% else %}
+                    <div class="project-image-placeholder">
+                        <i class="fas fa-code fa-3x"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge badge-modern mb-2">
+                                {{ project.get_category_display }}
+                            </span>
+                            <span class="badge bg-warning">
+                                <i class="fas fa-star me-1"></i>Featured
+                            </span>
                         </div>
                         
-                        <p class="card-text mb-3">
-                            Custom order matching engine handling 1,000+ orders/second with Django and PostgreSQL. 
-                            Focused on stablecoin trading with price-time priority algorithms.
-                        </p>
+                        <h5 class="card-title fw-bold">{{ project.title }}</h5>
+                        <p class="card-text mb-3">{{ project.short_description }}</p>
                         
                         <div class="mb-3">
-                            <span class="badge bg-primary me-1">Django</span>
-                            <span class="badge bg-primary me-1">PostgreSQL</span>
-                            <span class="badge bg-primary me-1">REST API</span>
+                            {% for tech in project.technology_list|slice:":4" %}
+                                <span class="badge bg-secondary me-1 mb-1">{{ tech }}</span>
+                            {% endfor %}
                         </div>
                         
-                        <div class="d-flex gap-2">
-                            <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Details
-                            </a>
+                        <div class="mt-auto">
+                            <div class="d-flex gap-2">
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" class="btn-modern btn-modern-outline" style="font-size: 0.875rem; padding: 8px 16px;">
+                                    <i class="fab fa-github me-1"></i>Code
+                                </a>
+                                {% endif %}
+                                {% if project.live_demo_url %}
+                                <a href="{{ project.live_demo_url }}" target="_blank" class="btn-modern" style="font-size: 0.875rem; padding: 8px 16px;">
+                                    <i class="fas fa-external-link-alt me-1"></i>Demo
+                                </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Medical AI -->
-            <div class="col-lg-4 mb-4">
-                <div class="card h-100 border-0 shadow project-card">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="feature-icon bg-info bg-opacity-10 text-info rounded-circle p-3 me-3">
-                                <i class="fas fa-brain fa-lg"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title fw-bold mb-1">Medical AI Research</h5>
-                                <small class="text-muted">MSc Dissertation</small>
-                            </div>
-                        </div>
-                        
-                        <p class="card-text mb-3">
-                            CNN architectures for automated skin cancer detection achieving 15% diagnostic 
-                            improvements. FDA-compliant evaluation framework with clinical validation.
-                        </p>
-                        
-                        <div class="mb-3">
-                            <span class="badge bg-info me-1">PyTorch</span>
-                            <span class="badge bg-info me-1">CNN</span>
-                            <span class="badge bg-info me-1">Medical AI</span>
-                        </div>
-                        
-                        <div class="d-flex gap-2">
-                            <a href="{% url 'portfolio:education' %}" class="btn btn-outline-info btn-sm">
-                                <i class="fas fa-file-pdf me-1"></i>Research
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Holiday Cluedo -->
-            <div class="col-lg-4 mb-4">
-                <div class="card h-100 border-0 shadow project-card">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="feature-icon bg-success bg-opacity-10 text-success rounded-circle p-3 me-3">
-                                <i class="fas fa-gamepad fa-lg"></i>
-                            </div>
-                            <div>
-                                <h5 class="card-title fw-bold mb-1">Holiday Cluedo PWA</h5>
-                                <small class="text-muted">Web Application</small>
-                            </div>
-                        </div>
-                        
-                        <p class="card-text mb-3">
-                            High-performance browser game supporting 20+ concurrent users with offline capability. 
-                            Fisher-Yates shuffle algorithm with collision detection.
-                        </p>
-                        
-                        <div class="mb-3">
-                            <span class="badge bg-success me-1">JavaScript</span>
-                            <span class="badge bg-success me-1">PWA</span>
-                            <span class="badge bg-success me-1">Service Workers</span>
-                        </div>
-                        
-                        <div class="d-flex gap-2">
-                            <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-play me-1"></i>Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center mt-4">
-            <a href="{% url 'portfolio:projects' %}" class="btn btn-primary btn-lg">
-                <i class="fas fa-folder-open me-2"></i>View All Projects
-            </a>
+            {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Skills Preview -->
-<section id="skills-preview" class="py-5 bg-light">
+<!-- Skills Section -->
+<section id="skills" class="py-5 bg-light animate-on-scroll">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5">
-                <h2 class="section-title">Core Technologies</h2>
+                <h2 class="section-title gradient-text">Core Technologies</h2>
                 <p class="lead">Expertise across the full development stack</p>
             </div>
         </div>
         
         <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center p-4">
-                    <div class="feature-icon bg-warning bg-opacity-10 text-warning rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
-                        <i class="fab fa-python fa-2x"></i>
+            {% for category_name, skills in skills_by_category.items %}
+            <div class="col-lg-6 mb-4">
+                <h4 class="fw-bold mb-3">
+                    {% if category_name == "Programming Languages" %}
+                        <i class="fas fa-code text-primary me-2"></i>
+                    {% elif category_name == "Frameworks & Libraries" %}
+                        <i class="fas fa-layer-group text-success me-2"></i>
+                    {% elif category_name == "Databases & Tools" %}
+                        <i class="fas fa-database text-info me-2"></i>
+                    {% else %}
+                        <i class="fas fa-cogs text-warning me-2"></i>
+                    {% endif %}
+                    {{ category_name }}
+                </h4>
+                
+                {% for skill in skills %}
+                <div class="skill-item glass-card mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="fw-bold mb-0">{{ skill.name }}</h6>
+                        <span class="badge badge-modern">{{ skill.get_proficiency_display }}</span>
                     </div>
-                    <h5 class="fw-bold">Python</h5>
-                    <div class="progress mx-auto" style="height: 8px; max-width: 200px;">
-                        <div class="progress-bar bg-warning" style="width: 95%"></div>
+                    <div class="progress-modern">
+                        <div class="progress-bar-modern skill-progress-bar" 
+                             data-progress="{{ skill.proficiency_percentage }}"
+                             style="width: 0%;"></div>
                     </div>
-                    <small class="text-muted">3+ years experience</small>
+                    <div class="d-flex justify-content-between mt-2">
+                        <small class="text-muted">{{ skill.years_experience }} year{% if skill.years_experience != 1 %}s{% endif %} experience</small>
+                        <small class="fw-bold text-primary">{{ skill.proficiency_percentage }}%</small>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center p-4">
-                    <div class="feature-icon bg-success bg-opacity-10 text-success rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
-                        <i class="fas fa-database fa-2x"></i>
-                    </div>
-                    <h5 class="fw-bold">PostgreSQL</h5>
-                    <div class="progress mx-auto" style="height: 8px; max-width: 200px;">
-                        <div class="progress-bar bg-success" style="width: 85%"></div>
-                    </div>
-                    <small class="text-muted">2+ years experience</small>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center p-4">
-                    <div class="feature-icon bg-info bg-opacity-10 text-info rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
-                        <i class="fab fa-js fa-2x"></i>
-                    </div>
-                    <h5 class="fw-bold">JavaScript</h5>
-                    <div class="progress mx-auto" style="height: 8px; max-width: 200px;">
-                        <div class="progress-bar bg-info" style="width: 80%"></div>
-                    </div>
-                    <small class="text-muted">2+ years experience</small>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="text-center p-4">
-                    <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
-                        <i class="fab fa-react fa-2x"></i>
-                    </div>
-                    <h5 class="fw-bold">React</h5>
-                    <div class="progress mx-auto" style="height: 8px; max-width: 200px;">
-                        <div class="progress-bar bg-primary" style="width: 70%"></div>
-                    </div>
-                    <small class="text-muted">1+ years experience</small>
-                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 animate-on-scroll">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title gradient-text">Get In Touch</h2>
+                <p class="lead">Ready to discuss your next project or opportunity?</p>
             </div>
         </div>
         
-        <div class="text-center mt-4">
-            <a href="{% url 'portfolio:skills' %}" class="btn btn-primary btn-lg">
-                <i class="fas fa-code me-2"></i>View All Skills
-            </a>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card glass-card">
+                    <div class="card-body p-5">
+                        <form method="post" id="contactForm">
+                            {% csrf_token %}
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <input type="text" class="form-control-modern" id="id_name" name="name" required placeholder=" ">
+                                        <label for="id_name" class="form-label-modern">Full Name *</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group-modern">
+                                        <input type="email" class="form-control-modern" id="id_email" name="email" required placeholder=" ">
+                                        <label for="id_email" class="form-label-modern">Email Address *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group-modern">
+                                <input type="text" class="form-control-modern" id="id_subject" name="subject" required placeholder=" ">
+                                <label for="id_subject" class="form-label-modern">Subject *</label>
+                            </div>
+                            
+                            <div class="form-group-modern">
+                                <textarea class="form-control-modern" id="id_message" name="message" rows="5" required placeholder=" "></textarea>
+                                <label for="id_message" class="form-label-modern">Message *</label>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn-modern">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="row g-4 mt-4">
+                    <div class="col-md-4 text-center">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-envelope fa-lg"></i>
+                        </div>
+                        <h6 class="fw-bold">Email</h6>
+                        <p class="text-muted">{{ personal_info.email|default:"andrewjem8@gmail.com" }}</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="bg-info bg-opacity-10 text-info rounded-circle p-3 mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="fab fa-linkedin fa-lg"></i>
+                        </div>
+                        <h6 class="fw-bold">LinkedIn</h6>
+                        <p class="text-muted">Professional networking</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 mx-auto mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-map-marker-alt fa-lg"></i>
+                        </div>
+                        <h6 class="fw-bold">Location</h6>
+                        <p class="text-muted">{{ personal_info.location|default:"Newcastle, UK" }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Call to Action -->
-<section id="cta" class="py-5 bg-primary text-white">
+<section class="py-5 bg-primary text-white">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
@@ -388,8 +468,8 @@
                 <p class="mb-0">Let's discuss how I can contribute to your next project or team.</p>
             </div>
             <div class="col-lg-4 text-lg-end">
-                <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg">
-                    <i class="fas fa-envelope me-2"></i>Get In Touch
+                <a href="#contact" class="btn-modern me-3" style="--primary-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); color: #007bff;">
+                    <i class="fas fa-envelope me-2"></i>Contact Me
                 </a>
             </div>
         </div>
@@ -400,10 +480,6 @@
 {% block extra_js %}
 <script>
     // Pass Django data to JavaScript
-    {% if personal_info.typing_phrases %}
-    window.typingPhrases = {{ personal_info.typing_phrases|safe }};
-    {% else %}
-    window.typingPhrases = ["Software Engineer", "Full-Stack Developer", "Django Specialist", "Problem Solver", "MSc Computer Science"];
-    {% endif %}
+    window.typingPhrases = {{ personal_info.typing_phrases|default:'["Software Engineer", "Full-Stack Developer", "Django Specialist", "Problem Solver", "MSc Computer Science"]'|safe }};
 </script>
 {% endblock %}

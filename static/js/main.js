@@ -1,5 +1,5 @@
 /**
- * Modern CV Website JavaScript
+ * Modern CV Website JavaScript - Complete Update
  * Features: Smooth animations, theme switching, typing effects, interactive charts
  */
 
@@ -8,7 +8,7 @@
 // ============================================================================
 
 const CONFIG = {
-    TYPING_SPEED: 80,
+    TYPING_SPEED: 100,
     TYPING_DELAY: 2000,
     SCROLL_THRESHOLD: 100,
     ANIMATION_DURATION: 800,
@@ -24,15 +24,13 @@ const SELECTORS = {
     loadingOverlay: '#loadingOverlay',
     skillProgressBars: '.skill-progress-bar',
     contactForm: '#contactForm',
+    animateElements: '.animate-on-scroll'
 };
 
 // ============================================================================
 // UTILITY FUNCTIONS
 // ============================================================================
 
-/**
- * Debounce function to limit the rate of function execution
- */
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -45,9 +43,6 @@ function debounce(func, wait) {
     };
 }
 
-/**
- * Throttle function to limit function execution frequency
- */
 function throttle(func, limit) {
     let inThrottle;
     return function() {
@@ -61,35 +56,10 @@ function throttle(func, limit) {
     };
 }
 
-/**
- * Check if element is in viewport
- */
-function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
+function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
 }
 
-/**
- * Smooth scroll to element
- */
-function smoothScrollTo(targetId) {
-    const element = document.getElementById(targetId);
-    if (element) {
-        element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-}
-
-/**
- * Format number with animation
- */
 function animateNumber(element, start, end, duration) {
     const startTime = performance.now();
     
@@ -106,13 +76,6 @@ function animateNumber(element, start, end, duration) {
     }
     
     requestAnimationFrame(update);
-}
-
-/**
- * Easing function for smooth animations
- */
-function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
 }
 
 // ============================================================================
@@ -148,6 +111,7 @@ class ThemeManager {
     
     setTheme(theme) {
         this.currentTheme = theme;
+        document.body.classList.toggle('dark-theme', theme === 'dark');
         document.documentElement.setAttribute('data-bs-theme', theme);
         localStorage.setItem('theme', theme);
         
@@ -162,6 +126,12 @@ class ThemeManager {
     toggleTheme() {
         const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
         this.setTheme(newTheme);
+        
+        // Add visual feedback
+        this.themeToggle.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            this.themeToggle.style.transform = 'scale(1)';
+        }, 150);
     }
     
     getTheme() {
@@ -179,7 +149,7 @@ class TypingAnimation {
         this.phrases = phrases;
         this.options = {
             typeSpeed: options.typeSpeed || CONFIG.TYPING_SPEED,
-            backSpeed: options.backSpeed || 50,
+            backSpeed: options.backSpeed || 60,
             backDelay: options.backDelay || CONFIG.TYPING_DELAY,
             loop: options.loop !== false,
             showCursor: options.showCursor !== false,
@@ -230,7 +200,7 @@ class TypingAnimation {
                 if (this.options.loop) {
                     this.isWaiting = true;
                 } else {
-                    return; // Stop if not looping
+                    return;
                 }
             }
             
@@ -268,7 +238,10 @@ class ScrollAnimations {
         
         if (this.backToTopBtn) {
             this.backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ 
+                    top: 0, 
+                    behavior: 'smooth' 
+                });
             });
         }
     }
@@ -289,7 +262,7 @@ class ScrollAnimations {
     
     initIntersectionObserver() {
         const options = {
-            threshold: 0.2,
+            threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
         
@@ -304,8 +277,14 @@ class ScrollAnimations {
         // Observe skill progress bars
         this.skillBars.forEach(bar => observer.observe(bar));
         
-        // Observe elements with data-aos attributes
-        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+        // Observe elements with animate-on-scroll class
+        document.querySelectorAll(SELECTORS.animateElements).forEach(el => observer.observe(el));
+        
+        // Observe cards for stagger animation
+        document.querySelectorAll('.card, .project-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+            observer.observe(card);
+        });
     }
     
     animateElement(element) {
@@ -316,8 +295,14 @@ class ScrollAnimations {
             this.animateSkillBar(element);
         }
         
-        // Trigger AOS animation
-        element.classList.add('aos-animate');
+        if (element.classList.contains('animate-on-scroll')) {
+            element.classList.add('animate-in');
+        }
+        
+        // Add stagger animation to cards
+        if (element.classList.contains('card') || element.classList.contains('project-card')) {
+            element.style.animation = 'fadeInUp 0.6s ease-out forwards';
+        }
     }
     
     animateSkillBar(bar) {
@@ -326,7 +311,7 @@ class ScrollAnimations {
         
         setTimeout(() => {
             bar.style.width = `${targetWidth}%`;
-        }, 100);
+        }, 200);
     }
 }
 
@@ -343,7 +328,27 @@ class FormHandler {
     init() {
         if (this.contactForm) {
             this.bindFormEvents();
+            this.setupModernFormLabels();
         }
+    }
+    
+    setupModernFormLabels() {
+        // Convert regular forms to modern floating label forms
+        const formGroups = this.contactForm.querySelectorAll('.form-group, .mb-3');
+        formGroups.forEach(group => {
+            const input = group.querySelector('input, textarea');
+            const label = group.querySelector('label');
+            
+            if (input && label && !input.classList.contains('form-control-modern')) {
+                // Add modern classes
+                input.classList.add('form-control-modern');
+                label.classList.add('form-label-modern');
+                group.classList.add('form-group-modern');
+                
+                // Add placeholder for floating effect
+                input.setAttribute('placeholder', ' ');
+            }
+        });
     }
     
     bindFormEvents() {
@@ -354,6 +359,15 @@ class FormHandler {
         inputs.forEach(input => {
             input.addEventListener('blur', () => this.validateField(input));
             input.addEventListener('input', () => this.clearFieldError(input));
+            
+            // Enhanced focus effects
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('focused');
+            });
         });
     }
     
@@ -366,33 +380,21 @@ class FormHandler {
         
         const formData = new FormData(this.contactForm);
         const submitBtn = this.contactForm.querySelector('[type="submit"]');
-        const originalText = submitBtn.textContent;
+        const originalText = submitBtn.innerHTML;
         
         try {
             this.setSubmitButtonState(submitBtn, true);
             
-            const response = await fetch('/ajax/contact/', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
+            // Use Django's form submission for now
+            this.contactForm.submit();
             
-            const data = await response.json();
-            
-            if (data.success) {
-                this.showNotification('Message sent successfully!', 'success');
-                this.contactForm.reset();
-            } else {
-                this.showFormErrors(data.errors);
-            }
         } catch (error) {
             this.showNotification('An error occurred. Please try again.', 'error');
             console.error('Form submission error:', error);
         } finally {
-            this.setSubmitButtonState(submitBtn, false, originalText);
+            setTimeout(() => {
+                this.setSubmitButtonState(submitBtn, false, originalText);
+            }, 1000);
         }
     }
     
@@ -460,29 +462,22 @@ class FormHandler {
         }
     }
     
-    showFormErrors(errors) {
-        Object.entries(errors).forEach(([fieldName, messages]) => {
-            const field = this.contactForm.querySelector(`[name="${fieldName}"]`);
-            if (field && messages.length > 0) {
-                this.showFieldError(field, messages[0]);
-            }
-        });
-    }
-    
-    setSubmitButtonState(button, loading, originalText = 'Send Message') {
+    setSubmitButtonState(button, loading, originalText = '') {
         if (loading) {
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            button.classList.add('loading');
         } else {
             button.disabled = false;
-            button.innerHTML = `<i class="fas fa-paper-plane me-2"></i>${originalText}`;
+            button.innerHTML = originalText || '<i class="fas fa-paper-plane me-2"></i>Send Message';
+            button.classList.remove('loading');
         }
     }
     
     showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
-        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; animation: slideInRight 0.3s ease;';
         notification.innerHTML = `
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -493,77 +488,93 @@ class FormHandler {
         // Auto remove after 5 seconds
         setTimeout(() => {
             if (notification.parentNode) {
-                notification.remove();
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
             }
         }, 5000);
     }
 }
 
 // ============================================================================
-// CHARTS AND VISUALIZATIONS
+// INTERACTIVE FEATURES
 // ============================================================================
 
-class SkillsChart {
-    constructor(canvasId, skillsData) {
-        this.canvas = document.getElementById(canvasId);
-        this.skillsData = skillsData;
-        this.chart = null;
-        
-        if (this.canvas && this.skillsData) {
-            this.init();
-        }
+class InteractiveFeatures {
+    constructor() {
+        this.init();
     }
     
     init() {
-        const ctx = this.canvas.getContext('2d');
-        
-        this.chart = new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: this.skillsData.map(skill => skill.name),
-                datasets: [{
-                    label: 'Proficiency Level',
-                    data: this.skillsData.map(skill => skill.proficiency),
-                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                    borderColor: 'rgba(0, 123, 255, 1)',
-                    borderWidth: 2,
-                    pointBackgroundColor: 'rgba(0, 123, 255, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(0, 123, 255, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: CONFIG.CHART_ANIMATION_DURATION,
-                    easing: 'easeInOutCubic'
-                },
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            stepSize: 20
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+        this.initSmoothScrolling();
+        this.initCardInteractions();
+        this.initSkillBars();
+        this.initParallaxEffects();
+    }
+    
+    initSmoothScrolling() {
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
+            });
+        });
+    }
+    
+    initCardInteractions() {
+        // Enhanced card hover effects
+        document.querySelectorAll('.card, .project-card').forEach(card => {
+            card.addEventListener('mouseenter', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    }
+    
+    initSkillBars() {
+        // Animate skill percentage numbers
+        document.querySelectorAll('.skill-progress-bar').forEach(bar => {
+            const percentage = parseInt(bar.dataset.progress || '0');
+            const numberElement = bar.parentElement.querySelector('.skill-percentage');
+            
+            if (numberElement) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateNumber(numberElement, 0, percentage, 1500);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(bar);
             }
         });
     }
     
-    updateData(newData) {
-        if (this.chart) {
-            this.chart.data.labels = newData.map(skill => skill.name);
-            this.chart.data.datasets[0].data = newData.map(skill => skill.proficiency);
-            this.chart.update();
-        }
+    initParallaxEffects() {
+        // Subtle parallax for hero elements
+        const heroElements = document.querySelectorAll('.floating-element');
+        
+        window.addEventListener('scroll', throttle(() => {
+            const scrollY = window.pageYOffset;
+            
+            heroElements.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.1);
+                const yPos = -(scrollY * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        }, 16));
     }
 }
 
@@ -609,16 +620,17 @@ class ProjectFilter {
     }
     
     filterProjects(category) {
-        this.projectItems.forEach(item => {
+        this.projectItems.forEach((item, index) => {
             const itemCategory = item.dataset.category;
             const show = category === 'all' || itemCategory === category;
             
             if (show) {
                 item.style.display = 'block';
-                item.classList.add('animate-fadeInUp');
+                item.style.animationDelay = `${index * 0.1}s`;
+                item.classList.add('animate-in');
             } else {
                 item.style.display = 'none';
-                item.classList.remove('animate-fadeInUp');
+                item.classList.remove('animate-in');
             }
         });
     }
@@ -627,8 +639,8 @@ class ProjectFilter {
         const searchTerm = term.toLowerCase();
         
         this.projectItems.forEach(item => {
-            const title = item.querySelector('.project-title')?.textContent.toLowerCase() || '';
-            const description = item.querySelector('.project-description')?.textContent.toLowerCase() || '';
+            const title = item.querySelector('.project-title, .card-title')?.textContent.toLowerCase() || '';
+            const description = item.querySelector('.project-description, .card-text')?.textContent.toLowerCase() || '';
             const technologies = item.querySelector('.project-technologies')?.textContent.toLowerCase() || '';
             
             const matches = title.includes(searchTerm) || 
@@ -709,7 +721,7 @@ class PerformanceMonitor {
 // MAIN APPLICATION CLASS
 // ============================================================================
 
-class CVWebsite {
+class ModernCVWebsite {
     constructor() {
         this.components = {};
         this.init();
@@ -731,6 +743,7 @@ class CVWebsite {
             this.components.scrollAnimations = new ScrollAnimations();
             this.components.formHandler = new FormHandler();
             this.components.projectFilter = new ProjectFilter();
+            this.components.interactiveFeatures = new InteractiveFeatures();
             this.components.performanceMonitor = new PerformanceMonitor();
             
             // Initialize typing animation if element exists
@@ -742,15 +755,13 @@ class CVWebsite {
                 );
             }
             
-            // Initialize skills chart if data exists
-            if (window.skillsChartData) {
-                this.components.skillsChart = new SkillsChart('skillsChart', window.skillsChartData);
-            }
-            
-            // Hide loading overlay
+            // Hide loading overlay with smooth transition
             this.hideLoadingOverlay();
             
-            console.log('✅ CV Website initialized successfully');
+            // Add CSS animations
+            this.addCSSpAnimations();
+            
+            console.log('✅ Modern CV Website initialized successfully');
         } catch (error) {
             console.error('❌ Error initializing CV Website:', error);
             this.hideLoadingOverlay();
@@ -760,11 +771,51 @@ class CVWebsite {
     hideLoadingOverlay() {
         const overlay = document.querySelector(SELECTORS.loadingOverlay);
         if (overlay) {
-            overlay.style.opacity = '0';
+            overlay.classList.add('fade-out');
             setTimeout(() => {
                 overlay.style.display = 'none';
             }, 300);
         }
+    }
+    
+    addCSSpAnimations() {
+        // Add keyframe animations dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+            }
+        `;
+        document.head.appendChild(style);
     }
 }
 
@@ -773,29 +824,23 @@ class CVWebsite {
 // ============================================================================
 
 /**
- * Initialize theme (called from template)
- */
-function initTheme() {
-    // This will be handled by ThemeManager
-}
-
-/**
  * Filter skills by category (called from template)
  */
 function filterSkills() {
     const category = document.getElementById('skill-category')?.value;
     const skillItems = document.querySelectorAll('[data-skill-category]');
     
-    skillItems.forEach(item => {
+    skillItems.forEach((item, index) => {
         const itemCategory = item.dataset.skillCategory;
         const show = !category || category === '' || itemCategory === category;
         
         if (show) {
             item.style.display = 'block';
-            item.classList.add('animate-fadeInUp');
+            item.style.animationDelay = `${index * 0.1}s`;
+            item.classList.add('animate-in');
         } else {
             item.style.display = 'none';
-            item.classList.remove('animate-fadeInUp');
+            item.classList.remove('animate-in');
         }
     });
 }
@@ -811,332 +856,19 @@ function updateProficiencyLabel(value) {
     }
 }
 
-/**
- * Initialize page-specific functionality
- */
-function initPageFeatures() {
-    // Initialize any page-specific features
-    const currentPage = document.body.dataset.page;
-    
-    switch(currentPage) {
-        case 'skills':
-            initSkillsPage();
-            break;
-        case 'projects':
-            initProjectsPage();
-            break;
-        case 'contact':
-            initContactPage();
-            break;
-    }
-}
-
-/**
- * Initialize skills page features
- */
-function initSkillsPage() {
-    // Add any skills-specific functionality
-    const categoryFilter = document.getElementById('skill-category');
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', filterSkills);
-    }
-}
-
-/**
- * Initialize projects page features
- */
-function initProjectsPage() {
-    // Add any projects-specific functionality
-    const searchInput = document.getElementById('project-search');
-    if (searchInput) {
-        searchInput.addEventListener('input', debounce((e) => {
-            // Project search functionality
-            const term = e.target.value.toLowerCase();
-            const projects = document.querySelectorAll('.project-card');
-            
-            projects.forEach(project => {
-                const title = project.querySelector('.card-title')?.textContent.toLowerCase() || '';
-                const description = project.querySelector('.card-text')?.textContent.toLowerCase() || '';
-                const technologies = project.querySelector('.project-technologies')?.textContent.toLowerCase() || '';
-                
-                const matches = title.includes(term) || 
-                              description.includes(term) || 
-                              technologies.includes(term);
-                
-                project.closest('.col-lg-4').style.display = matches ? 'block' : 'none';
-            });
-        }, 300));
-    }
-}
-
-/**
- * Initialize contact page features
- */
-function initContactPage() {
-    // Add any contact-specific functionality
-    const form = document.getElementById('contactForm');
-    if (form) {
-        // Form is already handled by FormHandler class
-        console.log('Contact form initialized');
-    }
-}
-
-// Initialize the CV Website when DOM is ready
-const cvWebsite = new CVWebsite();
-
-// Initialize page-specific features
-document.addEventListener('DOMContentLoaded', initPageFeatures);
+// Initialize the Modern CV Website when DOM is ready
+const modernCVWebsite = new ModernCVWebsite();
 
 // Export for potential module usage
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        CVWebsite,
+        ModernCVWebsite,
         ThemeManager,
         TypingAnimation,
         ScrollAnimations,
         FormHandler,
-        SkillsChart,
+        InteractiveFeatures,
         ProjectFilter,
         PerformanceMonitor
     };
 }
-
-// ============================================================================
-// DJANGO ADMIN AUTO-SAVE FUNCTIONALITY
-// Add this section to the end of your existing main.js file
-// ============================================================================
-
-class AdminAutoSave {
-    constructor() {
-        this.AUTO_SAVE_DELAY = 2000; // 2 seconds after user stops typing
-        this.NOTIFICATION_DURATION = 3000; // 3 seconds
-        this.saveTimeout = null;
-        this.hasChanges = false;
-        this.isAdminPage = false;
-        
-        this.init();
-    }
-    
-    init() {
-        // Check if we're in Django admin
-        this.isAdminPage = window.location.pathname.includes('/admin/');
-        if (!this.isAdminPage) return;
-        
-        // Only enable for specific models
-        const modelName = document.body.className.match(/model-(\w+)/);
-        if (!modelName) return;
-        
-        const autoSaveModels = ['personalinfo', 'education', 'experience', 'project', 'skill'];
-        if (!autoSaveModels.includes(modelName[1])) return;
-        
-        this.setupAutoSave();
-        console.log('Admin auto-save initialized for', modelName[1]);
-    }
-    
-    createNotification() {
-        const notification = document.createElement('div');
-        notification.id = 'auto-save-notification';
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 9999;
-            display: none;
-            font-size: 14px;
-            transition: opacity 0.3s ease;
-        `;
-        document.body.appendChild(notification);
-        return notification;
-    }
-    
-    showNotification(message, type = 'success') {
-        let notification = document.getElementById('auto-save-notification');
-        if (!notification) {
-            notification = this.createNotification();
-        }
-        
-        notification.textContent = message;
-        notification.style.background = type === 'success' ? '#28a745' : 
-                                       type === 'error' ? '#dc3545' : '#17a2b8';
-        notification.style.display = 'block';
-        notification.style.opacity = '1';
-        
-        setTimeout(() => {
-            notification.style.opacity = '0';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 300);
-        }, this.NOTIFICATION_DURATION);
-    }
-    
-    autoSave() {
-        const form = document.querySelector('#content-main form');
-        if (!form || !this.hasChanges) return;
-        
-        // Don't auto-save if there are validation errors visible
-        if (form.querySelector('.errorlist')) {
-            console.log('Form has errors, skipping auto-save');
-            return;
-        }
-        
-        const formData = new FormData(form);
-        formData.append('_ajax', '1');
-        
-        // Get CSRF token
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
-        if (!csrfToken) {
-            console.error('CSRF token not found');
-            return;
-        }
-        
-        // Save via AJAX
-        fetch(form.action || window.location.href, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                this.showNotification('Auto-saved successfully!', 'success');
-                this.hasChanges = false;
-                
-                // Update the "last saved" indicator if it exists
-                const lastSaved = document.getElementById('last-saved-time');
-                if (lastSaved) {
-                    const now = new Date();
-                    lastSaved.textContent = `Last saved: ${now.toLocaleTimeString()}`;
-                }
-            } else {
-                throw new Error('Save failed');
-            }
-        })
-        .catch(error => {
-            console.error('Auto-save error:', error);
-            this.showNotification('Auto-save failed. Please save manually.', 'error');
-        });
-    }
-    
-    debouncedAutoSave() {
-        clearTimeout(this.saveTimeout);
-        this.hasChanges = true;
-        
-        // Show saving indicator
-        const indicator = document.getElementById('auto-save-indicator');
-        if (indicator) {
-            indicator.style.display = 'inline';
-        }
-        
-        this.saveTimeout = setTimeout(() => {
-            this.autoSave();
-            if (indicator) {
-                indicator.style.display = 'none';
-            }
-        }, this.AUTO_SAVE_DELAY);
-    }
-    
-    setupAutoSave() {
-        // Add auto-save indicator to submit row
-        const submitRow = document.querySelector('.submit-row');
-        if (submitRow) {
-            const indicator = document.createElement('span');
-            indicator.id = 'auto-save-indicator';
-            indicator.style.cssText = `
-                margin-left: 10px;
-                color: #666;
-                font-style: italic;
-                display: none;
-            `;
-            indicator.textContent = 'Saving...';
-            submitRow.appendChild(indicator);
-            
-            // Add last saved time
-            const lastSaved = document.createElement('span');
-            lastSaved.id = 'last-saved-time';
-            lastSaved.style.cssText = `
-                margin-left: 10px;
-                color: #666;
-                font-size: 12px;
-            `;
-            submitRow.appendChild(lastSaved);
-        }
-        
-        // Get the form
-        const form = document.querySelector('#content-main form');
-        if (!form) return;
-        
-        // Bind auto-save to form inputs
-        const bindAutoSave = this.debouncedAutoSave.bind(this);
-        
-        // Text inputs and textareas
-        form.querySelectorAll('input[type="text"], input[type="email"], input[type="url"], input[type="number"], textarea, select').forEach(element => {
-            element.addEventListener('input', bindAutoSave);
-            element.addEventListener('change', bindAutoSave);
-        });
-        
-        // Checkboxes and radio buttons
-        form.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(element => {
-            element.addEventListener('change', bindAutoSave);
-        });
-        
-        // Date inputs
-        form.querySelectorAll('input[type="date"], input[type="datetime-local"]').forEach(element => {
-            element.addEventListener('change', bindAutoSave);
-        });
-        
-        // File uploads - just notify, don't auto-save
-        form.querySelectorAll('input[type="file"]').forEach(element => {
-            element.addEventListener('change', () => {
-                this.hasChanges = true;
-                this.showNotification('File selected. Click Save to upload.', 'info');
-            });
-        });
-        
-        // Warn before leaving if there are unsaved changes
-        window.addEventListener('beforeunload', (e) => {
-            if (this.hasChanges) {
-                e.preventDefault();
-                e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
-            }
-        });
-        
-        // Mark as saved when form is submitted normally
-        form.addEventListener('submit', () => {
-            this.hasChanges = false;
-        });
-        
-        // Add visual feedback for auto-save enabled
-        this.showNotification('Auto-save enabled for this form', 'info');
-    }
-}
-
-// ============================================================================
-// INITIALIZE ALL COMPONENTS INCLUDING ADMIN AUTO-SAVE
-// ============================================================================
-
-// Update the CVWebsite class initialization to include AdminAutoSave
-const originalInitializeComponents = CVWebsite.prototype.initializeComponents;
-CVWebsite.prototype.initializeComponents = function() {
-    // Call original initialization
-    originalInitializeComponents.call(this);
-    
-    // Add admin auto-save if we're in admin
-    if (window.location.pathname.includes('/admin/')) {
-        this.components.adminAutoSave = new AdminAutoSave();
-    }
-};
-
-// Or if you prefer, just initialize it separately at the bottom:
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize admin auto-save if we're in the admin area
-    if (window.location.pathname.includes('/admin/')) {
-        new AdminAutoSave();
-    }
-});
