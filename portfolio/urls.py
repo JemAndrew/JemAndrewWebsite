@@ -15,6 +15,9 @@ urlpatterns = [
     path('api/skills/', views.api_skills_view, name='api_skills'),
     path('api/projects/', views.api_projects_view, name='api_projects'),
     
+    # Github
+    path('api/github-data/', views.github_api_view, name='github_api'),
+
     # Optional: Keep these if you want individual project pages
     # path('project/<int:project_id>/', views.project_detail_view, name='project_detail'),
 ]

@@ -5,7 +5,7 @@
 {% block page_name %}home{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- Hero Section with Advanced Animations -->
 <section class="hero" id="hero">
     <div class="hero-container">
         <div class="hero-content">
@@ -39,6 +39,155 @@
     </div>
 </section>
 
+<!-- GitHub Integration Section -->
+<section class="section" id="github">
+    <div class="container">
+        <h2 class="section-title">Live Development Activity</h2>
+        <div class="section-subtitle">
+            Real-time data from my GitHub repositories and development activity
+        </div>
+        
+        <div class="github-section">
+            <!-- GitHub Stats -->
+            <div id="github-stats" class="github-stats">
+                {% if github_user %}
+                    <div class="github-stat animate-on-scroll">
+                        <i class="fas fa-code-branch" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                        <span class="github-stat-value" data-counter="{{ github_user.public_repos }}">{{ github_user.public_repos }}</span>
+                        <span class="github-stat-label">Repositories</span>
+                    </div>
+                    <div class="github-stat animate-on-scroll">
+                        <i class="fas fa-users" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                        <span class="github-stat-value" data-counter="{{ github_user.followers }}">{{ github_user.followers }}</span>
+                        <span class="github-stat-label">Followers</span>
+                    </div>
+                    <div class="github-stat animate-on-scroll">
+                        <i class="fas fa-user-plus" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                        <span class="github-stat-value" data-counter="{{ github_user.following }}">{{ github_user.following }}</span>
+                        <span class="github-stat-label">Following</span>
+                    </div>
+                    <div class="github-stat animate-on-scroll">
+                        <i class="fas fa-star" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                        <span class="github-stat-value" data-counter="0">0</span>
+                        <span class="github-stat-label">Total Stars</span>
+                    </div>
+                {% else %}
+                    <!-- Fallback stats -->
+                    <div class="github-stat animate-on-scroll">
+                        <i class="fas fa-code-branch" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                        <span class="github-stat-value">5+</span>
+                        <span class="github-stat-label">Repositories</span>
+                    </div>
+                    <div class="github-stat animate-on-scroll">
+                        <i class="fas fa-star" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                        <span class="github-stat-value">20+</span>
+                        <span class="github-stat-label">Total Stars</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- GitHub Repositories -->
+            <div id="github-repos" class="github-repos">
+                {% for repo in github_repos|slice:":6" %}
+                    <div class="github-repo animate-on-scroll">
+                        <div class="repo-header">
+                            <a href="{{ repo.html_url }}" target="_blank" class="repo-name">
+                                <i class="fas fa-code-branch me-2"></i>{{ repo.name }}
+                            </a>
+                            {% if repo.language %}
+                                <span class="language-tag">{{ repo.language }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="repo-description">{{ repo.description|default:"No description available" }}</p>
+                        <div class="repo-stats">
+                            {% if repo.stars %}
+                                <span class="repo-stat">
+                                    <i class="fas fa-star"></i> {{ repo.stars }}
+                                </span>
+                            {% endif %}
+                            {% if repo.forks %}
+                                <span class="repo-stat">
+                                    <i class="fas fa-code-branch"></i> {{ repo.forks }}
+                                </span>
+                            {% endif %}
+                            <span class="repo-stat">
+                                <i class="fas fa-clock"></i> Updated {{ repo.updated_at|timesince }} ago
+                            </span>
+                        </div>
+                        {% if repo.languages %}
+                            <div class="repo-languages">
+                                {% for lang, percent in repo.languages.items|slice:":3" %}
+                                    <span class="language-tag">{{ lang }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <!-- Fallback repositories -->
+                    <div class="github-repo animate-on-scroll">
+                        <div class="repo-header">
+                            <a href="https://github.com/JemAndrew/crypto-exchange" target="_blank" class="repo-name">
+                                <i class="fas fa-code-branch me-2"></i>crypto-exchange
+                            </a>
+                            <span class="language-tag">Python</span>
+                        </div>
+                        <p class="repo-description">Cryptocurrency exchange platform with order matching engine</p>
+                        <div class="repo-stats">
+                            <span class="repo-stat"><i class="fas fa-star"></i> 8</span>
+                            <span class="repo-stat"><i class="fas fa-code-branch"></i> 2</span>
+                            <span class="repo-stat"><i class="fas fa-clock"></i> 2 weeks ago</span>
+                        </div>
+                        <div class="repo-languages">
+                            <span class="language-tag">Django</span>
+                            <span class="language-tag">WebSockets</span>
+                            <span class="language-tag">PostgreSQL</span>
+                        </div>
+                    </div>
+                    <div class="github-repo animate-on-scroll">
+                        <div class="repo-header">
+                            <a href="https://github.com/JemAndrew/portfolio" target="_blank" class="repo-name">
+                                <i class="fas fa-code-branch me-2"></i>portfolio
+                            </a>
+                            <span class="language-tag">Python</span>
+                        </div>
+                        <p class="repo-description">Professional portfolio website built with Django</p>
+                        <div class="repo-stats">
+                            <span class="repo-stat"><i class="fas fa-star"></i> 5</span>
+                            <span class="repo-stat"><i class="fas fa-code-branch"></i> 1</span>
+                            <span class="repo-stat"><i class="fas fa-clock"></i> 1 week ago</span>
+                        </div>
+                        <div class="repo-languages">
+                            <span class="language-tag">JavaScript</span>
+                            <span class="language-tag">CSS</span>
+                            <span class="language-tag">HTML</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Language Statistics -->
+            {% if github_languages %}
+                <div id="language-stats" class="mt-4">
+                    <h4 style="text-align: center; margin-bottom: 2rem; color: var(--text-primary);">Most Used Languages</h4>
+                    <div class="language-chart" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        {% for lang, percent in github_languages.items|slice:":8" %}
+                            <div class="language-item animate-on-scroll" style="background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                                <div class="language-info" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span class="language-name" style="font-weight: 500;">{{ lang }}</span>
+                                    <span class="language-percentage" style="color: var(--primary-color); font-weight: 600;">{{ percent }}%</span>
+                                </div>
+                                <div class="language-bar" style="background: var(--bg-light); border-radius: 4px; overflow: hidden; height: 6px;">
+                                    <div class="language-fill" style="height: 100%; background: var(--primary-color); width: {{ percent }}%; transition: width 1s ease;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
 <!-- About Section -->
 <section class="section" id="about">
     <div class="container">
@@ -48,7 +197,7 @@
         </div>
         
         <div class="about-grid">
-            <div class="about-card">
+            <div class="about-card animate-on-scroll">
                 <div class="card-icon">
                     <i class="fas fa-briefcase"></i>
                 </div>
@@ -70,7 +219,7 @@
                 </div>
             </div>
             
-            <div class="about-card">
+            <div class="about-card animate-on-scroll">
                 <div class="card-icon">
                     <i class="fas fa-graduation-cap"></i>
                 </div>
@@ -104,7 +253,7 @@
         
         <div class="timeline">
             {% if current_position %}
-                <div class="timeline-item">
+                <div class="timeline-item animate-on-scroll">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
                         <div class="timeline-date">
@@ -123,7 +272,7 @@
             {% endif %}
             
             {% for education in education_list %}
-                <div class="timeline-item">
+                <div class="timeline-item animate-on-scroll">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
                         <div class="timeline-date">
@@ -153,7 +302,7 @@
         
         <div class="projects-grid">
             {% for project in featured_projects %}
-                <div class="project-card">
+                <div class="project-card animate-on-scroll">
                     <div class="project-header">
                         {% if project.image %}
                             <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
@@ -216,7 +365,7 @@
         
         <div class="skills-grid">
             {% for category_name, skills in skills_by_category.items %}
-                <div class="skill-category">
+                <div class="skill-category animate-on-scroll">
                     <h3 class="category-title">
                         {% if category_name == "Programming Languages" %}
                             <i class="fas fa-code"></i>
@@ -263,7 +412,7 @@
         </div>
         
         <div class="contact-wrapper">
-            <div class="contact-form-container">
+            <div class="contact-form-container animate-on-scroll">
                 <form method="post" class="contact-form" id="contactForm">
                     {% csrf_token %}
                     
@@ -309,7 +458,7 @@
                 </form>
             </div>
             
-            <div class="contact-info">
+            <div class="contact-info animate-on-scroll">
                 <div class="contact-item">
                     <div class="contact-icon">
                         <i class="fas fa-envelope"></i>
@@ -340,17 +489,39 @@
                     </div>
                 </div>
                 
-                {% if current_position %}
+                {% if github_user %}
                     <div class="contact-item">
                         <div class="contact-icon">
-                            <i class="fas fa-briefcase"></i>
+                            <i class="fab fa-github"></i>
                         </div>
                         <div class="contact-details">
-                            <h4>Current Role</h4>
-                            <p>{{ current_position.position }} at {{ current_position.company }}</p>
+                            <h4>GitHub</h4>
+                            <p>{{ github_user.public_repos }} public repositories</p>
                         </div>
                     </div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+            <div class="col-lg-8 animate-on-scroll">
+                <h3 class="fw-bold mb-3" style="color: var(--text-primary);">Ready to work together?</h3>
+                <p class="mb-4" style="color: var(--text-secondary);">Let's discuss how I can contribute to your next project or team.</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="#contact" class="btn btn-primary">
+                        <i class="fas fa-envelope me-2"></i>Contact Me
+                    </a>
+                    {% if github_user.html_url %}
+                        <a href="{{ github_user.html_url }}" target="_blank" class="btn btn-secondary">
+                            <i class="fab fa-github me-2"></i>View GitHub
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -359,8 +530,44 @@
 
 {% block extra_js %}
 <script>
-    // Show all projects functionality
+    // Pass Django data to JavaScript
+    window.githubData = {
+        github_user: {{ github_user|default:'null'|safe }},
+        github_repos: {{ github_repos|default:'[]'|safe }},
+        github_languages: {{ github_languages|default:'{}'|safe }},
+        github_commits: {{ github_commits|default:'{}'|safe }}
+    };
+
+    // Initialize counters for GitHub stats
     document.addEventListener('DOMContentLoaded', function() {
+        const counters = document.querySelectorAll('[data-counter]');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.dataset.counter) || 0;
+                    animateCounter(entry.target, target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        counters.forEach(counter => observer.observe(counter));
+
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 20);
+        }
+
+        // Show all projects functionality
         const showAllBtn = document.getElementById('showAllProjects');
         if (showAllBtn) {
             showAllBtn.addEventListener('click', function() {

@@ -8,6 +8,8 @@ import json
 import logging
 from datetime import date
 
+from portfolio.services.github_service import get_github_data
+
 # Import our static data and forms
 from . import data
 from .forms import ContactForm
@@ -123,6 +125,9 @@ def api_skills_view(request):
     
     return JsonResponse({'skills': skills_data})
 
+def github_api_view(request):
+    github_data = get_github_data()
+    return JsonResponse(github_data)
 
 def api_projects_view(request):
     """API endpoint for projects data"""
