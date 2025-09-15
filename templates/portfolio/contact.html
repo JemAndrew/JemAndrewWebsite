@@ -1,0 +1,417 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Contact - {{ personal_info.name }}{% endblock %}
+
+{% block page_name %}contact{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-light" style="margin-top: 76px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-4">Get In Touch</h1>
+                <p class="lead">
+                    Ready to discuss your next project, explore collaboration opportunities, or simply connect? 
+                    I'm always excited to hear about new challenges and potential partnerships.
+                </p>
+                <div class="d-flex gap-4 mt-4">
+                    <div class="text-center">
+                        <div class="h4 text-primary mb-0">&lt;24</div>
+                        <small class="text-muted">Hours Response</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="h4 text-primary mb-0">100%</div>
+                        <small class="text-muted">Response Rate</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-5 mx-auto" style="width: 150px; height: 150px;">
+                    <i class="fas fa-envelope fa-4x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-5">
+                            <h2 class="fw-bold">Send Me a Message</h2>
+                            <p class="text-muted">Fill out the form below and I'll get back to you as soon as possible.</p>
+                        </div>
+                        
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="post" id="contactForm" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="{{ form.name.id_for_label }}" class="form-label">Full Name *</label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.name.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    {% if form.name.help_text %}
+                                        <div class="form-text">{{ form.name.help_text }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">Email Address *</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.email.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    {% if form.email.help_text %}
+                                        <div class="form-text">{{ form.email.help_text }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.subject.id_for_label }}" class="form-label">Subject *</label>
+                                {{ form.subject }}
+                                {% if form.subject.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.subject.errors.0 }}
+                                    </div>
+                                {% endif %}
+                                {% if form.subject.help_text %}
+                                    <div class="form-text">{{ form.subject.help_text }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="{{ form.message.id_for_label }}" class="form-label">Message *</label>
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.message.errors.0 }}
+                                    </div>
+                                {% endif %}
+                                {% if form.message.help_text %}
+                                    <div class="form-text">{{ form.message.help_text }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Honeypot field (hidden) -->
+                            {{ form.honeypot }}
+                            
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    {{ form.non_field_errors.0 }}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Other Ways to Connect</h2>
+                <p class="lead">Multiple channels to get in touch</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-envelope fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Email</h5>
+                    <p class="text-muted mb-3">{{ personal_info.email|default:"andrewjem8@gmail.com" }}</p>
+                    <a href="mailto:{{ personal_info.email|default:'andrewjem8@gmail.com' }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>Send Email
+                    </a>
+                </div>
+            </div>
+            
+            {% if personal_info.linkedin_url %}
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-info bg-opacity-10 text-info rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fab fa-linkedin fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">LinkedIn</h5>
+                    <p class="text-muted mb-3">Professional networking</p>
+                    <a href="{{ personal_info.linkedin_url }}" target="_blank" class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>Connect
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if personal_info.github_url %}
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-dark bg-opacity-10 text-dark rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fab fa-github fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">GitHub</h5>
+                    <p class="text-muted mb-3">Code repositories</p>
+                    <a href="{{ personal_info.github_url }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>Follow
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if personal_info.location %}
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-success bg-opacity-10 text-success rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-map-marker-alt fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Location</h5>
+                    <p class="text-muted mb-3">{{ personal_info.location }}</p>
+                    <span class="badge bg-success">Available for Remote</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="lead">Quick answers to common questions</p>
+                </div>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item border-0 shadow-sm mb-3">
+                        <h3 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                <i class="fas fa-question-circle me-2 text-primary"></i>
+                                What types of projects are you interested in?
+                            </button>
+                        </h3>
+                        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                I'm particularly interested in backend development, full-stack web applications, and projects 
+                                involving complex data processing or optimization algorithms. I enjoy working on enterprise SaaS 
+                                platforms, financial technology, and AI/ML applications.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 shadow-sm mb-3">
+                        <h3 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                <i class="fas fa-clock me-2 text-primary"></i>
+                                How quickly do you respond to messages?
+                            </button>
+                        </h3>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                I aim to respond to all messages within 24 hours, typically much sooner. For urgent matters, 
+                                please mention this in your subject line and I'll prioritize your message accordingly.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 shadow-sm mb-3">
+                        <h3 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                <i class="fas fa-globe me-2 text-primary"></i>
+                                Are you available for remote work?
+                            </button>
+                        </h3>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, I'm fully set up for remote work and have experience collaborating with distributed teams. 
+                                I'm comfortable with various time zones and use modern collaboration tools for effective communication.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 shadow-sm mb-3">
+                        <h3 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                <i class="fas fa-handshake me-2 text-primary"></i>
+                                What's the best way to start a collaboration?
+                            </button>
+                        </h3>
+                        <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Send me a message describing your project, timeline, and technical requirements. I'll respond with 
+                                questions to better understand your needs, and we can schedule a call to discuss details and next steps.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Response Time Guarantee -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-2">Ready to start the conversation?</h3>
+                <p class="mb-0">I'm committed to responding to all genuine inquiries within 24 hours.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="#contactForm" class="btn btn-light btn-lg me-3">
+                    <i class="fas fa-arrow-up me-2"></i>Send Message
+                </a>
+                <a href="{% url 'portfolio:projects' %}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-folder-open me-2"></i>View Projects
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Form validation and submission
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    
+    if (form) {
+        // Real-time validation feedback
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+            
+            input.addEventListener('input', function() {
+                // Clear validation state on input
+                this.classList.remove('is-invalid', 'is-valid');
+                const feedback = this.parentNode.querySelector('.invalid-feedback');
+                if (feedback && !feedback.classList.contains('d-block')) {
+                    feedback.remove();
+                }
+            });
+        });
+    }
+    
+    // Smooth scroll to form
+    const formLinks = document.querySelectorAll('a[href="#contactForm"]');
+    formLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('contactForm').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+});
+
+function validateField(field) {
+    const value = field.value.trim();
+    let isValid = true;
+    let errorMessage = '';
+    
+    // Required field validation
+    if (field.required && !value) {
+        isValid = false;
+        errorMessage = 'This field is required.';
+    }
+    
+    // Email validation
+    if (field.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+            isValid = false;
+            errorMessage = 'Please enter a valid email address.';
+        }
+    }
+    
+    // Message length validation
+    if (field.name === 'message' && value && value.length < 10) {
+        isValid = false;
+        errorMessage = 'Message must be at least 10 characters long.';
+    }
+    
+    // Subject length validation
+    if (field.name === 'subject' && value && value.length < 5) {
+        isValid = false;
+        errorMessage = 'Subject must be at least 5 characters long.';
+    }
+    
+    // Update field state
+    if (isValid) {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+    } else {
+        field.classList.remove('is-valid');
+        field.classList.add('is-invalid');
+        
+        // Show error message
+        let feedback = field.parentNode.querySelector('.invalid-feedback');
+        if (!feedback) {
+            feedback = document.createElement('div');
+            feedback.className = 'invalid-feedback';
+            field.parentNode.appendChild(feedback);
+        }
+        feedback.textContent = errorMessage;
+    }
+    
+    return isValid;
+}
+
+// Character counter for message field
+const messageField = document.getElementById('contact-message');
+if (messageField) {
+    const maxLength = 5000;
+    const counter = document.createElement('div');
+    counter.className = 'form-text text-end';
+    messageField.parentNode.appendChild(counter);
+    
+    function updateCounter() {
+        const remaining = maxLength - messageField.value.length;
+        counter.textContent = `${remaining} characters remaining`;
+        counter.className = remaining < 100 ? 'form-text text-end text-warning' : 'form-text text-end';
+    }
+    
+    messageField.addEventListener('input', updateCounter);
+    updateCounter();
+}
+</script>
+{% endblock %}

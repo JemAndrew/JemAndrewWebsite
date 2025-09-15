@@ -1,0 +1,372 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Projects - {{ personal_info.name }}{% endblock %}
+
+{% block page_name %}projects{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-light" style="margin-top: 76px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-4">Projects & Portfolio</h1>
+                <p class="lead">
+                    A showcase of software engineering projects spanning enterprise SaaS platforms, personal applications, 
+                    and academic research demonstrating full-stack development capabilities.
+                </p>
+                {% if projects %}
+                <div class="d-flex gap-4 mt-4">
+                    <div class="text-center">
+                        <div class="h4 text-primary mb-0">{{ projects|length }}</div>
+                        <small class="text-muted">Total Projects</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="h4 text-primary mb-0">{{ projects|length|add:5 }}+</div>
+                        <small class="text-muted">Technologies Used</small>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-5 mx-auto" style="width: 150px; height: 150px;">
+                    <i class="fas fa-rocket fa-4x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="py-4 bg-white border-bottom">
+    <div class="container">
+        <form method="GET" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" 
+                       class="form-control" 
+                       id="project-search" 
+                       name="search" 
+                       placeholder="Search projects..." 
+                       value="{{ current_search }}">
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" name="category">
+                    <option value="">All Categories</option>
+                    {% for value, label in categories %}
+                        <option value="{{ value }}" {% if value == current_category %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" name="status">
+                    <option value="">All Statuses</option>
+                    {% for value, label in statuses %}
+                        <option value="{{ value }}" {% if value == current_status %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-filter me-2"></i>Filter
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Featured Projects -->
+{% if projects %}
+    {% with featured_projects=projects|dictsort:"featured"|slice:":3" %}
+    {% if featured_projects.0.featured %}
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">Featured Projects</h2>
+                    <p class="lead">Highlighted work showcasing key technical achievements</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                {% for project in featured_projects %}
+                {% if project.featured %}
+                <div class="col-lg-4">
+                    <div class="card h-100 border-0 shadow project-card">
+                        {% if project.image %}
+                        <img src="{{ project.image.url }}" class="card-img-top project-image" alt="{{ project.title }}">
+                        {% else %}
+                        <div class="project-image-placeholder">
+                            <i class="fas fa-code fa-3x"></i>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-{{ project.category }}-subtle text-{{ project.category }} mb-2">
+                                    {{ project.get_category_display }}
+                                </span>
+                                <span class="badge bg-warning">
+                                    <i class="fas fa-star me-1"></i>Featured
+                                </span>
+                            </div>
+                            
+                            <h5 class="card-title fw-bold">{{ project.title }}</h5>
+                            <p class="card-text mb-3">{{ project.short_description }}</p>
+                            
+                            <div class="project-technologies mb-3">
+                                {% for tech in project.technology_list|slice:":4" %}
+                                    <span class="badge bg-primary me-1 mb-1">{{ tech }}</span>
+                                {% endfor %}
+                                {% if project.technology_list|length > 4 %}
+                                    <span class="badge bg-secondary">+{{ project.technology_list|length|add:"-4" }} more</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mt-auto">
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'portfolio:project_detail' project.id %}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>Details
+                                    </a>
+                                    {% if project.github_url %}
+                                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                                        <i class="fab fa-github me-1"></i>Code
+                                    </a>
+                                    {% endif %}
+                                    {% if project.live_demo_url %}
+                                    <a href="{{ project.live_demo_url }}" target="_blank" class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>Demo
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% endwith %}
+{% endif %}
+
+<!-- All Projects -->
+<section class="py-5 {% if not projects.0.featured %}bg-light{% endif %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">All Projects</h2>
+                {% if current_search or current_category or current_status %}
+                <p class="lead">
+                    Filtered results 
+                    {% if current_search %}for "{{ current_search }}"{% endif %}
+                    {% if current_category %}in {{ current_category|capfirst }}{% endif %}
+                    {% if current_status %}with status {{ current_status|capfirst }}{% endif %}
+                </p>
+                {% else %}
+                <p class="lead">Complete portfolio of development work</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if projects %}
+        <div class="row g-4">
+            {% for project in projects %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow project-card">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" class="card-img-top project-image" alt="{{ project.title }}">
+                    {% else %}
+                    <div class="project-image-placeholder">
+                        <i class="fas fa-code fa-3x"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge bg-primary-subtle text-primary mb-2">
+                                {{ project.get_category_display }}
+                            </span>
+                            <div>
+                                {% if project.featured %}
+                                <span class="badge bg-warning me-1">
+                                    <i class="fas fa-star me-1"></i>Featured
+                                </span>
+                                {% endif %}
+                                <span class="badge bg-secondary">{{ project.get_status_display }}</span>
+                            </div>
+                        </div>
+                        
+                        <h5 class="card-title fw-bold">{{ project.title }}</h5>
+                        <p class="card-text mb-3">{{ project.short_description }}</p>
+                        
+                        <div class="project-technologies mb-3">
+                            {% for tech in project.technology_list|slice:":3" %}
+                                <span class="badge bg-primary me-1 mb-1">{{ tech }}</span>
+                            {% endfor %}
+                            {% if project.technology_list|length > 3 %}
+                                <span class="badge bg-secondary">+{{ project.technology_list|length|add:"-3" }} more</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="small text-muted mb-3">
+                            <i class="fas fa-calendar me-1"></i>{{ project.created_date|date:"M Y" }}
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="{% url 'portfolio:project_detail' project.id %}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i>Details
+                                </a>
+                                {% if project.github_url %}
+                                <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                                    <i class="fab fa-github me-1"></i>Code
+                                </a>
+                                {% endif %}
+                                {% if project.live_demo_url %}
+                                <a href="{{ project.live_demo_url }}" target="_blank" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-external-link-alt me-1"></i>Demo
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Show More Button (if you implement pagination later) -->
+        <div class="text-center mt-5">
+            <button class="btn btn-outline-primary btn-lg" onclick="showMoreProjects()" style="display: none;">
+                <i class="fas fa-plus me-2"></i>Load More Projects
+            </button>
+        </div>
+        
+        {% else %}
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center py-5">
+                    {% if current_search or current_category or current_status %}
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No projects match your filters</h4>
+                    <p class="text-muted">Try adjusting your search criteria or browse all projects.</p>
+                    <a href="{% url 'portfolio:projects' %}" class="btn btn-primary">
+                        <i class="fas fa-refresh me-2"></i>Clear Filters
+                    </a>
+                    {% else %}
+                    <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Projects coming soon</h4>
+                    <p class="text-muted">Check back later for detailed project showcases.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Projects by Category -->
+{% if projects_by_category %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Projects by Category</h2>
+                <p class="lead">Organized view of development work</p>
+            </div>
+        </div>
+        
+        {% for category, category_projects in projects_by_category.items %}
+        <div class="mb-5">
+            <h3 class="fw-bold mb-4">
+                <i class="fas fa-folder-open me-2 text-primary"></i>{{ category }}
+                <span class="badge bg-primary ms-2">{{ category_projects|length }}</span>
+            </h3>
+            
+            <div class="row g-3">
+                {% for project in category_projects|slice:":3" %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0">{{ project.title }}</h6>
+                                <span class="badge bg-secondary">{{ project.get_status_display }}</span>
+                            </div>
+                            <p class="card-text small text-muted mb-2">{{ project.short_description|truncatewords:15 }}</p>
+                            <div class="mb-2">
+                                {% for tech in project.technology_list|slice:":2" %}
+                                    <span class="badge bg-primary-subtle text-primary me-1">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                            <a href="{% url 'portfolio:project_detail' project.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-arrow-right me-1"></i>View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                {% if category_projects|length > 3 %}
+                <div class="col-12 text-center">
+                    <a href="{% url 'portfolio:projects' %}?category={{ category_projects.0.category }}" class="btn btn-outline-primary">
+                        View all {{ category_projects|length }} {{ category }} projects
+                        <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-2">Interested in collaborating on a project?</h3>
+                <p class="mb-0">Let's discuss how we can work together to bring your ideas to life.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg me-3">
+                    <i class="fas fa-envelope me-2"></i>Contact Me
+                </a>
+                <a href="{% url 'portfolio:skills' %}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-code me-2"></i>View Skills
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Project search functionality
+document.getElementById('project-search').addEventListener('input', function() {
+    // This will be handled by the main.js project search functionality
+});
+
+// Show more projects functionality (for future pagination)
+function showMoreProjects() {
+    // Implement pagination loading here
+    console.log('Loading more projects...');
+}
+
+// Category filter quick buttons
+function filterByCategory(category) {
+    const categorySelect = document.querySelector('select[name="category"]');
+    categorySelect.value = category;
+    categorySelect.form.submit();
+}
+</script>
+{% endblock %}

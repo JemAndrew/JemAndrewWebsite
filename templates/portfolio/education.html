@@ -1,0 +1,296 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Education - {{ personal_info.name }}{% endblock %}
+
+{% block page_name %}education{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 bg-light" style="margin-top: 76px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-4">Education & Qualifications</h1>
+                <p class="lead">
+                    My academic journey from biological sciences to computer science, showcasing continuous learning 
+                    and interdisciplinary expertise that brings unique perspectives to software engineering.
+                </p>
+                {% if total_years %}
+                <div class="d-flex gap-4 mt-4">
+                    <div class="text-center">
+                        <div class="h4 text-primary mb-0">{{ total_years }}</div>
+                        <small class="text-muted">Years of Study</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="h4 text-primary mb-0">{{ education_list|length }}</div>
+                        <small class="text-muted">Qualifications</small>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-5 mx-auto" style="width: 150px; height: 150px;">
+                    <i class="fas fa-graduation-cap fa-4x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Current Education Highlight -->
+{% for education in education_list %}
+    {% if education.is_current %}
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">Currently Studying</h2>
+                    <p class="lead">Ongoing academic pursuits</p>
+                </div>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-lg overflow-hidden">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div class="col-md-4 bg-primary d-flex align-items-center justify-content-center">
+                                    <div class="text-center text-white p-4">
+                                        <i class="fas fa-university fa-3x mb-3"></i>
+                                        <h4 class="fw-bold">{{ education.institution }}</h4>
+                                        <span class="badge bg-light text-primary">Current</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="p-4">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <div>
+                                                <h5 class="fw-bold text-primary mb-1">{{ education.get_degree_type_display }} {{ education.subject }}</h5>
+                                                <div class="text-muted">
+                                                    <i class="fas fa-calendar me-2"></i>
+                                                    {{ education.start_date|date:"M Y" }} - Present
+                                                </div>
+                                            </div>
+                                            <span class="badge bg-success">In Progress</span>
+                                        </div>
+                                        
+                                        {% if education.description %}
+                                        <p class="mb-3">{{ education.description }}</p>
+                                        {% endif %}
+                                        
+                                        {% if education.technologies_list %}
+                                        <div class="mb-3">
+                                            <h6 class="fw-bold mb-2">Key Topics & Technologies</h6>
+                                            <div class="d-flex flex-wrap gap-1">
+                                                {% for tech in education.technologies_list %}
+                                                    <span class="badge bg-primary-subtle text-primary">{{ tech }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endfor %}
+
+<!-- Education Timeline -->
+<section class="py-5 {% if not education_list.0.is_current %}bg-light{% endif %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Academic Journey</h2>
+                <p class="lead">Educational milestones and achievements</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                {% if education_list %}
+                <div class="timeline">
+                    {% for education in education_list %}
+                    <div class="timeline-item">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h4 class="fw-bold text-primary mb-1">{{ education.get_degree_type_display }} {{ education.subject }}</h4>
+                                <h5 class="text-dark mb-2">{{ education.institution }}</h5>
+                                <div class="text-muted">
+                                    <i class="fas fa-calendar me-2"></i>
+                                    {{ education.start_date|date:"M Y" }} - 
+                                    {% if education.is_current %}
+                                        Present
+                                    {% elif education.end_date %}
+                                        {{ education.end_date|date:"M Y" }}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                    
+                                    {% if education.duration_years %}
+                                    <span class="ms-3">
+                                        <i class="fas fa-clock me-2"></i>{{ education.duration_years }} year{% if education.duration_years != 1 %}s{% endif %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                {% if education.is_current %}
+                                <span class="badge bg-success mb-2">Current</span><br>
+                                {% endif %}
+                                {% if education.grade %}
+                                <span class="badge bg-primary">{{ education.grade }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        {% if education.description %}
+                        <p class="mb-3">{{ education.description|linebreaks }}</p>
+                        {% endif %}
+                        
+                        {% if education.technologies_list %}
+                        <div class="mb-0">
+                            <h6 class="fw-bold mb-2">Key Topics & Technologies</h6>
+                            <div class="d-flex flex-wrap gap-1">
+                                {% for tech in education.technologies_list %}
+                                    <span class="badge bg-secondary">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Education information will be added soon</h4>
+                    <p class="text-muted">Check back later for detailed academic background.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Education by Type -->
+{% if education_by_type %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Qualifications by Type</h2>
+                <p class="lead">Organized view of academic achievements</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for degree_type, qualifications in education_by_type.items %}
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-certificate me-2"></i>{{ degree_type }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for qualification in qualifications %}
+                        <div class="mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+                            <h6 class="fw-bold mb-1">{{ qualification.subject }}</h6>
+                            <div class="small text-muted mb-1">{{ qualification.institution }}</div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="small text-muted">
+                                    {{ qualification.start_date|date:"Y" }}
+                                    {% if qualification.end_date %} - {{ qualification.end_date|date:"Y" }}{% endif %}
+                                </span>
+                                {% if qualification.grade %}
+                                <span class="badge bg-primary-subtle text-primary">{{ qualification.grade }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Academic Achievements -->
+<section class="py-5 {% if not education_by_type %}bg-light{% endif %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Academic Highlights</h2>
+                <p class="lead">Key achievements and learning outcomes</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">AI Research</h5>
+                    <p class="text-muted">MSc dissertation on CNN architectures for medical diagnosis</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-success bg-opacity-10 text-success rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-microscope fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Scientific Background</h5>
+                    <p class="text-muted">Biology foundation providing data analysis and research skills</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-info bg-opacity-10 text-info rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-laptop-code fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Computer Science</h5>
+                    <p class="text-muted">Master's level expertise in algorithms, ML, and software engineering</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4">
+                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-4 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold">Analytical Skills</h5>
+                    <p class="text-muted">Strong mathematical and statistical analysis capabilities</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-2">Want to know more about my academic background?</h3>
+                <p class="mb-0">Let's discuss how my educational foundation contributes to my software engineering approach.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{% url 'portfolio:contact' %}" class="btn btn-light btn-lg me-3">
+                    <i class="fas fa-envelope me-2"></i>Contact Me
+                </a>
+                <a href="{% url 'portfolio:skills' %}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-code me-2"></i>View Skills
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
