@@ -1,581 +1,123 @@
 {% extends 'portfolio/base.html' %}
 {% load static %}
 
-{% block title %}{{ personal_info.name|default:"James Andrew" }} - Software Engineer{% endblock %}
+{% block title %}Professional Overview - {{ personal_info.name|default:"James Andrew" }}{% endblock %}
 {% block page_name %}home{% endblock %}
 
 {% block content %}
-<!-- Hero Section with Advanced Animations -->
-<section class="hero" id="hero">
-    <div class="hero-container">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">{{ personal_info.name|default:"James Andrew" }}</h1>
-                <div class="hero-subtitle">Software Engineer</div>
-                <p class="hero-description">
-                    {{ personal_info.bio|default:"Software engineer specializing in Django, PostgreSQL, and enterprise SaaS platforms. Currently developing scalable construction management solutions at BuildChorus with expertise in optimization algorithms and full-stack development." }}
-                </p>
-                <div class="hero-actions">
-                    <a href="#contact" class="btn btn-primary">
-                        <i class="fas fa-envelope"></i>
-                        Get In Touch
-                    </a>
-                    <a href="#projects" class="btn btn-secondary">
-                        <i class="fas fa-code"></i>
-                        View Projects
-                    </a>
-                </div>
-            </div>
-            <div class="hero-image">
-                {% if personal_info.profile_image %}
-                    <img src="{{ personal_info.profile_image.url }}" alt="{{ personal_info.name }}" class="profile-image">
-                {% else %}
-                    <div class="profile-placeholder">
-                        <i class="fas fa-user"></i>
-                    </div>
-                {% endif %}
-            </div>
+<div class="main-container">
+    <!-- Left Side - Profile -->
+    <div class="profile-side">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
         </div>
-    </div>
-</section>
 
-<!-- GitHub Integration Section -->
-<section class="section" id="github">
-    <div class="container">
-        <h2 class="section-title">Live Development Activity</h2>
-        <div class="section-subtitle">
-            Real-time data from my GitHub repositories and development activity
+        <h1 class="name-title">{{ personal_info.name|default:"James Andrew" }}</h1>
+        <p class="role-subtitle">Software Engineer</p>
+        <div class="company-highlight">
+            BuildChorus • MSc Computer Science
         </div>
-        
-        <div class="github-section">
-            <!-- GitHub Stats -->
-            <div id="github-stats" class="github-stats">
-                {% if github_user %}
-                    <div class="github-stat animate-on-scroll">
-                        <i class="fas fa-code-branch" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-                        <span class="github-stat-value" data-counter="{{ github_user.public_repos }}">{{ github_user.public_repos }}</span>
-                        <span class="github-stat-label">Repositories</span>
-                    </div>
-                    <div class="github-stat animate-on-scroll">
-                        <i class="fas fa-users" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-                        <span class="github-stat-value" data-counter="{{ github_user.followers }}">{{ github_user.followers }}</span>
-                        <span class="github-stat-label">Followers</span>
-                    </div>
-                    <div class="github-stat animate-on-scroll">
-                        <i class="fas fa-user-plus" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-                        <span class="github-stat-value" data-counter="{{ github_user.following }}">{{ github_user.following }}</span>
-                        <span class="github-stat-label">Following</span>
-                    </div>
-                    <div class="github-stat animate-on-scroll">
-                        <i class="fas fa-star" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-                        <span class="github-stat-value" data-counter="0">0</span>
-                        <span class="github-stat-label">Total Stars</span>
-                    </div>
-                {% else %}
-                    <!-- Fallback stats -->
-                    <div class="github-stat animate-on-scroll">
-                        <i class="fas fa-code-branch" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-                        <span class="github-stat-value">5+</span>
-                        <span class="github-stat-label">Repositories</span>
-                    </div>
-                    <div class="github-stat animate-on-scroll">
-                        <i class="fas fa-star" style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
-                        <span class="github-stat-value">20+</span>
-                        <span class="github-stat-label">Total Stars</span>
-                    </div>
-                {% endif %}
-            </div>
 
-            <!-- GitHub Repositories -->
-            <div id="github-repos" class="github-repos">
-                {% for repo in github_repos|slice:":6" %}
-                    <div class="github-repo animate-on-scroll">
-                        <div class="repo-header">
-                            <a href="{{ repo.html_url }}" target="_blank" class="repo-name">
-                                <i class="fas fa-code-branch me-2"></i>{{ repo.name }}
-                            </a>
-                            {% if repo.language %}
-                                <span class="language-tag">{{ repo.language }}</span>
-                            {% endif %}
-                        </div>
-                        <p class="repo-description">{{ repo.description|default:"No description available" }}</p>
-                        <div class="repo-stats">
-                            {% if repo.stars %}
-                                <span class="repo-stat">
-                                    <i class="fas fa-star"></i> {{ repo.stars }}
-                                </span>
-                            {% endif %}
-                            {% if repo.forks %}
-                                <span class="repo-stat">
-                                    <i class="fas fa-code-branch"></i> {{ repo.forks }}
-                                </span>
-                            {% endif %}
-                            <span class="repo-stat">
-                                <i class="fas fa-clock"></i> Updated {{ repo.updated_at|timesince }} ago
-                            </span>
-                        </div>
-                        {% if repo.languages %}
-                            <div class="repo-languages">
-                                {% for lang, percent in repo.languages.items|slice:":3" %}
-                                    <span class="language-tag">{{ lang }}</span>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% empty %}
-                    <!-- Fallback repositories -->
-                    <div class="github-repo animate-on-scroll">
-                        <div class="repo-header">
-                            <a href="https://github.com/JemAndrew/crypto-exchange" target="_blank" class="repo-name">
-                                <i class="fas fa-code-branch me-2"></i>crypto-exchange
-                            </a>
-                            <span class="language-tag">Python</span>
-                        </div>
-                        <p class="repo-description">Cryptocurrency exchange platform with order matching engine</p>
-                        <div class="repo-stats">
-                            <span class="repo-stat"><i class="fas fa-star"></i> 8</span>
-                            <span class="repo-stat"><i class="fas fa-code-branch"></i> 2</span>
-                            <span class="repo-stat"><i class="fas fa-clock"></i> 2 weeks ago</span>
-                        </div>
-                        <div class="repo-languages">
-                            <span class="language-tag">Django</span>
-                            <span class="language-tag">WebSockets</span>
-                            <span class="language-tag">PostgreSQL</span>
-                        </div>
-                    </div>
-                    <div class="github-repo animate-on-scroll">
-                        <div class="repo-header">
-                            <a href="https://github.com/JemAndrew/portfolio" target="_blank" class="repo-name">
-                                <i class="fas fa-code-branch me-2"></i>portfolio
-                            </a>
-                            <span class="language-tag">Python</span>
-                        </div>
-                        <p class="repo-description">Professional portfolio website built with Django</p>
-                        <div class="repo-stats">
-                            <span class="repo-stat"><i class="fas fa-star"></i> 5</span>
-                            <span class="repo-stat"><i class="fas fa-code-branch"></i> 1</span>
-                            <span class="repo-stat"><i class="fas fa-clock"></i> 1 week ago</span>
-                        </div>
-                        <div class="repo-languages">
-                            <span class="language-tag">JavaScript</span>
-                            <span class="language-tag">CSS</span>
-                            <span class="language-tag">HTML</span>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <!-- Language Statistics -->
-            {% if github_languages %}
-                <div id="language-stats" class="mt-4">
-                    <h4 style="text-align: center; margin-bottom: 2rem; color: var(--text-primary);">Most Used Languages</h4>
-                    <div class="language-chart" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                        {% for lang, percent in github_languages.items|slice:":8" %}
-                            <div class="language-item animate-on-scroll" style="background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
-                                <div class="language-info" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <span class="language-name" style="font-weight: 500;">{{ lang }}</span>
-                                    <span class="language-percentage" style="color: var(--primary-color); font-weight: 600;">{{ percent }}%</span>
-                                </div>
-                                <div class="language-bar" style="background: var(--bg-light); border-radius: 4px; overflow: hidden; height: 6px;">
-                                    <div class="language-fill" style="height: 100%; background: var(--primary-color); width: {{ percent }}%; transition: width 1s ease;"></div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+        <div class="profile-image-container">
+            <div class="profile-image-bg"></div>
+            {% if personal_info.profile_image_url %}
+                <img src="{{ personal_info.profile_image_url }}" alt="{{ personal_info.name }}" class="profile-image">
+            {% else %}
+                <div class="profile-image" style="display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.1); font-size: 4rem;">
+                    <i class="fas fa-user"></i>
                 </div>
             {% endif %}
         </div>
     </div>
-</section>
 
-<!-- About Section -->
-<section class="section" id="about">
-    <div class="container">
-        <h2 class="section-title">About Me</h2>
-        <div class="section-subtitle">
-            Software engineer with a passion for creating efficient, scalable solutions that solve real-world problems.
-        </div>
-        
-        <div class="about-grid">
-            <div class="about-card animate-on-scroll">
-                <div class="card-icon">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-                <h3>Current Role</h3>
-                <div class="role-info">
-                    {% if current_position %}
-                        <h4>{{ current_position.position }}</h4>
-                        <p class="company">{{ current_position.company }}</p>
-                        <span class="badge badge-success">Current</span>
-                        <p class="role-description">{{ current_position.description|truncatewords:30 }}</p>
-                    {% else %}
-                        <h4>Software Engineer</h4>
-                        <p class="company">BuildChorus</p>
-                        <span class="badge badge-success">Current</span>
-                        <p class="role-description">
-                            Developing enterprise-grade SaaS construction management platforms serving the multi-billion pound industry.
-                        </p>
-                    {% endif %}
-                </div>
+    <!-- Right Side - Content -->
+    <div class="content-side">
+        <p class="content-intro">
+            I'm a software engineer passionate about building <span class="highlight">scalable enterprise solutions</span>. 
+            Currently developing construction management SaaS platforms at <span class="highlight">BuildChorus</span>, 
+            specializing in Django, PostgreSQL, and optimization algorithms.
+        </p>
+
+        <p class="content-intro">
+            My unique journey from <span class="highlight">biological sciences to computer science</span> gives me a 
+            distinctive perspective on data analysis and systematic problem-solving. MSc Computer Science graduate 
+            with research experience in <span class="highlight">medical AI and CNN architectures</span>.
+        </p>
+
+        <div class="achievements-grid">
+            <div class="achievement-item">
+                <span class="achievement-number">2+</span>
+                <span class="achievement-label">Years Experience</span>
             </div>
-            
-            <div class="about-card animate-on-scroll">
-                <div class="card-icon">
-                    <i class="fas fa-graduation-cap"></i>
+            <div class="achievement-item">
+                <span class="achievement-number">15%</span>
+                <span class="achievement-label">AI Accuracy Improvement</span>
+            </div>
+            <div class="achievement-item">
+                <span class="achievement-number">{{ projects|length|default:"6" }}</span>
+                <span class="achievement-label">Major Projects</span>
+            </div>
+            <div class="achievement-item">
+                <span class="achievement-number">MSc</span>
+                <span class="achievement-label">Computer Science</span>
+            </div>
+        </div>
+
+        <div class="experience-section">
+            <h2 class="section-title">Current Role</h2>
+            <div class="experience-item">
+                {% if current_position %}
+                <div class="experience-header">
+                    <div class="company-logo">🏗️</div>
+                    <div>
+                        <div class="experience-title">{{ current_position.position }}</div>
+                        <div class="experience-company">{{ current_position.company }} • {{ current_position.location|default:"Newcastle, UK" }}</div>
+                    </div>
                 </div>
-                <h3>Education</h3>
-                <div class="education-info">
-                    {% for education in education_list|slice:":1" %}
-                        <h4>{{ education.get_degree_type_display }} {{ education.subject }}</h4>
-                        <p class="institution">{{ education.institution }}</p>
-                        {% if education.grade %}
-                            <span class="badge badge-primary">{{ education.grade }}</span>
-                        {% endif %}
-                        <p class="education-description">{{ education.description|truncatewords:25 }}</p>
-                    {% empty %}
-                        <h4>MSc Computer Science</h4>
-                        <p class="institution">Newcastle University</p>
-                        <span class="badge badge-primary">Merit</span>
-                        <p class="education-description">
-                            Specialized in machine learning and medical AI applications with research in CNN architectures.
-                        </p>
+                <p class="experience-description">
+                    {{ current_position.description }}
+                </p>
+                <div class="skills-tags">
+                    {% for skill in current_position.skills_list %}
+                        <span class="skill-tag">{{ skill }}</span>
                     {% endfor %}
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Experience Section -->
-<section class="section bg-light" id="experience">
-    <div class="container">
-        <h2 class="section-title">Experience</h2>
-        
-        <div class="timeline">
-            {% if current_position %}
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">
-                            {{ current_position.start_date|date:"M Y" }} - Present
-                        </div>
-                        <h3 class="timeline-title">{{ current_position.position }}</h3>
-                        <div class="timeline-company">{{ current_position.company }}</div>
-                        <p class="timeline-description">{{ current_position.description }}</p>
-                        <div class="tech-tags">
-                            {% for tech in current_position.skills_list|slice:":6" %}
-                                <span class="tech-tag">{{ tech|title }}</span>
-                            {% endfor %}
-                        </div>
+                {% else %}
+                <div class="experience-header">
+                    <div class="company-logo">🏗️</div>
+                    <div>
+                        <div class="experience-title">Software Engineer</div>
+                        <div class="experience-company">BuildChorus • Newcastle, UK</div>
                     </div>
                 </div>
-            {% endif %}
-            
-            {% for education in education_list %}
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">
-                            {{ education.start_date|date:"Y" }} - 
-                            {% if education.is_current %}Present{% else %}{{ education.end_date|date:"Y" }}{% endif %}
-                        </div>
-                        <h3 class="timeline-title">{{ education.get_degree_type_display }} {{ education.subject }}</h3>
-                        <div class="timeline-company">{{ education.institution }}</div>
-                        {% if education.grade %}
-                            <div class="timeline-grade">Grade: {{ education.grade }}</div>
-                        {% endif %}
-                        <p class="timeline-description">{{ education.description|truncatewords:40 }}</p>
-                    </div>
+                <p class="experience-description">
+                    Engineering enterprise-grade SaaS construction management platform serving the £10+ billion 
+                    construction software market. Developing user configurability features and optimization algorithms 
+                    using Django 5.0.6, PostgreSQL 17, and Google OR-Tools.
+                </p>
+                <div class="skills-tags">
+                    <span class="skill-tag">Django 5.0.6</span>
+                    <span class="skill-tag">PostgreSQL 17</span>
+                    <span class="skill-tag">Google OR-Tools</span>
+                    <span class="skill-tag">Enterprise SaaS</span>
                 </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Projects Section -->
-<section class="section" id="projects">
-    <div class="container">
-        <h2 class="section-title">Featured Projects</h2>
-        <div class="section-subtitle">
-            A selection of projects showcasing technical expertise and problem-solving capabilities.
-        </div>
-        
-        <div class="projects-grid">
-            {% for project in featured_projects %}
-                <div class="project-card animate-on-scroll">
-                    <div class="project-header">
-                        {% if project.image %}
-                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
-                        {% else %}
-                            <div class="project-placeholder">
-                                <i class="fas fa-code"></i>
-                            </div>
-                        {% endif %}
-                        <div class="project-status">
-                            <span class="badge badge-primary">{{ project.get_category_display }}</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">{{ project.title }}</h3>
-                        <p class="project-description">{{ project.short_description }}</p>
-                        <div class="project-tech">
-                            {% for tech in project.technology_list|slice:":4" %}
-                                <span class="tech-tag">{{ tech }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="project-actions">
-                            {% if project.github_url %}
-                                <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-secondary">
-                                    <i class="fab fa-github"></i>
-                                    Code
-                                </a>
-                            {% endif %}
-                            {% if project.live_demo_url %}
-                                <a href="{{ project.live_demo_url }}" target="_blank" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-external-link-alt"></i>
-                                    Demo
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <p class="text-center text-muted">No featured projects available.</p>
-            {% endfor %}
-        </div>
-        
-        {% if projects|length > 3 %}
-            <div class="text-center mt-4">
-                <button class="btn btn-secondary" id="showAllProjects">
-                    <i class="fas fa-plus"></i>
-                    Show All Projects ({{ projects|length }})
-                </button>
-            </div>
-        {% endif %}
-    </div>
-</section>
-
-<!-- Skills Section -->
-<section class="section bg-light" id="skills">
-    <div class="container">
-        <h2 class="section-title">Technical Skills</h2>
-        <div class="section-subtitle">
-            Expertise across the full development stack with focus on scalable web applications.
-        </div>
-        
-        <div class="skills-grid">
-            {% for category_name, skills in skills_by_category.items %}
-                <div class="skill-category animate-on-scroll">
-                    <h3 class="category-title">
-                        {% if category_name == "Programming Languages" %}
-                            <i class="fas fa-code"></i>
-                        {% elif category_name == "Frameworks & Libraries" %}
-                            <i class="fas fa-layer-group"></i>
-                        {% elif category_name == "Databases & Tools" %}
-                            <i class="fas fa-database"></i>
-                        {% else %}
-                            <i class="fas fa-cogs"></i>
-                        {% endif %}
-                        {{ category_name }}
-                    </h3>
-                    <div class="skills-list">
-                        {% for skill in skills %}
-                            <div class="skill-item">
-                                <div class="skill-info">
-                                    <span class="skill-name">{{ skill.name }}</span>
-                                    <span class="skill-experience">{{ skill.years_experience }} year{{ skill.years_experience|pluralize }}</span>
-                                </div>
-                                <div class="skill-level">
-                                    <span class="skill-badge skill-{{ skill.get_proficiency_display|lower }}">
-                                        {{ skill.get_proficiency_display }}
-                                    </span>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% empty %}
-                <div class="col-12">
-                    <p class="text-center text-muted">Skills information not available.</p>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Contact Section -->
-<section class="section" id="contact">
-    <div class="container">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="section-subtitle">
-            Ready to discuss opportunities or collaborate on a project? I'd love to hear from you.
-        </div>
-        
-        <div class="contact-wrapper">
-            <div class="contact-form-container animate-on-scroll">
-                <form method="post" class="contact-form" id="contactForm">
-                    {% csrf_token %}
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
-                            {{ form.name }}
-                            {% if form.name.errors %}
-                                <div class="form-error">{{ form.name.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="form-error">{{ form.email.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="{{ form.subject.id_for_label }}" class="form-label">{{ form.subject.label }}</label>
-                        {{ form.subject }}
-                        {% if form.subject.errors %}
-                            <div class="form-error">{{ form.subject.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="{{ form.message.id_for_label }}" class="form-label">{{ form.message.label }}</label>
-                        {{ form.message }}
-                        {% if form.message.errors %}
-                            <div class="form-error">{{ form.message.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    
-                    {{ form.honeypot }}
-                    
-                    <button type="submit" class="btn btn-primary btn-submit">
-                        <i class="fas fa-paper-plane"></i>
-                        Send Message
-                    </button>
-                </form>
-            </div>
-            
-            <div class="contact-info animate-on-scroll">
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div class="contact-details">
-                        <h4>Email</h4>
-                        <p>{{ personal_info.email|default:"andrewjem8@gmail.com" }}</p>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fab fa-linkedin"></i>
-                    </div>
-                    <div class="contact-details">
-                        <h4>LinkedIn</h4>
-                        <p>Professional networking</p>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="contact-details">
-                        <h4>Location</h4>
-                        <p>{{ personal_info.location|default:"Newcastle, UK" }}</p>
-                    </div>
-                </div>
-                
-                {% if github_user %}
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h4>GitHub</h4>
-                            <p>{{ github_user.public_repos }} public repositories</p>
-                        </div>
-                    </div>
                 {% endif %}
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Call to Action -->
-<section class="section bg-light">
-    <div class="container">
-        <div class="row align-items-center justify-content-center text-center">
-            <div class="col-lg-8 animate-on-scroll">
-                <h3 class="fw-bold mb-3" style="color: var(--text-primary);">Ready to work together?</h3>
-                <p class="mb-4" style="color: var(--text-secondary);">Let's discuss how I can contribute to your next project or team.</p>
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="#contact" class="btn btn-primary">
-                        <i class="fas fa-envelope me-2"></i>Contact Me
-                    </a>
-                    {% if github_user.html_url %}
-                        <a href="{{ github_user.html_url }}" target="_blank" class="btn btn-secondary">
-                            <i class="fab fa-github me-2"></i>View GitHub
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
+        <div class="cta-section">
+            <a href="{% url 'portfolio:education' %}" class="cta-button primary">
+                <i class="fas fa-graduation-cap me-1"></i>View Education
+            </a>
+            <a href="{% url 'portfolio:projects' %}" class="cta-button">
+                <i class="fas fa-laptop-code me-1"></i>View Projects
+            </a>
+            <a href="mailto:{{ personal_info.email|default:'andrewjem8@gmail.com' }}" class="cta-button">
+                <i class="fas fa-envelope me-1"></i>Get in Touch
+            </a>
         </div>
     </div>
-</section>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    // Pass Django data to JavaScript
-    window.githubData = {
-        github_user: {{ github_user|default:'null'|safe }},
-        github_repos: {{ github_repos|default:'[]'|safe }},
-        github_languages: {{ github_languages|default:'{}'|safe }},
-        github_commits: {{ github_commits|default:'{}'|safe }}
-    };
-
-    // Initialize counters for GitHub stats
-    document.addEventListener('DOMContentLoaded', function() {
-        const counters = document.querySelectorAll('[data-counter]');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const target = parseInt(entry.target.dataset.counter) || 0;
-                    animateCounter(entry.target, target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        });
-
-        counters.forEach(counter => observer.observe(counter));
-
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    element.textContent = target;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current);
-                }
-            }, 20);
-        }
-
-        // Show all projects functionality
-        const showAllBtn = document.getElementById('showAllProjects');
-        if (showAllBtn) {
-            showAllBtn.addEventListener('click', function() {
-                // You can implement AJAX loading or redirect to full projects page
-                window.location.href = '#projects';
-                alert('Full projects page would load here');
-            });
-        }
-    });
-</script>
+</div>
 {% endblock %}

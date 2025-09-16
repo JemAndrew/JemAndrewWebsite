@@ -98,6 +98,7 @@ PROJECTS = [
         'status': 'completed',
         'featured': True,
         'github_url': 'https://github.com/JemAndrew/crypto-exchange',  # Update if public
+        'profile_image_url': '/static/images/james_andrew.jpeg',
         'live_demo_url': None,
         'created_date': date(2024, 1, 1),
         'key_features': [

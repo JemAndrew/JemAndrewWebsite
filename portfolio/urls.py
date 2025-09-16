@@ -1,23 +1,17 @@
-# portfolio/urls.py - Simplified for single page portfolio
+# portfolio/urls.py - Fixed syntax
 from django.urls import path
 from . import views
 
 app_name = 'portfolio'
 
 urlpatterns = [
-    # Main single-page portfolio
+    # Main pages
     path('', views.home_view, name='home'),
-    
-    # AJAX endpoints (keep these for functionality)
-    path('ajax/contact/', views.ajax_contact_view, name='ajax_contact'),
-    
-    # API endpoints (optional - for future use)
-    path('api/skills/', views.api_skills_view, name='api_skills'),
-    path('api/projects/', views.api_projects_view, name='api_projects'),
-    
-    # Github
-    path('api/github-data/', views.github_api_view, name='github_api'),
+    path('education/', views.education_view, name='education'),
+    path('projects/', views.projects_view, name='projects'),
 
-    # Optional: Keep these if you want individual project pages
-    # path('project/<int:project_id>/', views.project_detail_view, name='project_detail'),
+    
+    # Dissertation downloads
+    path('download/msc-dissertation/', views.download_msc_dissertation, name='download_msc'),
+    path('download/bsc-dissertation/', views.download_bsc_dissertation, name='download_bsc'),
 ]
