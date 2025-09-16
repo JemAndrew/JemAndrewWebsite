@@ -1,5 +1,5 @@
 /**
- * Professional Portfolio JavaScript with Advanced Animations
+ * Professional Portfolio JavaScript with Advanced Animations and Typewriter Effect
  * Enhanced with GitHub integration and smooth animations
  */
 
@@ -20,8 +20,36 @@ class AdvancedPortfolio {
         this.setupFormHandling();
         this.setupPerformanceMonitoring();
         this.setupInteractiveElements();
+        this.setupTypewriter(); // Add typewriter initialization
         
-        console.log('Advanced Portfolio initialized with GitHub integration');
+        console.log('Advanced Portfolio initialized with GitHub integration and Typewriter effect');
+    }
+
+    /**
+     * Typewriter Effect for Home Page
+     */
+    setupTypewriter() {
+        const typewriterElement = document.getElementById('typewriter-output');
+        
+        if (typewriterElement) {
+            const phrases = [
+                'Software Engineer',
+                'BSc Biology Graduate', 
+                'MSc Computer Science Graduate',
+                'Full-Stack Developer',
+                'Independent Developer',
+                'Problem Solver',
+                'Python Developer',
+                'Java Developer',
+            ];
+            
+            new TypewriterEffect(typewriterElement, phrases, {
+                typeSpeed: 80,      
+                deleteSpeed: 40,    
+                pauseTime: 2000,    
+                deleteDelay: 500    
+            });
+        }
     }
 
     /**
@@ -85,17 +113,19 @@ class AdvancedPortfolio {
             // Hide/show navbar based on scroll direction
             if (scrollY > 100) {
                 if (scrollY > lastScrollY) {
-                    navbar.classList.add('nav-hidden');
+                    if (navbar) navbar.classList.add('nav-hidden');
                 } else {
-                    navbar.classList.remove('nav-hidden');
+                    if (navbar) navbar.classList.remove('nav-hidden');
                 }
             }
             
             // Add scrolled class
-            if (scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            if (navbar) {
+                if (scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
             }
             
             // Update active navigation
@@ -359,48 +389,9 @@ class AdvancedPortfolio {
      * Advanced Animations Setup
      */
     setupAdvancedAnimations() {
-        this.setupTypewriterEffect();
         this.setupCounterAnimations();
         this.setupMorphingShapes();
         this.setupInteractiveHovers();
-    }
-
-    setupTypewriterEffect() {
-        const typeElements = document.querySelectorAll('[data-typewriter]');
-        
-        typeElements.forEach(element => {
-            const text = element.textContent;
-            const speed = parseInt(element.dataset.speed) || 100;
-            
-            element.textContent = '';
-            element.style.borderRight = '2px solid #dc2626';
-            
-            let index = 0;
-            const typeWriter = () => {
-                if (index < text.length) {
-                    element.textContent += text.charAt(index);
-                    index++;
-                    setTimeout(typeWriter, speed);
-                } else {
-                    // Blinking cursor effect
-                    setInterval(() => {
-                        element.style.borderRight = element.style.borderRight === 'none' 
-                            ? '2px solid #dc2626' 
-                            : 'none';
-                    }, 500);
-                }
-            };
-            
-            // Start typewriter when element comes into view
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    setTimeout(typeWriter, 500);
-                    observer.disconnect();
-                }
-            });
-            
-            observer.observe(element);
-        });
     }
 
     setupCounterAnimations() {
@@ -645,80 +636,6 @@ class AdvancedPortfolio {
         `).join('');
     }
 
-    renderRepoLanguages(languages) {
-        if (!languages || Object.keys(languages).length === 0) return '';
-        
-        const topLanguages = Object.entries(languages)
-            .sort(([,a], [,b]) => b - a)
-            .slice(0, 3);
-
-        return `
-            <div class="repo-languages">
-                ${topLanguages.map(([lang, percent]) => 
-                    `<span class="language-tag" style="background: ${this.getLanguageColor(lang)}">${lang}</span>`
-                ).join('')}
-            </div>
-        `;
-    }
-
-    renderLanguageStats() {
-        const languageContainer = document.getElementById('language-stats');
-        if (!languageContainer || !this.githubData.github_languages) return;
-
-        const languages = Object.entries(this.githubData.github_languages)
-            .sort(([,a], [,b]) => b - a)
-            .slice(0, 8);
-
-        languageContainer.innerHTML = `
-            <h4>Most Used Languages</h4>
-            <div class="language-chart">
-                ${languages.map(([lang, percent], index) => `
-                    <div class="language-item" style="animation-delay: ${index * 0.1}s">
-                        <div class="language-info">
-                            <span class="language-name">${lang}</span>
-                            <span class="language-percentage">${percent}%</span>
-                        </div>
-                        <div class="language-bar">
-                            <div class="language-fill" 
-                                 style="width: 0%; background: ${this.getLanguageColor(lang)}; transition: width 1s ease ${index * 0.1}s"
-                                 data-width="${percent}%"></div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-
-        // Animate language bars
-        setTimeout(() => {
-            document.querySelectorAll('.language-fill').forEach(bar => {
-                bar.style.width = bar.dataset.width;
-            });
-        }, 500);
-    }
-
-    renderContributionCalendar() {
-        const calendarContainer = document.getElementById('contribution-calendar');
-        if (!calendarContainer || !this.githubData.github_calendar) return;
-
-        // Simplified contribution calendar
-        const calendar = this.githubData.github_calendar;
-        const weeks = this.groupCalendarByWeeks(calendar);
-
-        calendarContainer.innerHTML = `
-            <h4>Contribution Activity</h4>
-            <div class="contribution-grid">
-                ${weeks.map(week => `
-                    <div class="contribution-week">
-                        ${week.map(day => `
-                            <div class="contribution-day level-${day.level}" 
-                                 title="${day.count} contributions on ${day.date}"></div>
-                        `).join('')}
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }
-
     renderFallbackGitHubData() {
         // Render static data when GitHub API is unavailable
         const statsContainer = document.getElementById('github-stats');
@@ -774,6 +691,22 @@ class AdvancedPortfolio {
         return `${Math.floor(diffInSeconds / 31536000)}y ago`;
     }
 
+    renderRepoLanguages(languages) {
+        if (!languages || Object.keys(languages).length === 0) return '';
+        
+        const topLanguages = Object.entries(languages)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 3);
+
+        return `
+            <div class="repo-languages">
+                ${topLanguages.map(([lang, percent]) => 
+                    `<span class="language-tag" style="background: ${this.getLanguageColor(lang)}">${lang}</span>`
+                ).join('')}
+            </div>
+        `;
+    }
+
     getLanguageColor(language) {
         const colors = {
             'Python': 'rgba(220, 38, 38, 0.8)',
@@ -788,21 +721,6 @@ class AdvancedPortfolio {
             'PHP': 'rgba(79, 93, 149, 0.8)'
         };
         return colors[language] || 'rgba(100, 116, 139, 0.8)';
-    }
-
-    groupCalendarByWeeks(calendar) {
-        const weeks = [];
-        let currentWeek = [];
-        
-        calendar.forEach((day, index) => {
-            currentWeek.push(day);
-            if (currentWeek.length === 7 || index === calendar.length - 1) {
-                weeks.push([...currentWeek]);
-                currentWeek = [];
-            }
-        });
-        
-        return weeks;
     }
 
     /**
@@ -870,97 +788,6 @@ class AdvancedPortfolio {
         return isValid;
     }
 
-    handleFormSubmission(e, form) {
-        e.preventDefault();
-        
-        // Validate all fields
-        const inputs = form.querySelectorAll('input[required], textarea[required]');
-        let isValid = true;
-        
-        inputs.forEach(input => {
-            if (!this.validateField(input)) {
-                isValid = false;
-            }
-        });
-
-        if (!isValid) {
-            this.shakeForm(form);
-            return;
-        }
-
-        // Show loading state
-        const submitBtn = form.querySelector('[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        
-        this.setButtonLoading(submitBtn, true);
-
-        // Simulate form submission (replace with actual AJAX call)
-        setTimeout(() => {
-            this.setButtonLoading(submitBtn, false, originalText);
-            this.showSuccessMessage();
-            form.reset();
-            this.addSuccessAnimation(form);
-        }, 2000);
-    }
-
-    shakeForm(form) {
-        form.style.animation = 'shake 0.5s ease-in-out';
-        setTimeout(() => {
-            form.style.animation = '';
-        }, 500);
-
-        // Add shake keyframe if not exists
-        if (!document.querySelector('#shake-keyframe')) {
-            const style = document.createElement('style');
-            style.id = 'shake-keyframe';
-            style.textContent = `
-                @keyframes shake {
-                    0%, 100% { transform: translateX(0); }
-                    25% { transform: translateX(-5px); }
-                    75% { transform: translateX(5px); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-
-    addSuccessAnimation(form) {
-        const successIcon = document.createElement('div');
-        successIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-        successIcon.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-size: 3rem;
-            color: var(--success-color);
-            animation: successPop 0.6s ease-out;
-            pointer-events: none;
-            z-index: 10;
-        `;
-
-        form.style.position = 'relative';
-        form.appendChild(successIcon);
-
-        // Add success animation keyframe
-        if (!document.querySelector('#success-keyframe')) {
-            const style = document.createElement('style');
-            style.id = 'success-keyframe';
-            style.textContent = `
-                @keyframes successPop {
-                    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-                    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-                    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        setTimeout(() => {
-            successIcon.remove();
-        }, 600);
-    }
-
     showFieldError(field, message) {
         this.clearFieldError(field);
         
@@ -988,65 +815,6 @@ class AdvancedPortfolio {
         if (existingError) {
             existingError.remove();
         }
-    }
-
-    setButtonLoading(button, loading, originalText = '') {
-        if (loading) {
-            button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            button.style.pointerEvents = 'none';
-        } else {
-            button.disabled = false;
-            button.innerHTML = originalText || '<i class="fas fa-paper-plane"></i> Send Message';
-            button.style.pointerEvents = '';
-        }
-    }
-
-    showSuccessMessage() {
-        const message = this.createNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
-        document.body.appendChild(message);
-        
-        setTimeout(() => {
-            message.remove();
-        }, 5000);
-    }
-
-    createNotification(text, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
-                <span>${text}</span>
-            </div>
-            <button class="notification-close">&times;</button>
-        `;
-        
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? 'var(--success-color)' : 'var(--primary-color)'};
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            max-width: 400px;
-            animation: slideInRight 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        `;
-
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', () => {
-            notification.style.animation = 'slideOutRight 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        });
-
-        return notification;
     }
 
     /**
@@ -1078,7 +846,6 @@ class AdvancedPortfolio {
     setupInteractiveElements() {
         this.setupMobileMenu();
         this.setupKeyboardNavigation();
-        this.addCustomCursor();
     }
 
     setupMobileMenu() {
@@ -1126,53 +893,6 @@ class AdvancedPortfolio {
         });
     }
 
-    addCustomCursor() {
-        // Only add custom cursor on non-touch devices
-        if ('ontouchstart' in window) return;
-
-        const cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        cursor.style.cssText = `
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: rgba(220, 38, 38, 0.3);
-            border: 2px solid var(--primary-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: all 0.1s ease;
-            opacity: 0;
-        `;
-
-        document.body.appendChild(cursor);
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = (e.clientX - 10) + 'px';
-            cursor.style.top = (e.clientY - 10) + 'px';
-            cursor.style.opacity = '1';
-        });
-
-        document.addEventListener('mouseleave', () => {
-            cursor.style.opacity = '0';
-        });
-
-        // Scale cursor on hover over interactive elements
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.matches('a, button, .btn, .card, .github-repo, input, textarea')) {
-                cursor.style.transform = 'scale(1.5)';
-                cursor.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
-            }
-        });
-
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.matches('a, button, .btn, .card, .github-repo, input, textarea')) {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.backgroundColor = 'rgba(220, 38, 38, 0.3)';
-            }
-        });
-    }
-
     // Utility methods
     throttle(func, limit) {
         let inThrottle;
@@ -1197,6 +917,63 @@ class AdvancedPortfolio {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+}
+
+/**
+ * TypewriterEffect Class - Standalone component
+ */
+class TypewriterEffect {
+    constructor(element, phrases, options = {}) {
+        this.element = element;
+        this.phrases = phrases;
+        this.currentPhraseIndex = 0;
+        this.currentText = '';
+        this.isDeleting = false;
+        
+        // Options with defaults
+        this.typeSpeed = options.typeSpeed || 100;
+        this.deleteSpeed = options.deleteSpeed || 50;
+        this.pauseTime = options.pauseTime || 2000;
+        this.deleteDelay = options.deleteDelay || 1000;
+        
+        this.start();
+    }
+    
+    start() {
+        this.type();
+    }
+    
+    type() {
+        const currentPhrase = this.phrases[this.currentPhraseIndex];
+        
+        if (this.isDeleting) {
+            // Deleting text
+            this.currentText = currentPhrase.substring(0, this.currentText.length - 1);
+        } else {
+            // Typing text
+            this.currentText = currentPhrase.substring(0, this.currentText.length + 1);
+        }
+        
+        // Update the element
+        this.element.textContent = this.currentText;
+        
+        // Determine typing speed
+        let speed = this.isDeleting ? this.deleteSpeed : this.typeSpeed;
+        
+        // If word is complete
+        if (!this.isDeleting && this.currentText === currentPhrase) {
+            // Pause before deleting
+            speed = this.pauseTime;
+            this.isDeleting = true;
+        } else if (this.isDeleting && this.currentText === '') {
+            // Move to next phrase
+            this.isDeleting = false;
+            this.currentPhraseIndex = (this.currentPhraseIndex + 1) % this.phrases.length;
+            speed = this.deleteDelay;
+        }
+        
+        setTimeout(() => this.type(), speed);
     }
 }
 
@@ -1284,5 +1061,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for module usage
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { AdvancedPortfolio };
+    module.exports = { AdvancedPortfolio, TypewriterEffect };
 }

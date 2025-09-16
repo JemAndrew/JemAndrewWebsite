@@ -5,91 +5,111 @@
 {% block page_name %}education{% endblock %}
 
 {% block content %}
-<div class="education-hero">
-    <div class="container">
-        <h1 class="education-title">Academic Background</h1>
-        <p style="color: var(--text-gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
-            Advanced study in computer science and biological sciences with research focus on medical AI applications
-        </p>
-    </div>
-</div>
-
-<!-- Dissertation Downloads - The Cool Floating Elements You Wanted -->
-<div class="container">
-    <div class="dissertation-downloads">
-        <!-- MSc Dissertation -->
-        <div class="dissertation-card">
-            <div class="dissertation-icon">🧠</div>
-            <h3 class="dissertation-title">MSc Dissertation</h3>
-            <h4 style="color: var(--text-gray); font-size: 1.1rem; margin-bottom: 1rem;">
-                CNN Architectures for Automated Skin Cancer Detection
-            </h4>
-            <p class="dissertation-description">
-                Research into convolutional neural network architectures for automated dermatological diagnosis, 
-                achieving <strong>15% improvement</strong> in diagnostic accuracy over baseline models 
-                through advanced data augmentation and transfer learning techniques.
-            </p>
-            <div style="margin: 1rem 0;">
-                <span class="skill-tag">PyTorch</span>
-                <span class="skill-tag">CNN</span>
-                <span class="skill-tag">Medical AI</span>
-                <span class="skill-tag">Transfer Learning</span>
-                <span class="skill-tag">FDA-Compliant</span>
-            </div>
-            <a href="{% url 'portfolio:download_msc' %}" class="download-button">
-                <i class="fas fa-download"></i>Download MSc Dissertation
-                <span style="font-size: 0.8rem; opacity: 0.8;">(PDF • 2.3 MB)</span>
-            </a>
-        </div>
-
-        <!-- BSc Dissertation -->
-        <div class="dissertation-card">
-            <div class="dissertation-icon">🔬</div>
-            <h3 class="dissertation-title">BSc Dissertation</h3>
-            <h4 style="color: var(--text-gray); font-size: 1.1rem; margin-bottom: 1rem;">
-                Computational Approaches to Biological Data Analysis
-            </h4>
-            <p class="dissertation-description">
-                Interdisciplinary research combining biological sciences with computational methods, 
-                exploring data analysis techniques for genomic and proteomic datasets. 
-                Foundation work that led to transition into computer science.
-            </p>
-            <div style="margin: 1rem 0;">
-                <span class="skill-tag">R/Python</span>
-                <span class="skill-tag">Statistical Analysis</span>
-                <span class="skill-tag">Bioinformatics</span>
-                <span class="skill-tag">Data Visualization</span>
-                <span class="skill-tag">Genomics</span>
-            </div>
-            <a href="{% url 'portfolio:download_bsc' %}" class="download-button">
-                <i class="fas fa-download"></i>Download BSc Dissertation
-                <span style="font-size: 0.8rem; opacity: 0.8;">(PDF • 1.8 MB)</span>
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- Academic Timeline -->
-<div class="container mt-5">
-    <h2 class="section-title">Academic Journey</h2>
-    
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            {% for education in education_list %}
-            <div class="experience-item mb-4">
-                <div class="experience-header">
-                    <div class="company-logo">🎓</div>
-                    <div>
-                        <div class="experience-title">{{ education.get_degree_type_display }} {{ education.subject }}</div>
-                        <div class="experience-company">{{ education.institution }}</div>
-                        <div style="color: var(--text-light); font-size: 0.9rem; margin-top: 0.25rem;">
-                            {{ education.start_date.year }} - 
-                            {% if education.is_current %}Present{% else %}{{ education.end_date.year }}{% endif %}
-                            {% if education.grade %} • {{ education.grade }}{% endif %}
+<div class="main-container">
+    <!-- Left Side - Academic Paper Stack -->
+    <div class="left-side">
+        <div class="dissertation-downloads">
+            <!-- MSc Dissertation Paper Stack -->
+            <div class="dissertation-card">
+                <div class="paper-stack">
+                    <!-- Base paper layer -->
+                    <div class="paper-base"></div>
+                    
+                    <!-- Middle paper layer -->
+                    <div class="paper-middle"></div>
+                    
+                    <!-- Top paper with content -->
+                    <div class="paper-top">
+                        <h3 class="dissertation-title">MSc Dissertation</h3>
+                        <h4 class="dissertation-subtitle">
+                            CNN Architectures for Automated Skin Cancer Detection
+                        </h4>
+                        
+                        <div class="dissertation-meta">
+                            <span class="university-badge">Newcastle University</span>
+                            <span class="file-size">2.3 MB</span>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <span class="skill-tag">PyTorch</span>
+                            <span class="skill-tag">CNN</span>
+                            <span class="skill-tag">Medical AI</span>
                         </div>
                     </div>
                 </div>
-                <p class="experience-description">{{ education.description }}</p>
+                
+                <!-- Hidden download button revealed on hover -->
+                <div class="download-reveal">
+                    <a href="{% url 'portfolio:download_msc' %}" class="download-button">
+                        <i class="fas fa-download"></i>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+
+            <!-- BSc Dissertation Paper Stack -->
+            <div class="dissertation-card">
+                <div class="paper-stack">
+                    <!-- Base paper layer -->
+                    <div class="paper-base"></div>
+                    
+                    <!-- Middle paper layer -->
+                    <div class="paper-middle"></div>
+                    
+                    <!-- Top paper with content -->
+                    <div class="paper-top">
+                        <h3 class="dissertation-title">BSc Dissertation</h3>
+                        <h4 class="dissertation-subtitle">
+                            Computational Approaches to Biological Data Analysis
+                        </h4>
+                        
+                        <div class="dissertation-meta">
+                            <span class="university-badge">University</span>
+                            <span class="file-size">1.8 MB</span>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <span class="skill-tag">R/Python</span>
+                            <span class="skill-tag">Bioinformatics</span>
+                            <span class="skill-tag">Statistics</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden download button revealed on hover -->
+                <div class="download-reveal">
+                    <a href="{% url 'portfolio:download_bsc' %}" class="download-button">
+                        <i class="fas fa-download"></i>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side - Academic Content -->
+    <div class="right-side">
+        <div class="education-hero">
+            <h1 class="education-title">Academic Background</h1>
+            <p style="color: var(--text-gray); font-size: 1.1rem; line-height: 1.6; margin-bottom: 3rem;">
+                Advanced study in computer science and biological sciences with research focus on medical AI applications
+            </p>
+        </div>
+
+        <!-- Academic Timeline -->
+        <div class="timeline-section">
+            <h2 class="section-title">Academic Journey</h2>
+            
+            {% for education in education_list %}
+            <div class="timeline-item">
+                <div class="degree-title">{{ education.get_degree_type_display }} {{ education.subject }}</div>
+                <div class="institution">{{ education.institution }}</div>
+                <div class="duration">
+                    {{ education.start_date.year }} - 
+                    {% if education.is_current %}Present{% else %}{{ education.end_date.year }}{% endif %}
+                    {% if education.grade %} • {{ education.grade }}{% endif %}
+                </div>
+                <p class="degree-description">{{ education.description }}</p>
                 <div class="skills-tags">
                     {% for tech in education.technologies_list %}
                         <span class="skill-tag">{{ tech }}</span>
@@ -97,32 +117,67 @@
                 </div>
             </div>
             {% empty %}
-            <p style="color: var(--text-gray); text-align: center;">No education information available.</p>
+            <div class="timeline-item">
+                <div class="degree-title">MSc Computer Science</div>
+                <div class="institution">Newcastle University</div>
+                <div class="duration">2022 - 2023 • Merit</div>
+                <p class="degree-description">
+                    Advanced study in machine learning, algorithms, and software engineering. 
+                    Dissertation focused on CNN architectures for automated skin cancer detection, 
+                    achieving 15% diagnostic improvements over baseline models. Gained expertise 
+                    in PyTorch, medical AI applications, and FDA-compliant evaluation frameworks.
+                </p>
+                <div class="skills-tags">
+                    <span class="skill-tag">PyTorch</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Machine Learning</span>
+                    <span class="skill-tag">CNN</span>
+                    <span class="skill-tag">Medical AI</span>
+                    <span class="skill-tag">Research Methods</span>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="degree-title">BSc Biology</div>
+                <div class="institution">University</div>
+                <div class="duration">2019 - 2022 • Upper Second-Class Honours</div>
+                <p class="degree-description">
+                    Biological sciences foundation providing strong analytical and research skills. 
+                    Developed expertise in statistical analysis, data interpretation, and scientific 
+                    methodology that translates directly to software engineering and data science applications.
+                </p>
+                <div class="skills-tags">
+                    <span class="skill-tag">Statistical Analysis</span>
+                    <span class="skill-tag">Research Methods</span>
+                    <span class="skill-tag">Data Analysis</span>
+                    <span class="skill-tag">Scientific Writing</span>
+                </div>
+            </div>
             {% endfor %}
         </div>
-    </div>
-</div>
 
-<!-- Research Highlights -->
-<div class="container mt-5">
-    <h2 class="section-title">Research Impact</h2>
-    
-    <div class="achievements-grid">
-        <div class="achievement-item">
-            <span class="achievement-number">15%</span>
-            <span class="achievement-label">Diagnostic Improvement</span>
-        </div>
-        <div class="achievement-item">
-            <span class="achievement-number">FDA</span>
-            <span class="achievement-label">Compliant Framework</span>
-        </div>
-        <div class="achievement-item">
-            <span class="achievement-number">PyTorch</span>
-            <span class="achievement-label">Implementation</span>
-        </div>
-        <div class="achievement-item">
-            <span class="achievement-number">Bio→CS</span>
-            <span class="achievement-label">Interdisciplinary</span>
+        <!-- Research Highlights -->
+        <div style="margin-top: 3rem;">
+            <h2 class="section-title">Research Impact</h2>
+            
+            <div class="achievements-grid">
+                <div class="achievement-item">
+                    <span class="achievement-number">15%</span>
+                    <span class="achievement-label">Diagnostic Improvement</span>
+                </div>
+                <div class="achievement-item">
+                    <span class="achievement-number">FDA</span>
+                    <span class="achievement-label">Compliant Framework</span>
+                </div>
+                <div class="achievement-item">
+                    <span class="achievement-number">PyTorch</span>
+                    <span class="achievement-label">Implementation</span>
+                </div>
+                <div class="achievement-item">
+                    <span class="achievement-number">Bio→CS</span>
+                    <span class="achievement-label">Interdisciplinary</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

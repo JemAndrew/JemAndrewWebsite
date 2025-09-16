@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ personal_info.name|default:"James Andrew" }} - Software Engineer{% endblock %}</title>
+    <title>{% block title %}{{ personal_info.name|default:"Hi My Name Is Jem Andrew" }} - Software Engineer{% endblock %}</title>
     <meta name="description" content="{% block description %}James Andrew - Software Engineer specializing in Django, enterprise SaaS platforms, and full-stack development.{% endblock %}">
     
     <!-- Google Fonts -->
@@ -41,7 +41,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <h3>{{ personal_info.name|default:"James Andrew" }}</h3>
+            <h3>{{"Hi My Name is Jem Andrew" }}</h3>
             <p>{{ personal_info.title|default:"Software Engineer | MSc Computer Science" }}</p>
             
             <div class="social-links">
@@ -61,7 +61,7 @@
             </div>
             
             <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 2rem;">
-                &copy; {% now "Y" %} {{ personal_info.name|default:"James Andrew" }}. Built with Django & CSS.
+                &copy; {% now "Y" %} {{ personal_info.name|default:"Jem Andrew" }}. Built with Django & CSS.
             </p>
         </div>
     </footer>

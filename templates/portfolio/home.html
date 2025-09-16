@@ -6,29 +6,37 @@
 
 {% block content %}
 <div class="main-container">
-    <!-- Left Side - Profile -->
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Left Side - Professional Header -->
     <div class="profile-side">
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+        <div class="professional-header">
+            <h1 class="name-title">{{ personal_info.name|default:"James Andrew" }}</h1>
+            <div class="typewriter-text">
+                <span id="typewriter-output"></span>
+                <span class="typewriter-cursor"></span>
+            </div>
+            
+            <div class="credentials-row">
+                <span class="credential-badge primary">BuildChorus</span>
+                <span class="credential-badge secondary">MSc Computer Science</span>
+            </div>
         </div>
 
-        <h1 class="name-title">{{ personal_info.name|default:"James Andrew" }}</h1>
-        <p class="role-subtitle">Software Engineer</p>
-        <div class="company-highlight">
-            BuildChorus • MSc Computer Science
-        </div>
-
-        <div class="profile-image-container">
-            <div class="profile-image-bg"></div>
-            {% if personal_info.profile_image_url %}
-                <img src="{{ personal_info.profile_image_url }}" alt="{{ personal_info.name }}" class="profile-image">
-            {% else %}
-                <div class="profile-image" style="display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.1); font-size: 4rem;">
-                    <i class="fas fa-user"></i>
-                </div>
-            {% endif %}
+        <!-- Professional Quote/Tagline -->
+        <div style="margin: 2rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.08); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+            <blockquote style="font-style: italic; font-size: 1.1rem; line-height: 1.6; color: var(--text-gray); margin: 0;">
+                "Transforming biological insights into scalable software solutions, 
+                bridging the gap between scientific methodology and enterprise engineering."
+            </blockquote>
+            <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
+                — Software Engineer & Researcher
+            </div>
         </div>
     </div>
 
@@ -67,8 +75,7 @@
 
         <div class="experience-section">
             <h2 class="section-title">Current Role</h2>
-            <div class="experience-item">
-                {% if current_position %}
+            {% if current_position %}
                 <div class="experience-header">
                     <div class="company-logo">🏗️</div>
                     <div>
@@ -84,7 +91,7 @@
                         <span class="skill-tag">{{ skill }}</span>
                     {% endfor %}
                 </div>
-                {% else %}
+            {% else %}
                 <div class="experience-header">
                     <div class="company-logo">🏗️</div>
                     <div>
@@ -103,8 +110,7 @@
                     <span class="skill-tag">Google OR-Tools</span>
                     <span class="skill-tag">Enterprise SaaS</span>
                 </div>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
 
         <div class="cta-section">

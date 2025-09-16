@@ -1,20 +1,14 @@
-# portfolio/data.py
-"""
-Static data for James Andrew's portfolio website
-Replace database-driven content with clean Python data structures
-"""
-
 from datetime import date
 import json
 
 # Personal Information
 PERSONAL_INFO = {
-    'name': 'James Andrew',
+    'name': 'Jem Andrew',
     'title': 'Software Engineer | MSc Computer Science',
     'email': 'andrewjem8@gmail.com',
     'location': 'Newcastle, UK',
-    'linkedin_url': 'https://www.linkedin.com/in/james-andrew-439771333/',  # Update with your LinkedIn
-    'github_url': 'https://github.com/JemAndrew',  # Update with your GitHub
+    'linkedin_url': 'https://www.linkedin.com/in/james-andrew-439771333/',
+    'github_url': 'https://github.com/JemAndrew',
     'bio': """Software engineer with expertise in Django, PostgreSQL, and optimization algorithms. 
               Currently developing enterprise SaaS construction management platforms at BuildChorus. 
               MSc Computer Science graduate with research experience in medical AI and CNN architectures. 
@@ -28,13 +22,14 @@ PERSONAL_INFO = {
     ]
 }
 
+# Rest of your existing data stays the same...
 # Professional Experience
 EXPERIENCE = [
     {
         'position': 'Software Engineer',
         'company': 'BuildChorus',
         'location': 'Newcastle, UK',
-        'start_date': date(2025, 9, 1),  # Adjust to your actual start date
+        'start_date': date(2025, 9, 1),
         'end_date': None,
         'is_current': True,
         'description': """Engineering enterprise-grade SaaS construction management platform serving the £10+ billion 
@@ -59,9 +54,9 @@ EDUCATION = [
         'subject': 'Computer Science',
         'institution': 'Newcastle University',
         'start_date': date(2022, 9, 1),
-        'end_date': date(2023, 9, 1),  # Adjust based on completion
+        'end_date': date(2023, 9, 1),
         'is_current': False,
-        'grade': 'Merit',  # Update with your actual grade
+        'grade': 'Merit',
         'description': """Advanced study in machine learning, algorithms, and software engineering. 
                          Dissertation focused on CNN architectures for automated skin cancer detection, 
                          achieving 15% diagnostic improvements over baseline models. Gained expertise 
@@ -72,10 +67,10 @@ EDUCATION = [
         'degree_type': 'BSc',
         'subject': 'Biology',
         'institution': 'University Name',  # Replace with your university
-        'start_date': date(2019, 9, 1),  # Adjust dates
+        'start_date': date(2019, 9, 1),
         'end_date': date(2022, 6, 1),
         'is_current': False,
-        'grade': 'Upper Second-Class Honours',  # Update with your grade
+        'grade': 'Upper Second-Class Honours',
         'description': """Biological sciences foundation providing strong analytical and research skills. 
                          Developed expertise in statistical analysis, data interpretation, and scientific 
                          methodology that translates directly to software engineering and data science applications.""",
@@ -97,8 +92,7 @@ PROJECTS = [
         'category': 'personal',
         'status': 'completed',
         'featured': True,
-        'github_url': 'https://github.com/JemAndrew/crypto-exchange',  # Update if public
-        'profile_image_url': '/static/images/james_andrew.jpeg',
+        'github_url': 'https://github.com/JemAndrew/crypto-exchange',
         'live_demo_url': None,
         'created_date': date(2024, 1, 1),
         'key_features': [
@@ -121,7 +115,7 @@ PROJECTS = [
         'category': 'academic',
         'status': 'completed',
         'featured': True,
-        'github_url': None,  # Academic project - may not be public
+        'github_url': None,
         'live_demo_url': None,
         'created_date': date(2023, 6, 1),
         'key_features': [
@@ -144,8 +138,8 @@ PROJECTS = [
         'category': 'personal',
         'status': 'completed',
         'featured': True,
-        'github_url': 'https://github.com/JemAndrew/holiday-cluedo',  # Update if public
-        'live_demo_url': 'https://your-cluedo-demo.com',  # Update if deployed
+        'github_url': 'https://github.com/JemAndrew/holiday-cluedo',
+        'live_demo_url': 'https://your-cluedo-demo.com',
         'created_date': date(2023, 12, 1),
         'key_features': [
             '20+ concurrent user support',
@@ -166,8 +160,8 @@ PROJECTS = [
         'category': 'personal',
         'status': 'active',
         'featured': False,
-        'github_url': 'https://github.com/JemAndrew/portfolio',  # Update if public
-        'live_demo_url': None,  # Will be your deployed URL
+        'github_url': 'https://github.com/JemAndrew/portfolio',
+        'live_demo_url': None,
         'created_date': date(2024, 1, 15),
         'key_features': [
             'Responsive modern design',
@@ -209,10 +203,10 @@ SKILLS = {
 
 # Site settings and metadata
 SITE_SETTINGS = {
-    'site_title': 'James Andrew - Software Engineer',
+    'site_title': 'Jem Andrew - Software Engineer',
     'meta_description': 'Software Engineer at BuildChorus specializing in Django, enterprise SaaS platforms, and optimization algorithms. MSc Computer Science graduate.',
     'keywords': 'Software Engineer, Django Developer, Python, PostgreSQL, Full Stack Developer, Newcastle',
-    'analytics_id': None,  # Add Google Analytics ID if needed
+    'analytics_id': None,
     'contact_email': 'andrewjem8@gmail.com'
 }
 
@@ -228,7 +222,6 @@ CONTACT_SUBJECTS = [
 def get_personal_info():
     """Get personal information - replaces PersonalInfo.objects.first()"""
     info = type('PersonalInfo', (), PERSONAL_INFO)()
-    # This should produce valid JSON
     info.typing_phrases = json.dumps(PERSONAL_INFO['typing_phrases'])
     return info
 
@@ -236,14 +229,10 @@ def get_all_projects():
     """Get all projects - replaces Project.objects.all()"""
     projects = []
     for i, project_data in enumerate(PROJECTS, 1):
-        # Create a new class for each project to avoid shared state
         class ProjectObj:
             def __init__(self, data, project_id):
-                # Copy all data attributes
                 for key, value in data.items():
                     setattr(self, key, value)
-                
-                # Add computed attributes
                 self.id = project_id
                 self.technology_list = data['technologies'].split(', ')
             
@@ -269,7 +258,6 @@ def get_current_experience():
     if current:
         exp_obj = type('Experience', (), current)()
         exp_obj.skills_list = current['skills_gained'].split(', ')
-        # Calculate duration for display
         if exp_obj.start_date:
             if exp_obj.is_current:
                 duration_days = (date.today() - exp_obj.start_date).days
@@ -293,7 +281,6 @@ def get_all_experience():
     for exp in EXPERIENCE:
         exp_obj = type('Experience', (), exp)()
         exp_obj.skills_list = exp['skills_gained'].split(', ')
-        # Calculate duration
         if exp_obj.start_date:
             if exp_obj.is_current:
                 duration_days = (date.today() - exp_obj.start_date).days
@@ -318,7 +305,6 @@ def get_all_education():
         edu_obj = type('Education', (), edu)()
         edu_obj.technologies_list = edu['technologies'].split(', ')
         edu_obj.get_degree_type_display = lambda e=edu: e['degree_type']
-        # Calculate duration
         if edu_obj.start_date and edu_obj.end_date:
             edu_obj.duration_years = round((edu_obj.end_date - edu_obj.start_date).days / 365.25, 1)
         elif edu_obj.is_current and edu_obj.start_date:
@@ -335,11 +321,11 @@ def get_skills_by_category():
         skill_objects = []
         for skill in skills:
             skill_obj = type('Skill', (), skill)()
-            skill_obj.proficiency_percentage = skill['proficiency'] * 20  # Convert 1-5 to percentage
+            skill_obj.proficiency_percentage = skill['proficiency'] * 20
             skill_obj.get_proficiency_display = lambda s=skill: ['', 'Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert'][s['proficiency']]
             skill_obj.category = category.lower().replace(' ', '_').replace('&', 'and')
-            skill_obj.color = '#007bff'  # Default blue
-            skill_obj.icon_class = f"fas fa-code"  # Default icon
+            skill_obj.color = '#007bff'
+            skill_obj.icon_class = f"fas fa-code"
             skill_objects.append(skill_obj)
         skills_dict[category] = skill_objects
     return skills_dict

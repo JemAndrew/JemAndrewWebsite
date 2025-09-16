@@ -5,103 +5,246 @@
 {% block page_name %}projects{% endblock %}
 
 {% block content %}
-<div class="education-hero">
-    <div class="container">
-        <h1 class="education-title">Projects</h1>
-        <p style="color: var(--text-gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+<div class="main-container">
+    <!-- Left Side - Project Overview -->
+    <div class="left-side">
+        <h1 class="page-title">Projects</h1>
+        <p class="content-intro">
             Software engineering projects showcasing technical expertise and problem-solving abilities
         </p>
-    </div>
-</div>
 
-<div class="container">
-    <div class="projects-grid">
-        {% for project in projects %}
-        <div class="project-card">
-            <div class="project-header">
-                <div>
-                    <h3 class="project-title">{{ project.title }}</h3>
-                    <span class="project-category">{{ project.get_category_display }}</span>
-                </div>
+        <div class="achievements-grid" style="margin-top: 3rem;">
+            <div class="achievement-item">
+                <span class="achievement-number">{{ projects|length|default:"4" }}</span>
+                <span class="achievement-label">Total Projects</span>
             </div>
-            
-            <p class="project-description">{{ project.short_description }}</p>
-            
-            <div class="project-tech">
-                {% for tech in project.technology_list %}
-                    <span class="tech-tag">{{ tech }}</span>
-                {% endfor %}
+            <div class="achievement-item">
+                <span class="achievement-number">1000+</span>
+                <span class="achievement-label">Orders/Second</span>
             </div>
-            
-            <div class="project-links">
-                {% if project.github_url %}
-                <a href="{{ project.github_url }}" target="_blank" class="project-link">
-                    <i class="fab fa-github me-1"></i>View Code
-                </a>
-                {% endif %}
-                {% if project.live_demo_url %}
-                <a href="{{ project.live_demo_url }}" target="_blank" class="project-link">
-                    <i class="fas fa-external-link-alt me-1"></i>Live Demo
-                </a>
-                {% endif %}
+            <div class="achievement-item">
+                <span class="achievement-number">20+</span>
+                <span class="achievement-label">Concurrent Users</span>
+            </div>
+            <div class="achievement-item">
+                <span class="achievement-number">15%</span>
+                <span class="achievement-label">AI Improvement</span>
             </div>
         </div>
-        {% empty %}
-        <div class="col-12 text-center">
-            <p style="color: var(--text-gray); font-size: 1.1rem;">No projects available yet.</p>
-        </div>
-        {% endfor %}
-    </div>
-</div>
 
-<!-- Featured Projects Section -->
-{% if featured_projects %}
-<div class="container mt-5">
-    <h2 class="section-title">Featured Projects</h2>
-    <div class="projects-grid">
-        {% for project in featured_projects %}
-        <div class="project-card" style="border: 2px solid rgba(255, 255, 255, 0.3);">
-            <div class="project-header">
-                <div>
-                    <h3 class="project-title">{{ project.title }}</h3>
-                    <span class="project-category">Featured</span>
+        <div style="margin-top: 3rem;">
+            <h3 style="font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; color: var(--text-white);">Featured Technologies</h3>
+            <div class="skills-tags">
+                <span class="skill-tag">Django</span>
+                <span class="skill-tag">PostgreSQL</span>
+                <span class="skill-tag">PyTorch</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">WebSockets</span>
+                <span class="skill-tag">PWA</span>
+                <span class="skill-tag">CNN</span>
+                <span class="skill-tag">REST API</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side - Project List -->
+    <div class="right-side">
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <span class="project-category">{{ project.get_category_display }}</span>
+                    </div>
                 </div>
-            </div>
-            
-            <p class="project-description">{{ project.detailed_description|truncatewords:30 }}</p>
-            
-            <div class="project-tech">
-                {% for tech in project.technology_list %}
-                    <span class="tech-tag">{{ tech }}</span>
-                {% endfor %}
-            </div>
-            
-            {% if project.key_features %}
-            <div style="margin: 1rem 0;">
-                <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.5rem;">Key Features:</h5>
-                <ul style="color: var(--text-gray); font-size: 0.85rem; margin: 0; padding-left: 1rem;">
-                    {% for feature in project.key_features|slice:":3" %}
-                    <li>{{ feature }}</li>
+                
+                <p class="project-description">{{ project.detailed_description|default:project.short_description }}</p>
+                
+                {% if project.key_features %}
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        {% for feature in project.key_features|slice:":3" %}
+                        <li style="margin-bottom: 0.3rem;">{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <div class="project-tech">
+                    {% for tech in project.technology_list %}
+                        <span class="tech-tag">{{ tech }}</span>
                     {% endfor %}
-                </ul>
+                </div>
+                
+                <div class="project-links">
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank" class="project-link">
+                        <i class="fab fa-github me-1"></i>View Code
+                    </a>
+                    {% endif %}
+                    {% if project.live_demo_url %}
+                    <a href="{{ project.live_demo_url }}" target="_blank" class="project-link">
+                        <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                    </a>
+                    {% endif %}
+                    {% if not project.github_url and not project.live_demo_url %}
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-lock me-1"></i>Private Repository
+                    </span>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
-            
-            <div class="project-links">
-                {% if project.github_url %}
-                <a href="{{ project.github_url }}" target="_blank" class="project-link">
-                    <i class="fab fa-github me-1"></i>View Code
-                </a>
-                {% endif %}
-                {% if project.live_demo_url %}
-                <a href="{{ project.live_demo_url }}" target="_blank" class="project-link">
-                    <i class="fas fa-external-link-alt me-1"></i>Live Demo
-                </a>
-                {% endif %}
+            {% empty %}
+            <!-- Fallback projects if none exist -->
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Cryptocurrency Exchange Platform</h3>
+                        <span class="project-category">Personal</span>
+                    </div>
+                </div>
+                
+                <p class="project-description">
+                    Built a complete cryptocurrency exchange platform from scratch with a focus on stablecoin trading. 
+                    Implemented a custom order matching engine using price-time priority algorithms capable of processing 
+                    over 1,000 orders per second. The system features real-time WebSocket connections for live price updates, 
+                    comprehensive user authentication, and robust financial transaction handling.
+                </p>
+                
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        <li style="margin-bottom: 0.3rem;">Order matching engine with price-time priority</li>
+                        <li style="margin-bottom: 0.3rem;">Real-time WebSocket price feeds</li>
+                        <li style="margin-bottom: 0.3rem;">High-frequency transaction processing</li>
+                    </ul>
+                </div>
+                
+                <div class="project-tech">
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">WebSockets</span>
+                    <span class="tech-tag">REST API</span>
+                    <span class="tech-tag">Redis</span>
+                </div>
+                
+                <div class="project-links">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-lock me-1"></i>Private Repository
+                    </span>
+                </div>
             </div>
+
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Medical AI Diagnostic System</h3>
+                        <span class="project-category">Academic</span>
+                    </div>
+                </div>
+                
+                <p class="project-description">
+                    MSc dissertation project developing convolutional neural networks for automated skin cancer detection. 
+                    Implemented and compared multiple CNN architectures including ResNet, DenseNet, and custom designs. 
+                    Achieved 15% improvement in diagnostic accuracy over baseline models through advanced data augmentation, 
+                    transfer learning, and ensemble methods.
+                </p>
+                
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        <li style="margin-bottom: 0.3rem;">15% improvement in diagnostic accuracy</li>
+                        <li style="margin-bottom: 0.3rem;">Multiple CNN architecture comparison</li>
+                        <li style="margin-bottom: 0.3rem;">FDA-compliant evaluation framework</li>
+                    </ul>
+                </div>
+                
+                <div class="project-tech">
+                    <span class="tech-tag">PyTorch</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">CNN</span>
+                    <span class="tech-tag">Medical AI</span>
+                    <span class="tech-tag">Transfer Learning</span>
+                </div>
+                
+                <div class="project-links">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-graduation-cap me-1"></i>Academic Research
+                    </span>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Holiday Cluedo PWA</h3>
+                        <span class="project-category">Personal</span>
+                    </div>
+                </div>
+                
+                <p class="project-description">
+                    Progressive Web Application implementing the classic Cluedo board game optimized for holiday entertainment. 
+                    Built with vanilla JavaScript for maximum performance, supporting 20+ concurrent users with real-time 
+                    game state synchronization. Implements Fisher-Yates shuffle algorithm for fair card distribution and 
+                    sophisticated collision detection for game piece movement.
+                </p>
+                
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        <li style="margin-bottom: 0.3rem;">20+ concurrent user support</li>
+                        <li style="margin-bottom: 0.3rem;">Offline gameplay capability</li>
+                        <li style="margin-bottom: 0.3rem;">Fisher-Yates shuffle algorithm</li>
+                    </ul>
+                </div>
+                
+                <div class="project-tech">
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">PWA</span>
+                    <span class="tech-tag">Service Workers</span>
+                    <span class="tech-tag">WebSockets</span>
+                    <span class="tech-tag">Local Storage</span>
+                </div>
+                
+                <div class="project-links">
+                    <a href="#" class="project-link">
+                        <i class="fab fa-github me-1"></i>View Code
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Portfolio Website</h3>
+                        <span class="project-category">Personal</span>
+                    </div>
+                </div>
+                
+                <p class="project-description">
+                    Professional portfolio website built with Django and modern web technologies. Features clean, professional 
+                    design with responsive layout, optimized performance with minimal dependencies, and modern web practices 
+                    including progressive enhancement and accessibility considerations.
+                </p>
+                
+                <div class="project-tech">
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">WhiteNoise</span>
+                </div>
+                
+                <div class="project-links">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-globe me-1"></i>You're viewing it!
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
-{% endif %}
 {% endblock %}

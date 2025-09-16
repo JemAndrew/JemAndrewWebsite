@@ -16,6 +16,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com', '.railway.app', '.r
 
 # Application definition - SIMPLIFIED
 INSTALLED_APPS = [
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'portfolio',
     'django_extensions',
@@ -40,6 +41,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.template.context_processors.static',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },

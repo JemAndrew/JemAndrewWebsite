@@ -1,5 +1,5 @@
-# portfolio/views.py - Simplified for single page portfolio
-from django.shortcuts import render
+# portfolio/views.py - Fixed for DOCX files
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404, FileResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -115,27 +115,6 @@ def education_view(request):
     
     return render(request, 'portfolio/education.html', context)
 
-def download_msc_dissertation(request):
-    file_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'MSc_Dissertation_James_Andrew.pdf')
-    if os.path.exists(file_path):
-        return FileResponse(
-            open(file_path, 'rb'),
-            content_type='application/pdf',
-            filename='MSc_Dissertation_James_Andrew.pdf'
-        )
-    raise Http404("Dissertation not found")
-
-def download_bsc_dissertation(request):
-    file_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'BSc_Dissertation_James_Andrew.pdf')
-    if os.path.exists(file_path):
-        return FileResponse(
-            open(file_path, 'rb'),
-            content_type='application/pdf',
-            filename='BSc_Dissertation_James_Andrew.pdf'
-        )
-    raise Http404("Dissertation not found")
-
-
 # PAGE 3: Personal Projects  
 def projects_view(request):
     """
@@ -162,7 +141,7 @@ def projects_view(request):
             project_skills[category] = skills
     
     context.update({
-        'all_projects': all_projects,
+        'projects': all_projects,  # Add this line
         'personal_projects': personal_projects,
         'academic_projects': academic_projects,
         'project_skills': project_skills,
@@ -173,44 +152,74 @@ def projects_view(request):
     
     return render(request, 'portfolio/projects.html', context)
 
-# Dissertation download handlers
+# FIXED DISSERTATION DOWNLOAD HANDLERS
 def download_msc_dissertation(request):
-    """Download MSc dissertation PDF"""
+    """Download MSc dissertation - handles both PDF and DOCX"""
     try:
-        # Path to your MSc dissertation file
-        file_path = os.path.join('static', 'documents', 'MSc_Dissertation_James_Andrew.pdf')
+        # Try PDF first, then DOCX
+        pdf_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'MSc_Dissertation_James_Andrew.pdf')
+        docx_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'MSc_Dissertation_James_Andrew.docx')
         
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as fh:
-                response = HttpResponse(fh.read(), content_type="application/pdf")
-                response['Content-Disposition'] = 'attachment; filename="MSc_Dissertation_James_Andrew.pdf"'
-                return response
+        if os.path.exists(pdf_path):
+            return FileResponse(
+                open(pdf_path, 'rb'),
+                content_type='application/pdf',
+                filename='MSc_Dissertation_James_Andrew.pdf'
+            )
+        elif os.path.exists(docx_path):
+            return FileResponse(
+                open(docx_path, 'rb'),
+                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                filename='MSc_Dissertation_James_Andrew.docx'
+            )
         else:
-            raise Http404("Dissertation not found")
+            # File not found - redirect without messages to avoid middleware error
+            logger.error("MSc dissertation file not found")
+            return HttpResponse(
+                "<h1>File Not Found</h1><p>The dissertation file is not available.</p>", 
+                status=404
+            )
             
     except Exception as e:
         logger.error(f"Error downloading MSc dissertation: {e}")
-        messages.error(request, "Sorry, the dissertation is currently unavailable.")
-        return redirect('portfolio:education')
+        return HttpResponse(
+            "<h1>Error</h1><p>Sorry, the dissertation is currently unavailable.</p>", 
+            status=500
+        )
 
 def download_bsc_dissertation(request):
-    """Download BSc dissertation PDF"""
+    """Download BSc dissertation - handles both PDF and DOCX"""
     try:
-        # Path to your BSc dissertation file  
-        file_path = os.path.join('static', 'documents', 'BSc_Dissertation_James_Andrew.pdf')
+        # Try PDF first, then DOCX
+        pdf_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'BSc_Dissertation_James_Andrew.pdf')
+        docx_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'BSc_Dissertation_James_Andrew.docx')
         
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as fh:
-                response = HttpResponse(fh.read(), content_type="application/pdf")
-                response['Content-Disposition'] = 'attachment; filename="BSc_Dissertation_James_Andrew.pdf"'
-                return response
+        if os.path.exists(pdf_path):
+            return FileResponse(
+                open(pdf_path, 'rb'),
+                content_type='application/pdf',
+                filename='BSc_Dissertation_James_Andrew.pdf'
+            )
+        elif os.path.exists(docx_path):
+            return FileResponse(
+                open(docx_path, 'rb'),
+                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                filename='BSc_Dissertation_James_Andrew.docx'
+            )
         else:
-            raise Http404("Dissertation not found")
+            # File not found - redirect without messages to avoid middleware error
+            logger.error("BSc dissertation file not found")
+            return HttpResponse(
+                "<h1>File Not Found</h1><p>The dissertation file is not available.</p>", 
+                status=404
+            )
             
     except Exception as e:
         logger.error(f"Error downloading BSc dissertation: {e}")
-        messages.error(request, "Sorry, the dissertation is currently unavailable.")
-        return redirect('portfolio:education')
+        return HttpResponse(
+            "<h1>Error</h1><p>Sorry, the dissertation is currently unavailable.</p>", 
+            status=500
+        )
 
 # GitHub API endpoint
 def github_api_view(request):
@@ -268,5 +277,3 @@ def api_skills_view(request):
             })
     
     return JsonResponse({'skills': skills_data})
-
-
