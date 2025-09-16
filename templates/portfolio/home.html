@@ -28,15 +28,17 @@
             </div>
         </div>
 
-        <!-- Professional Quote/Tagline -->
-        <div style="margin: 2rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.08); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
-            <blockquote style="font-style: italic; font-size: 1.1rem; line-height: 1.6; color: var(--text-gray); margin: 0;">
-                "Transforming biological insights into scalable software solutions, 
-                bridging the gap between scientific methodology and enterprise engineering."
-            </blockquote>
-            <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
-                — Software Engineer & Researcher
-            </div>
+   
+        <div class="social-links" style="justify-content: flex-start; margin: 2rem 0; gap: 1.5rem;">
+            <a href="{{ personal_info.linkedin_url|default:'https://www.linkedin.com/in/james-andrew-439771333/' }}" target="_blank" class="social-link" title="LinkedIn" style="font-size: 2rem;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="{{ personal_info.github_url|default:'https://github.com/JemAndrew' }}" target="_blank" class="social-link" title="GitHub" style="font-size: 2rem;">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="mailto:{{ personal_info.email|default:'andrewjem8@gmail.com' }}" class="social-link" title="Email" style="font-size: 2rem;">
+                <i class="fas fa-envelope"></i>
+            </a>
         </div>
     </div>
 

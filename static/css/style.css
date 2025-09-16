@@ -74,16 +74,16 @@ body {
     text-decoration: none;
 }
 
-/* CONSISTENT SPLIT SCREEN LAYOUT - PERFECT LEFT ALIGNMENT */
+/* CONSISTENT SPLIT SCREEN LAYOUT - TOP ALIGNED LIKE BRITTANY CHIANG */
 .main-container {
     display: grid;
-    grid-template-columns: 45% 55%;
+    grid-template-columns: 600px 1fr; /* Fixed width for left, flexible right */
     min-height: 100vh;
-    align-items: center;
+    align-items: start; /* Changed from center to start - aligns content to top */
     max-width: 1400px;
     margin: 0 auto;
     gap: 4rem;
-    padding: 0 2rem;
+    padding: 8rem 2rem 4rem;
 }
 
 .profile-side, .left-side {
@@ -91,11 +91,14 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Perfect left alignment */
+    align-items: flex-start;
+    width: 100%; /* Ensure it uses full allocated width */
+    box-sizing: border-box;
 }
 
 .content-side, .right-side {
     padding: 2rem 0 2rem 2rem;
+    min-height: 100vh; /* Ensure full height */
 }
 
 /* Left side text alignment */
@@ -231,10 +234,9 @@ body {
     51%, 100% { opacity: 0; }
 }
 
-/* REMOVE ALL CARD BOXES - CLEAN FLOWING DESIGN */
+/* REMOVE ALL CARD BOXES EXCEPT PROJECT CARDS - CLEAN FLOWING DESIGN */
 .card, 
 .experience-item, 
-.project-card,
 .github-repo {
     background: none !important;
     border: none !important;
@@ -628,13 +630,184 @@ body {
     font-weight: 300;
 }
 
-/* PROJECTS PAGE - Clean List */
+/* ============================================ */
+/* PROJECT CARDS GRID - NEW DESIGN */
+/* ============================================ */
+
+/* Hide old projects layout */
 .projects-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+    display: none;
 }
 
+/* Projects Card Grid */
+.projects-card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-top: 1rem;
+    width: 100%;
+}
+
+.project-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.project-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced project card header */
+.project-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.project-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-white);
+    line-height: 1.3;
+    margin: 0;
+    flex: 1;
+}
+
+.project-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.project-category-badge {
+    padding: 0.3rem 0.8rem;
+    background: rgba(220, 38, 38, 0.2);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.project-year {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+/* Project card content */
+.project-card-description {
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin: 1rem 0 1.5rem 0;
+    font-weight: 300;
+    font-size: 0.95rem;
+}
+
+.project-card-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 1.5rem 0;
+}
+
+.tech-badge {
+    padding: 0.25rem 0.6rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 400;
+    transition: all 0.2s ease;
+}
+
+.tech-badge:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Project actions */
+.project-card-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.project-action-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.3px;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.project-action-btn.primary {
+    background: rgba(220, 38, 38, 0.2);
+    border-color: rgba(220, 38, 38, 0.4);
+    color: var(--text-white);
+}
+
+.project-action-btn.primary:hover {
+    background: rgba(220, 38, 38, 0.3);
+    border-color: rgba(220, 38, 38, 0.6);
+    color: var(--text-white);
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+}
+
+.project-action-btn.secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: var(--text-white);
+}
+
+.project-action-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-white);
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+}
+
+.project-private-badge {
+    padding: 0.6rem 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Old project styles that still need to work for fallback */
 .project-item {
     margin-bottom: 2rem;
 }
@@ -674,15 +847,6 @@ body {
     flex-wrap: wrap;
     gap: 0.4rem;
     margin: 1rem 0;
-}
-
-.tech-tag {
-    padding: 0.2rem 0.5rem;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--text-light);
-    font-weight: 400;
 }
 
 .project-links {
@@ -802,14 +966,63 @@ body {
     transform: translateY(-2px);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Responsive design improvements */
+@media (max-width: 1200px) {
     .main-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 4rem 1rem 1rem;
+        grid-template-columns: 500px 1fr; /* Slightly smaller fixed width */
+        gap: 3rem;
     }
+}
 
+@media (max-width: 968px) {
+    .main-container {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 2rem;
+        padding: 6rem 1rem 2rem;
+        align-items: flex-start;
+    }
+    
+    .left-side, .profile-side,
+    .right-side, .content-side {
+        padding: 1rem;
+        position: static;
+    }
+    
+    .projects-card-grid {
+        gap: 1.5rem;
+    }
+    
+    .project-card {
+        padding: 1.5rem;
+    }
+    
+    .project-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .project-card-meta {
+        align-self: flex-start;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .project-card-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .project-action-btn,
+    .project-private-badge {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
     .profile-side, 
     .content-side,
     .left-side,
@@ -846,31 +1059,51 @@ body {
     }
 
     .dissertation-downloads {
-            display: flex;
-            flex-direction: column;
-            gap: 5rem;
-            align-items: flex-start; 
-            justify-content: center;
-            min-height: 70vh;
-            margin: 3rem 0;
-            padding: 2rem 0;
-            margin-left: 0; 
-            padding-left: 0; 
+        display: flex;
+        flex-direction: column;
+        gap: 5rem;
+        align-items: flex-start; 
+        justify-content: center;
+        min-height: 70vh;
+        margin: 3rem 0;
+        padding: 2rem 0;
+        margin-left: 0; 
+        padding-left: 0; 
     }
 
     .dissertation-card {
-            position: relative;
-            width: 280px;
-            height: 360px;
-            cursor: pointer;
-            margin: 1rem 0;
-            margin-left: 0; 
-            perspective: 1000px;
-            align-self: flex-start; 
+        position: relative;
+        width: 280px;
+        height: 360px;
+        cursor: pointer;
+        margin: 1rem 0;
+        margin-left: 0; 
+        perspective: 1000px;
+        align-self: flex-start; 
     }
 
     .cta-section {
         justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 4rem 0.5rem 1rem;
+    }
+    
+    .project-card {
+        padding: 1rem;
+        margin: 0 0.5rem;
+    }
+    
+    .project-card-title {
+        font-size: 1.1rem;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
     }
 }
 

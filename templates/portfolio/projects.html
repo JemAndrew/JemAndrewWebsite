@@ -6,11 +6,11 @@
 
 {% block content %}
 <div class="main-container">
-    <!-- Left Side - Project Overview -->
+    <!-- Left Side - Projects Header & Overview -->
     <div class="left-side">
         <h1 class="page-title">Projects</h1>
         <p class="content-intro">
-            Software engineering projects showcasing technical expertise and problem-solving abilities
+            Software engineering projects showcasing technical expertise and problem-solving abilities across enterprise applications, research, and personal development.
         </p>
 
         <div class="achievements-grid" style="margin-top: 3rem;">
@@ -47,199 +47,161 @@
         </div>
     </div>
 
-    <!-- Right Side - Project List -->
+    <!-- Right Side - Project Cards Grid -->
     <div class="right-side">
-        <div class="projects-grid">
+        <div class="projects-card-grid">
             {% for project in projects %}
-            <div class="project-item">
-                <div class="project-header">
-                    <div>
-                        <h3 class="project-title">{{ project.title }}</h3>
-                        <span class="project-category">{{ project.get_category_display }}</span>
+            <div class="project-card">
+                <div class="project-card-header">
+                    <h3 class="project-card-title">{{ project.title }}</h3>
+                    <div class="project-card-meta">
+                        <span class="project-category-badge">{{ project.get_category_display }}</span>
+                        <span class="project-year">{{ project.created_date.year|default:"2024" }}</span>
                     </div>
                 </div>
                 
-                <p class="project-description">{{ project.detailed_description|default:project.short_description }}</p>
+                <p class="project-card-description">
+                    {{ project.short_description }}
+                </p>
                 
-                {% if project.key_features %}
-                <div style="margin: 1.5rem 0;">
-                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
-                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-                        {% for feature in project.key_features|slice:":3" %}
-                        <li style="margin-bottom: 0.3rem;">{{ feature }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-                
-                <div class="project-tech">
-                    {% for tech in project.technology_list %}
-                        <span class="tech-tag">{{ tech }}</span>
+                <div class="project-card-tech">
+                    {% for tech in project.technology_list|slice:":4" %}
+                        <span class="tech-badge">{{ tech }}</span>
                     {% endfor %}
                 </div>
                 
-                <div class="project-links">
+                <div class="project-card-actions">
                     {% if project.github_url %}
-                    <a href="{{ project.github_url }}" target="_blank" class="project-link">
-                        <i class="fab fa-github me-1"></i>View Code
+                    <a href="{{ project.github_url }}" target="_blank" class="project-action-btn primary">
+                        <i class="fab fa-github"></i>
+                        View Code
                     </a>
                     {% endif %}
                     {% if project.live_demo_url %}
-                    <a href="{{ project.live_demo_url }}" target="_blank" class="project-link">
-                        <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                    </a>
+                    <a href="https://familycluedo.netlify.app" target="_blank" class="project-action-btn secondary">
+                        <i class="fas fa-external-link-alt"></i>
+                        Live Demo
                     </a>
                     {% endif %}
                     {% if not project.github_url and not project.live_demo_url %}
-                    <span style="color: var(--text-light); font-size: 0.85rem;">
-                        <i class="fas fa-lock me-1"></i>Private Repository
+                    <span class="project-private-badge">
+                        <i class="fas fa-lock"></i>
+                        Private Repository
                     </span>
                     {% endif %}
                 </div>
             </div>
             {% empty %}
-            <!-- Fallback projects if none exist -->
-            <div class="project-item">
-                <div class="project-header">
-                    <div>
-                        <h3 class="project-title">Cryptocurrency Exchange Platform</h3>
-                        <span class="project-category">Personal</span>
+            <!-- Fallback projects if none exist in database -->
+            <div class="project-card">
+                <div class="project-card-header">
+                    <h3 class="project-card-title">Cryptocurrency Exchange Platform</h3>
+                    <div class="project-card-meta">
+                        <span class="project-category-badge">Personal</span>
+                        <span class="project-year">2024</span>
                     </div>
                 </div>
                 
-                <p class="project-description">
-                    Built a complete cryptocurrency exchange platform from scratch with a focus on stablecoin trading. 
-                    Implemented a custom order matching engine using price-time priority algorithms capable of processing 
-                    over 1,000 orders per second. The system features real-time WebSocket connections for live price updates, 
-                    comprehensive user authentication, and robust financial transaction handling.
+                <p class="project-card-description">
+                    Custom order matching engine handling 1,000+ orders/second with Django and PostgreSQL, focused on stablecoin trading with real-time WebSocket connections.
                 </p>
                 
-                <div style="margin: 1.5rem 0;">
-                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
-                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-                        <li style="margin-bottom: 0.3rem;">Order matching engine with price-time priority</li>
-                        <li style="margin-bottom: 0.3rem;">Real-time WebSocket price feeds</li>
-                        <li style="margin-bottom: 0.3rem;">High-frequency transaction processing</li>
-                    </ul>
+                <div class="project-card-tech">
+                    <span class="tech-badge">Django</span>
+                    <span class="tech-badge">PostgreSQL</span>
+                    <span class="tech-badge">WebSockets</span>
+                    <span class="tech-badge">REST API</span>
                 </div>
                 
-                <div class="project-tech">
-                    <span class="tech-tag">Django</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                    <span class="tech-tag">WebSockets</span>
-                    <span class="tech-tag">REST API</span>
-                    <span class="tech-tag">Redis</span>
-                </div>
-                
-                <div class="project-links">
-                    <span style="color: var(--text-light); font-size: 0.85rem;">
-                        <i class="fas fa-lock me-1"></i>Private Repository
+                <div class="project-card-actions">
+                    <span class="project-private-badge">
+                        <i class="fas fa-lock"></i>
+                        Private Repository
                     </span>
                 </div>
             </div>
 
-            <div class="project-item">
-                <div class="project-header">
-                    <div>
-                        <h3 class="project-title">Medical AI Diagnostic System</h3>
-                        <span class="project-category">Academic</span>
+            <div class="project-card">
+                <div class="project-card-header">
+                    <h3 class="project-card-title">Medical AI Diagnostic System</h3>
+                    <div class="project-card-meta">
+                        <span class="project-category-badge">Academic</span>
+                        <span class="project-year">2023</span>
                     </div>
                 </div>
                 
-                <p class="project-description">
-                    MSc dissertation project developing convolutional neural networks for automated skin cancer detection. 
-                    Implemented and compared multiple CNN architectures including ResNet, DenseNet, and custom designs. 
-                    Achieved 15% improvement in diagnostic accuracy over baseline models through advanced data augmentation, 
-                    transfer learning, and ensemble methods.
+                <p class="project-card-description">
+                    CNN architectures for automated skin cancer detection achieving 15% diagnostic improvements over baseline models using PyTorch and advanced data augmentation.
                 </p>
                 
-                <div style="margin: 1.5rem 0;">
-                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
-                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-                        <li style="margin-bottom: 0.3rem;">15% improvement in diagnostic accuracy</li>
-                        <li style="margin-bottom: 0.3rem;">Multiple CNN architecture comparison</li>
-                        <li style="margin-bottom: 0.3rem;">FDA-compliant evaluation framework</li>
-                    </ul>
+                <div class="project-card-tech">
+                    <span class="tech-badge">PyTorch</span>
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">CNN</span>
+                    <span class="tech-badge">Medical AI</span>
                 </div>
                 
-                <div class="project-tech">
-                    <span class="tech-tag">PyTorch</span>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">CNN</span>
-                    <span class="tech-tag">Medical AI</span>
-                    <span class="tech-tag">Transfer Learning</span>
-                </div>
-                
-                <div class="project-links">
-                    <span style="color: var(--text-light); font-size: 0.85rem;">
-                        <i class="fas fa-graduation-cap me-1"></i>Academic Research
+                <div class="project-card-actions">
+                    <span class="project-private-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                        Academic Research
                     </span>
                 </div>
             </div>
 
-            <div class="project-item">
-                <div class="project-header">
-                    <div>
-                        <h3 class="project-title">Holiday Cluedo PWA</h3>
-                        <span class="project-category">Personal</span>
+            <div class="project-card">
+                <div class="project-card-header">
+                    <h3 class="project-card-title">Holiday Cluedo PWA</h3>
+                    <div class="project-card-meta">
+                        <span class="project-category-badge">Personal</span>
+                        <span class="project-year">2023</span>
                     </div>
                 </div>
                 
-                <p class="project-description">
-                    Progressive Web Application implementing the classic Cluedo board game optimized for holiday entertainment. 
-                    Built with vanilla JavaScript for maximum performance, supporting 20+ concurrent users with real-time 
-                    game state synchronization. Implements Fisher-Yates shuffle algorithm for fair card distribution and 
-                    sophisticated collision detection for game piece movement.
+                <p class="project-card-description">
+                    High-performance browser game supporting 20+ concurrent users with offline capability, Fisher-Yates shuffle algorithm, and real-time game synchronization.
                 </p>
                 
-                <div style="margin: 1.5rem 0;">
-                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">Key Features:</h5>
-                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-                        <li style="margin-bottom: 0.3rem;">20+ concurrent user support</li>
-                        <li style="margin-bottom: 0.3rem;">Offline gameplay capability</li>
-                        <li style="margin-bottom: 0.3rem;">Fisher-Yates shuffle algorithm</li>
-                    </ul>
+                <div class="project-card-tech">
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">PWA</span>
+                    <span class="tech-badge">Service Workers</span>
+                    <span class="tech-badge">WebSockets</span>
                 </div>
                 
-                <div class="project-tech">
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">PWA</span>
-                    <span class="tech-tag">Service Workers</span>
-                    <span class="tech-tag">WebSockets</span>
-                    <span class="tech-tag">Local Storage</span>
-                </div>
-                
-                <div class="project-links">
-                    <a href="#" class="project-link">
-                        <i class="fab fa-github me-1"></i>View Code
+                <div class="project-card-actions">
+                    <a href="https://github.com/JemAndrew/holiday-cluedo" target="_blank" class="project-action-btn primary">
+                        <i class="fab fa-github"></i>
+                        View Code
                     </a>
                 </div>
             </div>
 
-            <div class="project-item">
-                <div class="project-header">
-                    <div>
-                        <h3 class="project-title">Portfolio Website</h3>
-                        <span class="project-category">Personal</span>
+            <div class="project-card">
+                <div class="project-card-header">
+                    <h3 class="project-card-title">Portfolio Website</h3>
+                    <div class="project-card-meta">
+                        <span class="project-category-badge">Personal</span>
+                        <span class="project-year">2024</span>
                     </div>
                 </div>
                 
-                <p class="project-description">
-                    Professional portfolio website built with Django and modern web technologies. Features clean, professional 
-                    design with responsive layout, optimized performance with minimal dependencies, and modern web practices 
-                    including progressive enhancement and accessibility considerations.
+                <p class="project-card-description">
+                    Professional Django portfolio with modern design, optimized performance, responsive layout, and GitHub API integration for dynamic content.
                 </p>
                 
-                <div class="project-tech">
-                    <span class="tech-tag">Django</span>
-                    <span class="tech-tag">CSS3</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">HTML5</span>
-                    <span class="tech-tag">WhiteNoise</span>
+                <div class="project-card-tech">
+                    <span class="tech-badge">Django</span>
+                    <span class="tech-badge">CSS3</span>
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">GitHub API</span>
                 </div>
                 
-                <div class="project-links">
-                    <span style="color: var(--text-light); font-size: 0.85rem;">
-                        <i class="fas fa-globe me-1"></i>You're viewing it!
+                <div class="project-card-actions">
+                    <span class="project-private-badge">
+                        <i class="fas fa-globe"></i>
+                        You're viewing it!
                     </span>
                 </div>
             </div>
@@ -247,4 +209,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}

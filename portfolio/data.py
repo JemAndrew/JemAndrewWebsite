@@ -139,7 +139,7 @@ PROJECTS = [
         'status': 'completed',
         'featured': True,
         'github_url': 'https://github.com/JemAndrew/holiday-cluedo',
-        'live_demo_url': 'https://your-cluedo-demo.com',
+        'live_demo_url': 'https://familycluedo.netlify.app',
         'created_date': date(2023, 12, 1),
         'key_features': [
             '20+ concurrent user support',
