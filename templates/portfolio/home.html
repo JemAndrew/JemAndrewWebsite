@@ -1,7 +1,7 @@
 {% extends 'portfolio/base.html' %}
 {% load static %}
 
-{% block title %}Professional Overview - {{ personal_info.name|default:"James Andrew" }}{% endblock %}
+{% block title %}Jem Andrew - Software Engineer{% endblock %}
 {% block page_name %}home{% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
     <!-- Left Side - Professional Header -->
     <div class="profile-side">
         <div class="professional-header">
-            <h1 class="name-title">{{ personal_info.name|default:"James Andrew" }}</h1>
+            <h1 class="name-title">{{ personal_info.name|default:"Jem Andrew" }}</h1>
             <div class="typewriter-text">
                 <span id="typewriter-output"></span>
                 <span class="typewriter-cursor"></span>
@@ -28,32 +28,19 @@
             </div>
         </div>
 
-   
-        <div class="social-links" style="justify-content: flex-start; margin: 2rem 0; gap: 1.5rem;">
-            <a href="{{ personal_info.linkedin_url|default:'https://www.linkedin.com/in/james-andrew-439771333/' }}" target="_blank" class="social-link" title="LinkedIn" style="font-size: 2rem;">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="{{ personal_info.github_url|default:'https://github.com/JemAndrew' }}" target="_blank" class="social-link" title="GitHub" style="font-size: 2rem;">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="mailto:{{ personal_info.email|default:'andrewjem8@gmail.com' }}" class="social-link" title="Email" style="font-size: 2rem;">
-                <i class="fas fa-envelope"></i>
-            </a>
+        <!-- Personal Bio Section -->
+        <div style="margin: 2rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.08); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
+            <p style="font-size: 1.1rem; line-height: 1.6; color: var(--text-gray); margin: 0;">
+                {{ personal_info.bio }}
+            </p>
         </div>
     </div>
 
     <!-- Right Side - Content -->
     <div class="content-side">
+        <!-- Journey Story -->
         <p class="content-intro">
-            I'm a software engineer passionate about building <span class="highlight">scalable enterprise solutions</span>. 
-            Currently developing construction management SaaS platforms at <span class="highlight">BuildChorus</span>, 
-            specializing in Django, PostgreSQL, and optimization algorithms.
-        </p>
-
-        <p class="content-intro">
-            My unique journey from <span class="highlight">biological sciences to computer science</span> gives me a 
-            distinctive perspective on data analysis and systematic problem-solving. MSc Computer Science graduate 
-            with research experience in <span class="highlight">medical AI and CNN architectures</span>.
+            {{ personal_info.bio_extended }}
         </p>
 
         <div class="achievements-grid">
@@ -62,16 +49,16 @@
                 <span class="achievement-label">Years Experience</span>
             </div>
             <div class="achievement-item">
-                <span class="achievement-number">15%</span>
-                <span class="achievement-label">AI Accuracy Improvement</span>
+                <span class="achievement-number">84%</span>
+                <span class="achievement-label">Top Module Score</span>
             </div>
             <div class="achievement-item">
-                <span class="achievement-number">{{ projects|length|default:"6" }}</span>
+                <span class="achievement-number">{{ projects|length|default:"5" }}</span>
                 <span class="achievement-label">Major Projects</span>
             </div>
             <div class="achievement-item">
-                <span class="achievement-number">MSc</span>
-                <span class="achievement-label">Computer Science</span>
+                <span class="achievement-number">15%</span>
+                <span class="achievement-label">AI Improvement</span>
             </div>
         </div>
 
@@ -88,12 +75,20 @@
                 <p class="experience-description">
                     {{ current_position.description }}
                 </p>
+                {% if current_position.responsibilities %}
+                <ul style="color: var(--text-gray); font-size: 0.95rem; margin-top: 1rem; padding-left: 1.5rem; line-height: 1.6;">
+                    {% for responsibility in current_position.responsibilities %}
+                    <li style="margin-bottom: 0.5rem;">{{ responsibility }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 <div class="skills-tags">
-                    {% for skill in current_position.skills_list %}
+                    {% for skill in current_position.skills_list|slice:":6" %}
                         <span class="skill-tag">{{ skill }}</span>
                     {% endfor %}
                 </div>
             {% else %}
+                <!-- Fallback content if no position data -->
                 <div class="experience-header">
                     <div class="company-logo">🏗️</div>
                     <div>
@@ -102,15 +97,19 @@
                     </div>
                 </div>
                 <p class="experience-description">
-                    Engineering enterprise-grade SaaS construction management platform serving the £10+ billion 
-                    construction software market. Developing user configurability features and optimization algorithms 
-                    using Django 5.0.6, PostgreSQL 17, and Google OR-Tools.
+                    Working at BuildChorus where I develop full-stack features for our construction management SaaS platform.
                 </p>
+                <ul style="color: var(--text-gray); font-size: 0.95rem; margin-top: 1rem; padding-left: 1.5rem; line-height: 1.6;">
+                    <li style="margin-bottom: 0.5rem;">Building user configurability features for material procurement strategies</li>
+                    <li style="margin-bottom: 0.5rem;">Deploying containerised applications on Google Cloud Platform using Docker</li>
+                    <li style="margin-bottom: 0.5rem;">Optimising PostgreSQL databases for complex construction data</li>
+                    <li style="margin-bottom: 0.5rem;">Collaborating through GitLab workflows and Jira sprint planning</li>
+                </ul>
                 <div class="skills-tags">
                     <span class="skill-tag">Django 5.0.6</span>
                     <span class="skill-tag">PostgreSQL 17</span>
                     <span class="skill-tag">Google OR-Tools</span>
-                    <span class="skill-tag">Enterprise SaaS</span>
+                    <span class="skill-tag">Docker</span>
                 </div>
             {% endif %}
         </div>

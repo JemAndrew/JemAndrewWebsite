@@ -1,4 +1,4 @@
-# portfolio/views.py - Fixed for DOCX files
+# portfolio/views.py - Fixed for projects display
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404, FileResponse
 from django.views.decorators.http import require_http_methods
@@ -61,6 +61,7 @@ def home_view(request):
     # Get data for home page
     current_position = data.get_current_experience()
     core_skills = data.get_skills_by_category()
+    all_projects = data.get_all_projects()  # Add this
     github_data = get_github_data()
     
     # Get just the highlights for home page
@@ -71,6 +72,7 @@ def home_view(request):
     context.update({
         'current_position': current_position,
         'featured_skills': featured_skills,
+        'projects': all_projects,  # Add this for the counter
         'form': form,
         'page_title': 'Home - Professional Overview',
         'meta_description': 'James Andrew - Software Engineer at BuildChorus specializing in Django, enterprise SaaS platforms, and full-stack development.',
@@ -123,7 +125,7 @@ def projects_view(request):
     """
     context = get_site_context()
     
-    # Get all projects and GitHub data
+    # Get all projects
     all_projects = data.get_all_projects()
     github_data = get_github_data()
     
@@ -141,7 +143,7 @@ def projects_view(request):
             project_skills[category] = skills
     
     context.update({
-        'projects': all_projects,  
+        'projects': all_projects,  # THIS IS THE KEY LINE - pass all projects
         'personal_projects': personal_projects,
         'academic_projects': academic_projects,
         'project_skills': project_skills,

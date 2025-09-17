@@ -1,21 +1,22 @@
 {% extends 'portfolio/base.html' %}
 {% load static %}
 
-{% block title %}Projects - {{ personal_info.name|default:"James Andrew" }}{% endblock %}
+{% block title %}Projects - {{ personal_info.name|default:"Jem Andrew" }}{% endblock %}
 {% block page_name %}projects{% endblock %}
 
 {% block content %}
 <div class="main-container">
-    <!-- Left Side - Projects Header & Overview -->
+    <!-- Left Side - Project Overview -->
     <div class="left-side">
-        <h1 class="page-title">Projects</h1>
+        <h1 class="page-title">My Projects</h1>
         <p class="content-intro">
-            Software engineering projects showcasing technical expertise and problem-solving abilities across enterprise applications, research, and personal development.
+            Projects ranging from academic to personal where I implement my own ideas or explore concepts from others. 
+            Each one is a chance to test myself and write reproducible clean code that's efficient and logical.
         </p>
 
         <div class="achievements-grid" style="margin-top: 3rem;">
             <div class="achievement-item">
-                <span class="achievement-number">{{ projects|length|default:"4" }}</span>
+                <span class="achievement-number">{{ projects|length|default:"5" }}</span>
                 <span class="achievement-label">Total Projects</span>
             </div>
             <div class="achievement-item">
@@ -27,179 +28,276 @@
                 <span class="achievement-label">Concurrent Users</span>
             </div>
             <div class="achievement-item">
-                <span class="achievement-number">15%</span>
-                <span class="achievement-label">AI Improvement</span>
+                <span class="achievement-number">85%</span>
+                <span class="achievement-label">Team Project Grade</span>
             </div>
         </div>
 
         <div style="margin-top: 3rem;">
-            <h3 style="font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; color: var(--text-white);">Featured Technologies</h3>
+            <h3 style="font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; color: var(--text-white);">Technologies I Work With</h3>
             <div class="skills-tags">
                 <span class="skill-tag">Django</span>
                 <span class="skill-tag">PostgreSQL</span>
                 <span class="skill-tag">PyTorch</span>
                 <span class="skill-tag">JavaScript</span>
                 <span class="skill-tag">WebSockets</span>
-                <span class="skill-tag">PWA</span>
-                <span class="skill-tag">CNN</span>
-                <span class="skill-tag">REST API</span>
+                <span class="skill-tag">Flask</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">MongoDB</span>
             </div>
         </div>
     </div>
 
-    <!-- Right Side - Project Cards Grid -->
+    <!-- Right Side - Project List -->
     <div class="right-side">
-        <div class="projects-card-grid">
+        <div class="projects-grid">
+            <!-- Debug: Show project count -->
+            {% if not projects %}
+                <p style="color: white;">No projects found. Check data.py</p>
+            {% endif %}
+            <style>
+            .project-item {
+                margin-bottom: 3rem !important;
+                padding-bottom: 2rem !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            </style>
             {% for project in projects %}
-            <div class="project-card">
-                <div class="project-card-header">
-                    <h3 class="project-card-title">{{ project.title }}</h3>
-                    <div class="project-card-meta">
-                        <span class="project-category-badge">{{ project.get_category_display }}</span>
-                        <span class="project-year">{{ project.created_date.year|default:"2024" }}</span>
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <span class="project-category">{{ project.get_category_display }}</span>
                     </div>
                 </div>
                 
-                <p class="project-card-description">
-                    {{ project.short_description }}
-                </p>
+                <p class="project-description">{{ project.detailed_description }}</p>
                 
-                <div class="project-card-tech">
-                    {% for tech in project.technology_list|slice:":4" %}
-                        <span class="tech-badge">{{ tech }}</span>
+                {% if project.key_features %}
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">What I Built:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        {% for feature in project.key_features %}
+                        <li style="margin-bottom: 0.3rem;">{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <div class="project-tech">
+                    {% for tech in project.technology_list %}
+                        <span class="tech-tag">{{ tech }}</span>
                     {% endfor %}
                 </div>
                 
-                <div class="project-card-actions">
+                <div class="project-links">
                     {% if project.github_url %}
-                    <a href="{{ project.github_url }}" target="_blank" class="project-action-btn primary">
-                        <i class="fab fa-github"></i>
-                        View Code
+                    <a href="{{ project.github_url }}" target="_blank" class="project-link">
+                        <i class="fab fa-github me-1"></i>View Code
                     </a>
                     {% endif %}
                     {% if project.live_demo_url %}
-                    <a href="{{ project.live_demo_url }}" target="_blank" class="project-action-btn secondary">
-                        <i class="fas fa-external-link-alt"></i>
-                        Live Demo
+                    <a href="{{ project.live_demo_url }}" target="_blank" class="project-link">
+                        <i class="fas fa-external-link-alt me-1"></i>Live Demo
                     </a>
                     {% endif %}
                     {% if not project.github_url and not project.live_demo_url %}
-                    <span class="project-private-badge">
-                        <i class="fas fa-lock"></i>
-                        Private Repository
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        {% if project.category == "academic" %}
+                        <i class="fas fa-graduation-cap me-1"></i>Academic Project
+                        {% else %}
+                        <i class="fas fa-lock me-1"></i>Private Repository
+                        {% endif %}
                     </span>
                     {% endif %}
                 </div>
             </div>
             {% empty %}
-            <div class="project-card">
-                <div class="project-card-header">
-                    <h3 class="project-card-title">Cryptocurrency Exchange Platform</h3>
-                    <div class="project-card-meta">
-                        <span class="project-category-badge">Personal</span>
-                        <span class="project-year">2024</span>
+            <!-- Fallback projects -->
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Cryptocurrency Exchange Platform</h3>
+                        <span class="project-category">Personal</span>
                     </div>
                 </div>
                 
-                <p class="project-card-description">
-                    Custom order matching engine handling 1,000+ orders/second with Django and PostgreSQL, focused on stablecoin trading with real-time WebSocket connections.
+                <p class="project-description">
+                    Built a cryptocurrency exchange from scratch focused on stablecoin trading. 
+                    The core is a custom order matching engine using price-time priority that handles 
+                    over 1000 orders per second. Real-time WebSocket connections keep prices live and 
+                    the database schema carefully manages relationships between orders trades and wallets. 
+                    Edge cases like partial fills and identical price orders are all handled properly.
                 </p>
                 
-                <div class="project-card-tech">
-                    <span class="tech-badge">Django</span>
-                    <span class="tech-badge">PostgreSQL</span>
-                    <span class="tech-badge">WebSockets</span>
-                    <span class="tech-badge">REST API</span>
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">What I Built:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        <li style="margin-bottom: 0.3rem;">Order matching engine with price-time priority</li>
+                        <li style="margin-bottom: 0.3rem;">Real-time WebSocket price feeds</li>
+                        <li style="margin-bottom: 0.3rem;">High-frequency transaction processing</li>
+                    </ul>
                 </div>
                 
-                <div class="project-card-actions">
-                    <span class="project-private-badge">
-                        <i class="fas fa-lock"></i>
-                        Private Repository
+                <div class="project-tech">
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">WebSockets</span>
+                    <span class="tech-tag">REST API</span>
+                </div>
+                
+                <div class="project-links">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-lock me-1"></i>Private Repository
                     </span>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-card-header">
-                    <h3 class="project-card-title">Medical AI Diagnostic System</h3>
-                    <div class="project-card-meta">
-                        <span class="project-category-badge">Academic</span>
-                        <span class="project-year">2023</span>
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Medical AI Diagnostic System</h3>
+                        <span class="project-category">Academic</span>
                     </div>
                 </div>
                 
-                <p class="project-card-description">
-                    CNN architectures for automated skin cancer detection achieving 15% diagnostic improvements over baseline models using PyTorch and advanced data augmentation.
+                <p class="project-description">
+                    My MSc dissertation project where I developed CNNs for automated skin cancer detection. 
+                    I compared multiple architectures including ResNet DenseNet and custom designs. 
+                    Through advanced data augmentation and ensemble methods I achieved 15% better accuracy 
+                    than baseline models. The evaluation framework follows FDA compliance guidelines which 
+                    was crucial for potential clinical application.
                 </p>
                 
-                <div class="project-card-tech">
-                    <span class="tech-badge">PyTorch</span>
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">CNN</span>
-                    <span class="tech-badge">Medical AI</span>
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">What I Built:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        <li style="margin-bottom: 0.3rem;">15% improvement in diagnostic accuracy</li>
+                        <li style="margin-bottom: 0.3rem;">Multiple CNN architecture comparison</li>
+                        <li style="margin-bottom: 0.3rem;">FDA-compliant evaluation framework</li>
+                    </ul>
                 </div>
                 
-                <div class="project-card-actions">
-                    <a href="https://github.com/JemAndrew/Skin-cancer-eval" target="_blank" class="project-action-btn primary">
-                        <i class="fab fa-github"></i>
-                        View Code
+                <div class="project-tech">
+                    <span class="tech-tag">PyTorch</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">CNN</span>
+                    <span class="tech-tag">Medical AI</span>
+                </div>
+                
+                <div class="project-links">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-graduation-cap me-1"></i>Academic Research
+                    </span>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Holiday Cluedo PWA</h3>
+                        <span class="project-category">Personal</span>
+                    </div>
+                </div>
+                
+                <p class="project-description">
+                    Built a Progressive Web App version of Cluedo optimised for holiday entertainment. 
+                    Written in vanilla JavaScript for maximum performance and supports 20+ concurrent users. 
+                    The Fisher-Yates shuffle algorithm ensures fair card distribution and collision detection 
+                    handles game piece movement. Service workers enable offline play so the game works without 
+                    internet connection.
+                </p>
+                
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">What I Built:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        <li style="margin-bottom: 0.3rem;">20+ concurrent user support</li>
+                        <li style="margin-bottom: 0.3rem;">Offline gameplay capability</li>
+                        <li style="margin-bottom: 0.3rem;">Fisher-Yates shuffle algorithm for fair play</li>
+                    </ul>
+                </div>
+                
+                <div class="project-tech">
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">PWA</span>
+                    <span class="tech-tag">Service Workers</span>
+                    <span class="tech-tag">WebSockets</span>
+                </div>
+                
+                <div class="project-links">
+                    <a href="https://github.com/JemAndrew/holiday-cluedo" class="project-link">
+                        <i class="fab fa-github me-1"></i>View Code
                     </a>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-card-header">
-                    <h3 class="project-card-title">Holiday Cluedo PWA</h3>
-                    <div class="project-card-meta">
-                        <span class="project-category-badge">Personal</span>
-                        <span class="project-year">2023</span>
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Bike Route Planning Application</h3>
+                        <span class="project-category">Academic</span>
                     </div>
                 </div>
                 
-                <p class="project-card-description">
-                    High-performance browser game supporting 20+ concurrent users with offline capability, Fisher-Yates shuffle algorithm, and real-time game synchronization.
+                <p class="project-description">
+                    Collaborated in a 5-person team to build a cycling route application that scored 85%. 
+                    I developed the REST API endpoints for user authentication and route management. 
+                    We had to migrate from Google Places to HERE Maps API when Google deprecated theirs. 
+                    The stack uses React frontend with Flask backend and MongoDB for data storage. 
+                    We followed agile methodology with proper sprint planning and Git version control.
                 </p>
                 
-                <div class="project-card-tech">
-                    <span class="tech-badge">JavaScript</span>
-                    <span class="tech-badge">PWA</span>
-                    <span class="tech-badge">Service Workers</span>
-                    <span class="tech-badge">WebSockets</span>
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 500;">What I Built:</h5>
+                    <ul style="color: var(--text-gray); font-size: 0.9rem; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
+                        <li style="margin-bottom: 0.3rem;">REST API for authentication and routes</li>
+                        <li style="margin-bottom: 0.3rem;">Integration with HERE Maps API</li>
+                        <li style="margin-bottom: 0.3rem;">Agile team collaboration</li>
+                    </ul>
                 </div>
                 
-                <div class="project-card-actions">
-                    <a href="https://github.com/JemAndrew/holiday_cluedo" target="_blank" class="project-action-btn primary">
-                        <i class="fab fa-github"></i>
-                        View Code
-                    </a>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Flask</span>
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">MongoDB</span>
+                </div>
+                
+                <div class="project-links">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-graduation-cap me-1"></i>Team Project - Grade: 85%
+                    </span>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-card-header">
-                    <h3 class="project-card-title">Portfolio Website</h3>
-                    <div class="project-card-meta">
-                        <span class="project-category-badge">Personal</span>
-                        <span class="project-year">2024</span>
+            <div class="project-item">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Portfolio Website</h3>
+                        <span class="project-category">Personal</span>
                     </div>
                 </div>
                 
-                <p class="project-card-description">
-                    Professional Django portfolio with modern design, optimized performance, responsive layout, and GitHub API integration for dynamic content.
+                <p class="project-description">
+                    This portfolio website showcases my work through clean design and efficient code. 
+                    Built with Django and modern web technologies it features responsive layouts that 
+                    work across all devices. The focus is on performance with minimal dependencies and 
+                    fast load times. Every element is crafted to present my projects and skills clearly.
                 </p>
                 
-                <div class="project-card-tech">
-                    <span class="tech-badge">Django</span>
-                    <span class="tech-badge">CSS3</span>
-                    <span class="tech-badge">JavaScript</span>
-                    <span class="tech-badge">GitHub API</span>
+                <div class="project-tech">
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">HTML5</span>
                 </div>
                 
-                <div class="project-card-actions">
-                    <span class="project-private-badge">
-                        <i class="fas fa-globe"></i>
-                        You're viewing it!
+                <div class="project-links">
+                    <span style="color: var(--text-light); font-size: 0.85rem;">
+                        <i class="fas fa-globe me-1"></i>You're viewing it now!
                     </span>
                 </div>
             </div>
@@ -207,6 +305,4 @@
         </div>
     </div>
 </div>
-
-
 {% endblock %}

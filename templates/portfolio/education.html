@@ -1,7 +1,7 @@
 {% extends 'portfolio/base.html' %}
 {% load static %}
 
-{% block title %}Education - {{ personal_info.name|default:"James Andrew" }}{% endblock %}
+{% block title %}Education - {{ personal_info.name|default:"Jem Andrew" }}{% endblock %}
 {% block page_name %}education{% endblock %}
 
 {% block content %}
@@ -60,18 +60,18 @@
                     <div class="paper-top">
                         <h3 class="dissertation-title">BSc Dissertation</h3>
                         <h4 class="dissertation-subtitle">
-                            Computational Approaches to Biological Data Analysis
+                            CRISPR Gene Editing in Wheat and Barley Disease Resistance
                         </h4>
                         
                         <div class="dissertation-meta">
-                            <span class="university-badge">University</span>
+                            <span class="university-badge">Newcastle University</span>
                             <span class="file-size">1.8 MB</span>
                         </div>
                         
                         <div style="margin-top: 1rem;">
-                            <span class="skill-tag">R/Python</span>
+                            <span class="skill-tag">R</span>
                             <span class="skill-tag">Bioinformatics</span>
-                            <span class="skill-tag">Statistics</span>
+                            <span class="skill-tag">CRISPR</span>
                         </div>
                     </div>
                 </div>
@@ -90,15 +90,15 @@
     <!-- Right Side - Academic Content -->
     <div class="right-side">
         <div class="education-hero">
-            <h1 class="education-title">Academic Background</h1>
+            <h1 class="education-title">Academic Journey</h1>
             <p style="color: var(--text-gray); font-size: 1.1rem; line-height: 1.6; margin-bottom: 3rem;">
-                Advanced study in computer science and biological sciences with research focus on medical AI applications
+                From biology to computer science - a path driven by curiosity about how things work and a love for solving complex problems through code
             </p>
         </div>
 
         <!-- Academic Timeline -->
         <div class="timeline-section">
-            <h2 class="section-title">Academic Journey</h2>
+            <h2 class="section-title">My Degrees</h2>
             
             {% for education in education_list %}
             <div class="timeline-item">
@@ -109,7 +109,26 @@
                     {% if education.is_current %}Present{% else %}{{ education.end_date.year }}{% endif %}
                     {% if education.grade %} • {{ education.grade }}{% endif %}
                 </div>
-                <p class="degree-description">{{ education.description }}</p>
+                
+                <!-- Module Grades for MSc -->
+                {% if education.degree_type == "MSc" and education.modules %}
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.95rem; margin-bottom: 1rem; font-weight: 500;">Key Modules & Marks:</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                        {% for module in education.modules|slice:":6" %}
+                        <div style="display: flex; justify-content: space-between; padding: 0.4rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.5rem;">
+                            <span style="color: var(--text-gray); font-size: 0.85rem;">{{ module.name }}</span>
+                            <span style="color: var(--text-white); font-weight: 500; font-size: 0.85rem;">{{ module.grade }}%</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <p class="degree-description">
+                    Dissertation: {{ education.description }}
+                </p>
+                
                 <div class="skills-tags">
                     {% for tech in education.technologies_list %}
                         <span class="skill-tag">{{ tech }}</span>
@@ -117,65 +136,99 @@
                 </div>
             </div>
             {% empty %}
+            <!-- Fallback content -->
             <div class="timeline-item">
                 <div class="degree-title">MSc Computer Science</div>
                 <div class="institution">Newcastle University</div>
-                <div class="duration">2022 - 2023 • Merit</div>
+                <div class="duration">2024 - 2025 • Merit</div>
+                
+                <div style="margin: 1.5rem 0;">
+                    <h5 style="color: var(--text-white); font-size: 0.95rem; margin-bottom: 1rem; font-weight: 500;">Key Modules & Marks:</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                        <div style="display: flex; justify-content: space-between; padding: 0.4rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.5rem;">
+                            <span style="color: var(--text-gray); font-size: 0.85rem;">Advanced Programming</span>
+                            <span style="color: var(--text-white); font-weight: 500; font-size: 0.85rem;">84%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.4rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.5rem;">
+                            <span style="color: var(--text-gray); font-size: 0.85rem;">Software Engineering & Team Project</span>
+                            <span style="color: var(--text-white); font-weight: 500; font-size: 0.85rem;">84%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.4rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.5rem;">
+                            <span style="color: var(--text-gray); font-size: 0.85rem;">Database Systems</span>
+                            <span style="color: var(--text-white); font-weight: 500; font-size: 0.85rem;">83%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.4rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.5rem;">
+                            <span style="color: var(--text-gray); font-size: 0.85rem;">Computer Networks</span>
+                            <span style="color: var(--text-white); font-weight: 500; font-size: 0.85rem;">82%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.4rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.5rem;">
+                            <span style="color: var(--text-gray); font-size: 0.85rem;">Cybersecurity</span>
+                            <span style="color: var(--text-white); font-weight: 500; font-size: 0.85rem;">77%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.4rem; background: rgba(255, 255, 255, 0.05); border-radius: 0.5rem;">
+                            <span style="color: var(--text-gray); font-size: 0.85rem;">Programming & Data Structures</span>
+                            <span style="color: var(--text-white); font-weight: 500; font-size: 0.85rem;">76%</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <p class="degree-description">
-                    Advanced study in machine learning, algorithms, and software engineering. 
-                    Dissertation focused on CNN architectures for automated skin cancer detection, 
-                    achieving 15% diagnostic improvements over baseline models. Gained expertise 
-                    in PyTorch, medical AI applications, and FDA-compliant evaluation frameworks.
+                    Dissertation: Comparison of Novel vs Standard CNN Architectures for Automated Skin Cancer Detection. 
+                    Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning architectures 
+                    for automated dermatological diagnosis.
                 </p>
+                
                 <div class="skills-tags">
                     <span class="skill-tag">PyTorch</span>
                     <span class="skill-tag">Python</span>
                     <span class="skill-tag">Machine Learning</span>
                     <span class="skill-tag">CNN</span>
                     <span class="skill-tag">Medical AI</span>
-                    <span class="skill-tag">Research Methods</span>
                 </div>
             </div>
 
             <div class="timeline-item">
-                <div class="degree-title">BSc Biology</div>
-                <div class="institution">University</div>
-                <div class="duration">2019 - 2022 • Upper Second-Class Honours</div>
+                <div class="degree-title">BSc (Hons) Biology</div>
+                <div class="institution">Newcastle University</div>
+                <div class="duration">2021 - 2024 • Upper Second-Class Honours (2:1)</div>
+                
                 <p class="degree-description">
-                    Biological sciences foundation providing strong analytical and research skills. 
-                    Developed expertise in statistical analysis, data interpretation, and scientific 
-                    methodology that translates directly to software engineering and data science applications.
+                    Dissertation: A Systematic Review of CRISPR Gene Editing in Enhancing Fusarium Head Blight Resistance 
+                    in Wheat and Barley (83%). This research sparked my interest in computational approaches to biological 
+                    problems and led me to pursue computer science.
                 </p>
+                
                 <div class="skills-tags">
+                    <span class="skill-tag">R</span>
                     <span class="skill-tag">Statistical Analysis</span>
+                    <span class="skill-tag">Bioinformatics</span>
                     <span class="skill-tag">Research Methods</span>
-                    <span class="skill-tag">Data Analysis</span>
                     <span class="skill-tag">Scientific Writing</span>
                 </div>
             </div>
             {% endfor %}
         </div>
 
-        <!-- Research Highlights -->
+        <!-- What I Learned -->
         <div style="margin-top: 3rem;">
-            <h2 class="section-title">Research Impact</h2>
+            <h2 class="section-title">Key Takeaways</h2>
             
             <div class="achievements-grid">
                 <div class="achievement-item">
+                    <span class="achievement-number">84%</span>
+                    <span class="achievement-label">Top Module Score</span>
+                </div>
+                <div class="achievement-item">
                     <span class="achievement-number">15%</span>
-                    <span class="achievement-label">Diagnostic Improvement</span>
+                    <span class="achievement-label">AI Improvement</span>
                 </div>
                 <div class="achievement-item">
-                    <span class="achievement-number">FDA</span>
-                    <span class="achievement-label">Compliant Framework</span>
-                </div>
-                <div class="achievement-item">
-                    <span class="achievement-number">PyTorch</span>
-                    <span class="achievement-label">Implementation</span>
+                    <span class="achievement-number">83%</span>
+                    <span class="achievement-label">BSc Dissertation</span>
                 </div>
                 <div class="achievement-item">
                     <span class="achievement-number">Bio→CS</span>
-                    <span class="achievement-label">Interdisciplinary</span>
+                    <span class="achievement-label">Career Pivot</span>
                 </div>
             </div>
         </div>
