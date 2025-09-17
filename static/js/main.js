@@ -1,6 +1,6 @@
 /**
  * Professional Portfolio JavaScript with Advanced Animations and Typewriter Effect
- * Enhanced with GitHub integration and smooth animations
+ * Enhanced with GitHub integration, smooth animations, and Projects Navigation
  */
 
 class AdvancedPortfolio {
@@ -20,9 +20,10 @@ class AdvancedPortfolio {
         this.setupFormHandling();
         this.setupPerformanceMonitoring();
         this.setupInteractiveElements();
-        this.setupTypewriter(); // Add typewriter initialization
+        this.setupTypewriter();
+        this.setupProjectsNavigation(); // NEW: Projects navigation
         
-        console.log('Advanced Portfolio initialized with GitHub integration and Typewriter effect');
+        console.log('Advanced Portfolio initialized with GitHub integration, Typewriter effect, and Projects Navigation');
     }
 
     /**
@@ -50,6 +51,106 @@ class AdvancedPortfolio {
                 deleteDelay: 500    
             });
         }
+    }
+
+    /**
+     * Projects Navigation - NEW METHOD
+     */
+    setupProjectsNavigation() {
+        // Only run on projects page
+        if (!document.querySelector('.projects-nav')) return;
+        
+        const navItems = document.querySelectorAll('.project-nav-item');
+        const projectCards = document.querySelectorAll('.project-card-wrapper');
+        
+        // Smooth scroll on click
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = item.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Update active state
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Add highlight animation to target card
+                    this.highlightProjectCard(targetElement);
+                }
+            });
+        });
+        
+        // Scroll spy for active navigation
+        if (projectCards.length > 0) {
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -70% 0px',
+                threshold: 0
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navItems.forEach(nav => {
+                            nav.classList.remove('active');
+                            if (nav.getAttribute('href') === `#${id}`) {
+                                nav.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+            
+            projectCards.forEach(card => {
+                observer.observe(card);
+            });
+        }
+        
+        // Mobile optimization
+        this.setupProjectsMobileNav(navItems);
+    }
+    
+    highlightProjectCard(element) {
+        const card = element.querySelector('.project-card-item');
+        if (!card) return;
+        
+        // Add highlight effect
+        card.style.transition = 'all 0.3s ease';
+        const originalBoxShadow = card.style.boxShadow;
+        const originalBorderColor = card.style.borderColor;
+        
+        card.style.boxShadow = '0 0 30px rgba(220, 38, 38, 0.4)';
+        card.style.borderColor = 'rgba(220, 38, 38, 0.5)';
+        
+        // Remove highlight after animation
+        setTimeout(() => {
+            card.style.boxShadow = originalBoxShadow || '';
+            card.style.borderColor = originalBorderColor || '';
+        }, 1000);
+    }
+    
+    setupProjectsMobileNav(navItems) {
+        const isMobile = window.innerWidth < 968;
+        if (!isMobile) return;
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Scroll nav into view if needed on mobile
+                setTimeout(() => {
+                    const nav = document.querySelector('.projects-nav');
+                    if (nav) {
+                        nav.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }, 500);
+            });
+        });
     }
 
     /**

@@ -636,31 +636,7 @@ body {
 
 /* Hide old projects layout */
 .projects-grid {
-    display: block;
-}
-
-/* Make project items visible */
-
-.project-item {
-    margin-bottom: 3rem !important;
-    padding-bottom: 2rem !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.project-item:last-child {
-    border-bottom: none !important;
-}
-
-.project-header,
-.project-description,
-.project-tech,
-.project-links {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    display: none;
 }
 
 /* Projects Card Grid */
@@ -1138,3 +1114,23 @@ body {
     font-size: 1.1rem;
     padding: 4rem 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
