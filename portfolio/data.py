@@ -8,7 +8,7 @@ PERSONAL_INFO = {
     'email': 'andrewjem8@gmail.com',
     'location': 'Newcastle, UK',
     'linkedin_url': 'https://www.linkedin.com/in/james-andrew-439771333/',
-    'github_url': 'https://github.com/JemAndrew',
+    'github_url': 'https://github.com/JemAndrew/Skin-cancer-eval',
     'bio': """Software engineer with expertise in Django, PostgreSQL, and optimization algorithms. 
               Currently developing enterprise SaaS construction management platforms at BuildChorus. 
               MSc Computer Science graduate with research experience in medical AI and CNN architectures. 
@@ -115,7 +115,7 @@ PROJECTS = [
         'category': 'academic',
         'status': 'completed',
         'featured': True,
-        'github_url': None,
+        'github_url': 'https://github.com/JemAndrew/Skin-cancer-eval',
         'live_demo_url': None,
         'created_date': date(2023, 6, 1),
         'key_features': [
@@ -138,7 +138,7 @@ PROJECTS = [
         'category': 'personal',
         'status': 'completed',
         'featured': True,
-        'github_url': 'https://github.com/JemAndrew/holiday-cluedo',
+        'github_url': 'https://github.com/JemAndrew/holiday_cluedo',
         'live_demo_url': 'https://familycluedo.netlify.app',
         'created_date': date(2023, 12, 1),
         'key_features': [
@@ -160,7 +160,7 @@ PROJECTS = [
         'category': 'personal',
         'status': 'active',
         'featured': False,
-        'github_url': 'https://github.com/JemAndrew/portfolio',
+        'github_url': 'https://github.com/JemAndrew/cv-website',
         'live_demo_url': None,
         'created_date': date(2024, 1, 15),
         'key_features': [

@@ -141,7 +141,7 @@ def projects_view(request):
             project_skills[category] = skills
     
     context.update({
-        'projects': all_projects,  # Add this line
+        'projects': all_projects,  
         'personal_projects': personal_projects,
         'academic_projects': academic_projects,
         'project_skills': project_skills,

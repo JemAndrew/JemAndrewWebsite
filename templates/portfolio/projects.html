@@ -78,8 +78,7 @@
                     </a>
                     {% endif %}
                     {% if project.live_demo_url %}
-                    </a>
-                    <a href="https://familycluedo.netlify.app" target="_blank" class="project-action-btn secondary">
+                    <a href="{{ project.live_demo_url }}" target="_blank" class="project-action-btn secondary">
                         <i class="fas fa-external-link-alt"></i>
                         Live Demo
                     </a>
@@ -93,7 +92,6 @@
                 </div>
             </div>
             {% empty %}
-            <!-- Fallback projects if none exist in database -->
             <div class="project-card">
                 <div class="project-card-header">
                     <h3 class="project-card-title">Cryptocurrency Exchange Platform</h3>
@@ -143,10 +141,10 @@
                 </div>
                 
                 <div class="project-card-actions">
-                    <span class="project-private-badge">
-                        <i class="fas fa-graduation-cap"></i>
-                        Academic Research
-                    </span>
+                    <a href="https://github.com/JemAndrew/Skin-cancer-eval" target="_blank" class="project-action-btn primary">
+                        <i class="fab fa-github"></i>
+                        View Code
+                    </a>
                 </div>
             </div>
 
@@ -171,7 +169,7 @@
                 </div>
                 
                 <div class="project-card-actions">
-                    <a href="https://github.com/JemAndrew/holiday-cluedo" target="_blank" class="project-action-btn primary">
+                    <a href="https://github.com/JemAndrew/holiday_cluedo" target="_blank" class="project-action-btn primary">
                         <i class="fab fa-github"></i>
                         View Code
                     </a>
