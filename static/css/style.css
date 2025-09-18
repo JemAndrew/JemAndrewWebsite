@@ -121,13 +121,12 @@ body {
 }
 
 /* ============================================ */
-/* 5. LAYOUT CONTAINERS
+/* 5. LAYOUT CONTAINERS - CONSISTENT ACROSS ALL PAGES
 /* ============================================ */
 
 .main-container {
     display: grid;
     grid-template-columns: 600px 1fr;
-    grid-template-rows: repeat(auto-fit, minmax(400px, auto));
     min-height: 100vh;
     align-items: start;
     max-width: 1400px;
@@ -233,7 +232,6 @@ body {
 /* 7. PAPER STACK CARDS - UNIVERSAL STYLES
 /* ============================================ */
 
-/* Base card that works everywhere */
 .paper-card {
     position: relative;
     width: 280px;
@@ -241,7 +239,6 @@ body {
     cursor: pointer;
     margin: 1rem 0;
     perspective: 1000px;
-    align-items: center;
     margin-left: auto;
     margin-right: auto;
 }
@@ -294,7 +291,6 @@ body {
     z-index: 3;
 }
 
-/* FIXED: Proper hover animation that doesn't shift off-screen */
 .paper-card:hover .paper-top {
     transform: translateX(-15px) translateY(-15px) rotate(-3deg);
     opacity: 0.9;
@@ -308,7 +304,6 @@ body {
     transform: rotate(-0.3deg) translateX(5px) translateY(5px);
 }
 
-/* Content styles for paper cards */
 .paper-title {
     font-size: 1.2rem;
     font-weight: 600;
@@ -350,7 +345,6 @@ body {
     font-size: 0.75rem;
 }
 
-/* FIXED: Properly centered download button that doesn't shift off-screen */
 .download-reveal {
     position: absolute;
     bottom: 1.5rem;
@@ -401,7 +395,6 @@ body {
 /* 8. EDUCATION PAGE SPECIFIC ALIGNMENTS
 /* ============================================ */
 
-/* FIXED: Academic research header styling */
 .academic-research-header {
     margin-bottom: 3rem;
     text-align: left;
@@ -423,26 +416,24 @@ body {
 
 /* FIXED: Dissertation downloads positioning */
 .dissertation-downloads {
-    display: grid;
-    grid-template-rows: auto 1fr 1fr;
-    gap: 2rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 0;
     margin: 0;
     padding: 0;
-    margin-bottom: 3rem;
-    height: 100vh;
 }
 
 .dissertation-downloads .paper-card {
-    margin-bottom: 3rem;
+    margin-bottom: 0;
 }
 
-/* FIXED: Precise spacer for BSc alignment */
+/* FIXED: Spacer for BSc alignment */
 .dissertation-spacer {
-    height: none; 
+    height: 280px;
 }
 
-/* FIXED: Connection lines that show relationship */
+/* Connection lines that show relationship */
 .paper-card.dissertation-msc {
     position: relative;
 }
@@ -451,7 +442,6 @@ body {
     position: relative;
 }
 
-/* Add connection indicator lines */
 .paper-card[data-degree="msc"]::after {
     content: '';
     position: absolute;
@@ -520,7 +510,6 @@ body {
     box-shadow: 0 12px 28px rgba(0,0,0,.35);
 }
 
-/* Experience Section */
 .experience-section {
     margin: 3rem 0;
 }
@@ -599,7 +588,6 @@ body {
 /* 10. PROJECTS PAGE - PROPER CARD CONTAINERS
 /* ============================================ */
 
-/* FIXED: Projects page gets proper card styling like Brittany's design */
 .project-card {
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.1), 
@@ -751,7 +739,6 @@ body {
     cursor: default;
 }
 
-/* Year headers for projects */
 .year-header {
     font-size: 2rem;
     font-weight: 700;
@@ -773,7 +760,7 @@ body {
 }
 
 /* ============================================ */
-/* 11. EDUCATION PAGE SPECIFIC
+/* 11. EDUCATION PAGE TIMELINE SPECIFIC
 /* ============================================ */
 
 .education-hero {
@@ -783,16 +770,12 @@ body {
 }
 
 .timeline-section {
-    display: grid;
-    grid-template-rows: auto 1fr 1fr;
     margin: 0;
     padding-top: 0;
-    height: 100vh;
 }
 
 .timeline-item {
     margin-bottom: 3rem;
-    min-height: 400px;
     padding: 2rem;
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.1), 
@@ -959,7 +942,6 @@ body {
     background: rgba(220, 38, 38, 0.3);
 }
 
-/* View toggle buttons */
 .view-toggle {
     display: flex;
     gap: 0.5rem;
@@ -1046,7 +1028,6 @@ body {
         gap: 2rem;
         padding: 6rem 1rem 2rem;
         align-items: flex-start;
-        /* Remove the grid-template-rows here - it conflicts with desktop grid */
     }
     
     .left-side, 
@@ -1057,17 +1038,8 @@ body {
         position: static;
     }
     
-    /* IMPORTANT: Reset grid to flexbox on mobile */
-    .dissertation-downloads {
-        display: flex !important; /* Override grid */
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-        height: auto; /* Remove fixed height on mobile */
-    }
-    
     .timeline-section {
-        display: block; /* Remove grid on mobile */
+        display: block;
     }
     
     .paper-card[data-degree="msc"]::after,
@@ -1076,18 +1048,16 @@ body {
         display: none;
     }
     
-    /* Remove spacer references since we're using flexbox */
     .dissertation-spacer {
-        display: none; /* Always hide spacer on mobile */
+        height: 2rem;
     }
     
     .paper-card {
         width: 100%;
         max-width: 320px;
-        margin: 1rem auto; /* Simplified margin */
+        margin: 1rem auto;
     }
     
-    /* Reset specific positioning on mobile */
     .paper-card.dissertation-msc,
     .paper-card.dissertation-bsc {
         margin-top: 1rem;
