@@ -127,6 +127,7 @@ body {
 .main-container {
     display: grid;
     grid-template-columns: 600px 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(400px, auto));
     min-height: 100vh;
     align-items: start;
     max-width: 1400px;
@@ -240,6 +241,9 @@ body {
     cursor: pointer;
     margin: 1rem 0;
     perspective: 1000px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .paper-stack {
@@ -290,18 +294,18 @@ body {
     z-index: 3;
 }
 
-/* Universal hover animation */
+/* FIXED: Proper hover animation that doesn't shift off-screen */
 .paper-card:hover .paper-top {
-    transform: translateX(-50px) translateY(-30px) rotate(-8deg);
-    opacity: 0.8;
+    transform: translateX(-15px) translateY(-15px) rotate(-3deg);
+    opacity: 0.9;
 }
 
 .paper-card:hover .paper-middle {
-    transform: rotate(1deg) translateX(3px) translateY(3px);
+    transform: rotate(0.8deg) translateX(3px) translateY(3px);
 }
 
 .paper-card:hover .paper-base {
-    transform: rotate(-0.5deg) translateX(5px) translateY(5px);
+    transform: rotate(-0.3deg) translateX(5px) translateY(5px);
 }
 
 /* Content styles for paper cards */
@@ -346,20 +350,22 @@ body {
     font-size: 0.75rem;
 }
 
-/* Universal download button */
+/* FIXED: Properly centered download button that doesn't shift off-screen */
 .download-reveal {
     position: absolute;
-    bottom: 2rem;
+    bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
     transition: all 0.3s ease;
     z-index: 4;
+    pointer-events: none;
 }
 
 .paper-card:hover .download-reveal {
     opacity: 1;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateX(-50%) translateY(-5px);
+    pointer-events: all;
 }
 
 .download-button {
@@ -373,11 +379,14 @@ body {
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
+    white-space: nowrap;
+    min-width: 140px;
 }
 
 .download-button:hover {
@@ -389,41 +398,86 @@ body {
 }
 
 /* ============================================ */
-/* 8. POSITIONING MODIFIERS
+/* 8. EDUCATION PAGE SPECIFIC ALIGNMENTS
 /* ============================================ */
 
-/* Education page specific positioning */
-.education-downloads {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    align-items: stretch;
+/* FIXED: Academic research header styling */
+.academic-research-header {
+    margin-bottom: 3rem;
+    text-align: left;
+}
+
+.academic-research-title {
+    font-size: 1.8rem !important;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-white);
+}
+
+.academic-research-subtitle {
+    font-size: 1rem;
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* FIXED: Dissertation downloads positioning */
+.dissertation-downloads {
+    display: grid;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
     margin: 0;
     padding: 0;
+    margin-bottom: 3rem;
+    height: 100vh;
 }
 
-.education-downloads .paper-card {
-    width: 100%;
-    max-width: 280px;
+.dissertation-downloads .paper-card {
+    margin-bottom: 3rem;
 }
 
-/* Spacer for alignment on education page */
+/* FIXED: Precise spacer for BSc alignment */
 .dissertation-spacer {
-    height: 320px; /* Adjust this to align with timeline */
+    height: none; 
 }
 
-/* Connection lines for education page (optional) */
-.education-downloads .paper-card.with-connector::after {
+/* FIXED: Connection lines that show relationship */
+.paper-card.dissertation-msc {
+    position: relative;
+}
+
+.paper-card.dissertation-bsc {
+    position: relative;
+}
+
+/* Add connection indicator lines */
+.paper-card[data-degree="msc"]::after {
     content: '';
     position: absolute;
-    right: -3rem;
+    right: -2rem;
     top: 50%;
-    width: 3rem;
+    width: 2rem;
     height: 2px;
     background: linear-gradient(90deg, 
-        rgba(220, 38, 38, 0.4), 
-        rgba(220, 38, 38, 0.1));
+        rgba(220, 38, 38, 0.6), 
+        rgba(220, 38, 38, 0.2));
     transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+.paper-card[data-degree="bsc"]::after {
+    content: '';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    width: 2rem;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        rgba(220, 38, 38, 0.6), 
+        rgba(220, 38, 38, 0.2));
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
 }
 
 /* ============================================ */
@@ -542,7 +596,184 @@ body {
 }
 
 /* ============================================ */
-/* 10. EDUCATION PAGE SPECIFIC
+/* 10. PROJECTS PAGE - PROPER CARD CONTAINERS
+/* ============================================ */
+
+/* FIXED: Projects page gets proper card styling like Brittany's design */
+.project-card {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1), 
+        rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-red), var(--accent-red));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.project-card:hover::before {
+    opacity: 1;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.project-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-white);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.project-category {
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.project-category.personal {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.project-category.academic {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.project-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-gray);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tech-tag {
+    padding: 0.3rem 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-weight: 400;
+    transition: all 0.2s ease;
+}
+
+.tech-tag:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-white);
+}
+
+.project-links {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.project-link.primary {
+    background: var(--primary-red);
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.project-link.primary:hover {
+    background: var(--accent-red);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.project-link.viewing {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border-color: rgba(34, 197, 94, 0.3);
+    cursor: default;
+}
+
+.project-link.private {
+    background: rgba(156, 163, 175, 0.2);
+    color: var(--text-light);
+    border-color: rgba(156, 163, 175, 0.3);
+    cursor: default;
+}
+
+/* Year headers for projects */
+.year-header {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 3rem 0 2rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(220, 38, 38, 0.3);
+    position: relative;
+}
+
+.year-header::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--primary-red);
+}
+
+/* ============================================ */
+/* 11. EDUCATION PAGE SPECIFIC
 /* ============================================ */
 
 .education-hero {
@@ -552,12 +783,16 @@ body {
 }
 
 .timeline-section {
+    display: grid;
+    grid-template-rows: auto 1fr 1fr;
     margin: 0;
     padding-top: 0;
+    height: 100vh;
 }
 
 .timeline-item {
     margin-bottom: 3rem;
+    min-height: 400px;
     padding: 2rem;
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.1), 
@@ -640,7 +875,7 @@ body {
 }
 
 /* ============================================ */
-/* 11. SHARED COMPONENTS
+/* 12. SHARED COMPONENTS
 /* ============================================ */
 
 .achievements-grid {
@@ -724,8 +959,36 @@ body {
     background: rgba(220, 38, 38, 0.3);
 }
 
+/* View toggle buttons */
+.view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.3rem;
+    border-radius: 0.75rem;
+    margin: 2rem 0;
+}
+
+.view-btn {
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.view-btn:hover,
+.view-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-white);
+}
+
 /* ============================================ */
-/* 12. FOOTER
+/* 13. FOOTER
 /* ============================================ */
 
 .footer {
@@ -762,7 +1025,169 @@ body {
 }
 
 /* ============================================ */
-/* 13. ANIMATIONS
+/* 14. RESPONSIVE DESIGN
+/* ============================================ */
+
+@media (max-width: 1200px) {
+    .main-container {
+        grid-template-columns: 500px 1fr;
+        gap: 3rem;
+    }
+    
+    body[data-page="education"] .main-container {
+        grid-template-columns: 350px 1fr;
+        gap: 2.5rem;
+    }
+}
+
+@media (max-width: 968px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 6rem 1rem 2rem;
+        align-items: flex-start;
+        /* Remove the grid-template-rows here - it conflicts with desktop grid */
+    }
+    
+    .left-side, 
+    .profile-side,
+    .right-side, 
+    .content-side {
+        padding: 1rem;
+        position: static;
+    }
+    
+    /* IMPORTANT: Reset grid to flexbox on mobile */
+    .dissertation-downloads {
+        display: flex !important; /* Override grid */
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        height: auto; /* Remove fixed height on mobile */
+    }
+    
+    .timeline-section {
+        display: block; /* Remove grid on mobile */
+    }
+    
+    .paper-card[data-degree="msc"]::after,
+    .paper-card[data-degree="bsc"]::after,
+    .timeline-item.with-connector::before {
+        display: none;
+    }
+    
+    /* Remove spacer references since we're using flexbox */
+    .dissertation-spacer {
+        display: none; /* Always hide spacer on mobile */
+    }
+    
+    .paper-card {
+        width: 100%;
+        max-width: 320px;
+        margin: 1rem auto; /* Simplified margin */
+    }
+    
+    /* Reset specific positioning on mobile */
+    .paper-card.dissertation-msc,
+    .paper-card.dissertation-bsc {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-side,
+    .content-side,
+    .left-side,
+    .right-side {
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .name-title,
+    .page-title,
+    .education-title {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+    
+    .nav-container {
+        position: static;
+        padding: 1rem;
+    }
+    
+    .nav-pills {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .dissertation-downloads {
+        align-items: center;
+    }
+    
+    .cta-section {
+        justify-content: center;
+    }
+    
+    .hero-socials {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 4rem 0.5rem 1rem;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .project-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .project-link {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ============================================ */
+/* 15. UTILITY CLASSES
+/* ============================================ */
+
+.company-highlight,
+.company-tag,
+.cursor-dot,
+.cursor-dot-outline,
+.mouse-tracker,
+.custom-cursor {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.card,
+.experience-item,
+.github-repo {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* ============================================ */
+/* 16. ANIMATIONS
 /* ============================================ */
 
 .typewriter-text {
@@ -846,135 +1271,26 @@ body {
 }
 
 /* ============================================ */
-/* 14. UTILITY CLASSES
+/* 17. PROJECT FILTER ANIMATIONS
 /* ============================================ */
 
-.company-highlight,
-.company-tag,
-.cursor-dot,
-.cursor-dot-outline,
-.mouse-tracker,
-.custom-cursor {
-    display: none !important;
-    visibility: hidden !important;
+.project-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
 }
 
-.card,
-.experience-item,
-.github-repo {
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    backdrop-filter: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+.project-card[style*="display: none"] {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
 }
 
-/* ============================================ */
-/* 15. RESPONSIVE DESIGN
-/* ============================================ */
-
-@media (max-width: 1200px) {
-    .main-container {
-        grid-template-columns: 500px 1fr;
-        gap: 3rem;
-    }
-    
-    body[data-page="education"] .main-container {
-        grid-template-columns: 350px 1fr;
-        gap: 2.5rem;
-    }
+.year-section {
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-@media (max-width: 968px) {
-    .main-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 6rem 1rem 2rem;
-        align-items: flex-start;
-    }
-    
-    .left-side, 
-    .profile-side,
-    .right-side, 
-    .content-side {
-        padding: 1rem;
-        position: static;
-    }
-    
-    .education-downloads .paper-card.with-connector::after,
-    .timeline-item.with-connector::before {
-        display: none;
-    }
-    
-    .dissertation-spacer {
-        height: 2rem;
-    }
-    
-    .paper-card {
-        width: 100%;
-        max-width: 320px;
-        margin: 2rem auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .profile-side,
-    .content-side,
-    .left-side,
-    .right-side {
-        padding: 1rem;
-        text-align: center;
-    }
-    
-    .name-title,
-    .page-title,
-    .education-title {
-        font-size: 2.5rem;
-        text-align: center;
-    }
-    
-    .nav-container {
-        position: static;
-        padding: 1rem;
-    }
-    
-    .nav-pills {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .achievements-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .education-downloads {
-        align-items: center;
-    }
-    
-    .cta-section {
-        justify-content: center;
-    }
-    
-    .hero-socials {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .main-container {
-        padding: 4rem 0.5rem 1rem;
-    }
-    
-    .achievements-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-    }
-    
-    .simple-link {
-        width: 100%;
-        justify-content: center;
-    }
+.year-section[style*="display: none"] {
+    opacity: 0;
+    transform: translateY(-10px);
 }

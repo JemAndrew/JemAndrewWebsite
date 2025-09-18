@@ -5,7 +5,7 @@
 {% block page_name %}projects{% endblock %}
 
 {% block content %}
-<div class="main-container">
+<div class="main-container projects-page">
     <!-- Left Side - Projects Overview -->
     <div class="left-side">
         <h1 class="page-title">Projects</h1>
@@ -60,31 +60,55 @@
             <div class="year-section" id="year-2025">
                 <h2 class="year-header">2025</h2>
                 
-                <!-- Medical AI Project -->
-                <article class="project-simple-card" data-category="academic">
-                    <h3 class="project-simple-title">Medical AI Diagnostic System</h3>
-                    <p class="project-simple-description">
+                <!-- Medical AI Project - PROPER CARD CONTAINER -->
+                <article class="project-card" data-category="academic">
+                    <div class="project-header">
+                        <h3 class="project-title">Medical AI Diagnostic System</h3>
+                        <div class="project-category academic">Academic</div>
+                    </div>
+                    
+                    <p class="project-description">
                         MSc dissertation project using CNN architectures for automated skin cancer detection. 
                         Compared ResNet, DenseNet and custom architectures achieving significant improvements 
                         over baseline models through ensemble methods.
                     </p>
-                    <div class="project-simple-links">
-                        <a href="https://github.com/JemAndrew/Skin-cancer-eval" target="_blank" class="simple-link github">
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">CNN</span>
+                        <span class="tech-tag">Medical AI</span>
+                    </div>
+                    
+                    <div class="project-links">
+                        <a href="https://github.com/JemAndrew/Skin-cancer-eval" target="_blank" class="project-link primary">
                             <i class="fab fa-github"></i> View Code
                         </a>
                     </div>
                 </article>
 
-                <!-- Bike Route Project -->
-                <article class="project-simple-card" data-category="academic">
-                    <h3 class="project-simple-title">Bike Route Planning Application</h3>
-                    <p class="project-simple-description">
+                <!-- Bike Route Project - PROPER CARD CONTAINER -->
+                <article class="project-card" data-category="academic">
+                    <div class="project-header">
+                        <h3 class="project-title">Bike Route Planning Application</h3>
+                        <div class="project-category academic">Academic</div>
+                    </div>
+                    
+                    <p class="project-description">
                         Full-stack cycling route app built with Flask and React in a 5-person agile team. 
                         I led the REST API development for authentication and route management, handling 
                         the migration from Google Places to HERE Maps API.
                     </p>
-                    <div class="project-simple-links">
-                        <a href="https://github.com/JemAndrew/cycle_plan" target="_blank" class="simple-link github">
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">HERE Maps API</span>
+                    </div>
+                    
+                    <div class="project-links">
+                        <a href="https://github.com/JemAndrew/cycle_plan" target="_blank" class="project-link primary">
                             <i class="fab fa-github"></i> View Code
                         </a>
                     </div>
@@ -95,31 +119,55 @@
             <div class="year-section" id="year-2024">
                 <h2 class="year-header">2024</h2>
                 
-                <!-- Portfolio Website -->
-                <article class="project-simple-card" data-category="personal">
-                    <h3 class="project-simple-title">Portfolio Website</h3>
-                    <p class="project-simple-description">
+                <!-- Portfolio Website - PROPER CARD CONTAINER -->
+                <article class="project-card" data-category="personal">
+                    <div class="project-header">
+                        <h3 class="project-title">Portfolio Website</h3>
+                        <div class="project-category personal">Personal</div>
+                    </div>
+                    
+                    <p class="project-description">
                         This portfolio website built with Django and modern web technologies. Features 
                         responsive design, optimized performance, and clean code architecture to effectively 
                         present my projects and technical journey.
                     </p>
-                    <div class="project-simple-links">
-                        <span class="simple-link viewing">
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">HTML5</span>
+                    </div>
+                    
+                    <div class="project-links">
+                        <span class="project-link viewing">
                             <i class="fas fa-eye"></i> You're viewing it
                         </span>
                     </div>
                 </article>
 
-                <!-- Cryptocurrency Exchange -->
-                <article class="project-simple-card" data-category="personal">
-                    <h3 class="project-simple-title">Cryptocurrency Exchange Platform</h3>
-                    <p class="project-simple-description">
+                <!-- Cryptocurrency Exchange - PROPER CARD CONTAINER -->
+                <article class="project-card" data-category="personal">
+                    <div class="project-header">
+                        <h3 class="project-title">Cryptocurrency Exchange Platform</h3>
+                        <div class="project-category personal">Personal</div>
+                    </div>
+                    
+                    <p class="project-description">
                         Built a custom order matching engine with price-time priority algorithm handling 
                         high-frequency trading. Real-time WebSocket connections for live price feeds with 
                         careful database schema design for orders, trades, and wallet management.
                     </p>
-                    <div class="project-simple-links">
-                        <span class="simple-link private">
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">WebSockets</span>
+                        <span class="tech-tag">REST API</span>
+                    </div>
+                    
+                    <div class="project-links">
+                        <span class="project-link private">
                             <i class="fas fa-lock"></i> Private Repository
                         </span>
                     </div>
@@ -130,22 +178,30 @@
             <div class="year-section" id="year-2023">
                 <h2 class="year-header">2023</h2>
                 
-                <!-- Holiday Cluedo -->
-                <article class="project-simple-card" data-category="personal">
-                    <h3 class="project-simple-title">Holiday Cluedo PWA</h3>
-                    <p class="project-simple-description">
+                <!-- Holiday Cluedo - PROPER CARD CONTAINER -->
+                <article class="project-card" data-category="personal">
+                    <div class="project-header">
+                        <h3 class="project-title">Holiday Cluedo PWA</h3>
+                        <div class="project-category personal">Personal</div>
+                    </div>
+                    
+                    <p class="project-description">
                         Progressive Web App version of Cluedo optimized for multiplayer family entertainment. 
                         Supports concurrent users with offline capability using service workers and 
                         Fisher-Yates shuffle algorithm for fair card distribution.
                     </p>
-                    <div class="project-simple-links">
-                        <a href="https://github.com/JemAndrew/holiday_cluedo" target="_blank" class="simple-link github">
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">PWA</span>
+                        <span class="tech-tag">Service Workers</span>
+                        <span class="tech-tag">WebSockets</span>
+                    </div>
+                    
+                    <div class="project-links">
+                        <a href="https://github.com/JemAndrew/holiday_cluedo" target="_blank" class="project-link primary">
                             <i class="fab fa-github"></i> View Code
                         </a>
-                        <!-- Add this if you have a live demo -->
-                        <!-- <a href="https://your-demo-url.com" target="_blank" class="simple-link demo">
-                            <i class="fas fa-external-link-alt"></i> Live Demo
-                        </a> -->
                     </div>
                 </article>
             </div>
@@ -160,7 +216,7 @@
 // Simple view filter functionality
 document.addEventListener('DOMContentLoaded', function() {
     const viewButtons = document.querySelectorAll('.view-btn');
-    const projectCards = document.querySelectorAll('.project-simple-card');
+    const projectCards = document.querySelectorAll('.project-card');
     
     viewButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -187,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Hide empty year sections
             document.querySelectorAll('.year-section').forEach(section => {
-                const visibleCards = section.querySelectorAll('.project-simple-card[style="display: block"], .project-simple-card:not([style])');
+                const visibleCards = section.querySelectorAll('.project-card[style="display: block"], .project-card:not([style])');
                 if (filter !== 'all' && visibleCards.length === 0) {
                     section.style.display = 'none';
                 } else {
