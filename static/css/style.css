@@ -83,7 +83,7 @@ body {
     z-index: 1000;
     padding: 2rem;
     width: 100%;
-    max-width: 1400px;
+    max-width: 1800px;
     margin-left: 50%;
     transform: translateX(-50%);
 }
@@ -129,7 +129,7 @@ body {
     grid-template-columns: 600px 1fr;
     min-height: 100vh;
     align-items: start;
-    max-width: 1400px;
+    max-width: 1800px;
     margin: 0 auto;
     gap: 4rem;
     padding: 8rem 2rem 4rem;
@@ -184,7 +184,7 @@ body {
 }
 
 .education-title {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 700;
     line-height: 1.1;
     margin-bottom: 1.5rem;
@@ -197,7 +197,7 @@ body {
 
 .role-subtitle, 
 .subtitle {
-    font-size: 1.25rem;
+    font-size: 2.25rem;
     font-weight: 500;
     color: var(--text-white);
     margin-bottom: 1.5rem;
@@ -207,15 +207,15 @@ body {
 }
 
 .section-title {
-    font-size: 1.3rem;
+    font-size: 2rem;
     font-weight: 600;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: var(--text-white);
     letter-spacing: 0.5px;
 }
 
 .content-intro {
-    font-size: 1.1rem;
+    font-size: 1.35rem;
     line-height: 1.7;
     color: var(--text-gray);
     margin-bottom: 2rem;
@@ -401,12 +401,15 @@ body {
 }
 
 .academic-research-title {
-    font-size: 1.8rem !important;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--text-white);
+    font-size: 4rem !important;  /* Match the right side */
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
-
 .academic-research-subtitle {
     font-size: 1rem;
     color: var(--text-gray);
@@ -422,6 +425,7 @@ body {
     gap: 0;
     margin: 0;
     padding: 0;
+    margin-top: 1rem;
 }
 
 .dissertation-downloads .paper-card {
@@ -430,7 +434,7 @@ body {
 
 /* FIXED: Spacer for BSc alignment */
 .dissertation-spacer {
-    height: 280px;
+    height: 230px;
 }
 
 /* Connection lines that show relationship */
@@ -1135,15 +1139,7 @@ body {
 /* 15. UTILITY CLASSES
 /* ============================================ */
 
-.company-highlight,
-.company-tag,
-.cursor-dot,
-.cursor-dot-outline,
-.mouse-tracker,
-.custom-cursor {
-    display: none !important;
-    visibility: hidden !important;
-}
+
 
 .card,
 .experience-item,
@@ -1241,6 +1237,137 @@ body {
 }
 
 /* ============================================ */
+/* 18. ENHANCED PROJECTS VIEW SYSTEM
+/* ============================================ */
+
+/* Organization Toggle */
+.view-organization {
+    margin: 2rem 0;
+}
+
+.organization-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--text-white);
+}
+
+.organization-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.3rem;
+    border-radius: 0.75rem;
+}
+
+.org-btn {
+    padding: 0.8rem 1.2rem;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.org-btn:hover,
+.org-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-white);
+}
+
+/* Enhanced Navigation */
+.project-category-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.category-link {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 1rem;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.category-link:hover {
+    color: var(--primary-red);
+    border-left-color: var(--primary-red);
+    transform: translateX(4px);
+}
+
+/* Category View Styles */
+.category-section {
+    margin-bottom: 4rem;
+}
+
+.category-header {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-header i {
+    color: var(--primary-red);
+}
+
+.category-description {
+    color: var(--text-gray);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Project Year Badge for Category View */
+.project-year {
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Smooth View Transitions */
+.projects-timeline,
+.projects-categories {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .organization-toggle {
+        flex-direction: column;
+    }
+    
+    .project-category-nav {
+        display: none;
+    }
+    
+    .category-header {
+        font-size: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* ============================================ */
 /* 17. PROJECT FILTER ANIMATIONS
 /* ============================================ */
 
@@ -1263,4 +1390,65 @@ body {
 .year-section[style*="display: none"] {
     opacity: 0;
     transform: translateY(-10px);
+}
+
+/* ============================================ */
+/* ENHANCED MOUSE TRACKER - SLIGHTLY MORE VISIBLE
+/* ============================================ */
+
+/* Create the mouse tracker element */
+.mouse-tracker {
+    position: fixed;
+    width: 600px;      /* Doubled from 300px */
+    height: 600px;     /* Doubled from 300px */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    top: -300px;       /* Adjusted for larger size */
+    left: -300px;      /* Adjusted for larger size */
+    transition: opacity 0.3s ease;
+    
+    /* Softer, more extended gradient */
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.04) 0%,     /* Softer center */
+        rgba(255, 255, 255, 0.025) 20%,   /* Gentle falloff */
+        rgba(220, 38, 38, 0.02) 40%,      /* Red accent further out */
+        rgba(255, 255, 255, 0.015) 60%,   /* Extended white glow */
+        rgba(220, 38, 38, 0.01) 80%,      /* Very subtle red edge */
+        transparent 100%
+    );
+    
+    /* Softer, more extended glow effect */
+    box-shadow: 
+        0 0 120px rgba(255, 255, 255, 0.025),  /* Larger inner glow */
+        0 0 240px rgba(220, 38, 38, 0.012),    /* Large red glow */
+        0 0 360px rgba(255, 255, 255, 0.008);  /* Very large outer glow */
+    
+    /* Smooth movement */
+    will-change: transform;
+}
+
+/* Enhanced hover effect - larger and softer */
+.mouse-tracker.hovering {
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.06) 0%,     /* Brighter center on hover */
+        rgba(255, 255, 255, 0.035) 20%,   /* Gentle gradient */
+        rgba(220, 38, 38, 0.03) 40%,      /* More visible red accent */
+        rgba(255, 255, 255, 0.02) 60%,    /* Extended glow */
+        rgba(220, 38, 38, 0.015) 80%,     /* Subtle red edge */
+        transparent 100%
+    );
+    
+    box-shadow: 
+        0 0 150px rgba(255, 255, 255, 0.035), /* Enhanced inner glow */
+        0 0 300px rgba(220, 38, 38, 0.018),   /* Stronger red glow */
+        0 0 450px rgba(255, 255, 255, 0.012); /* Massive outer glow */
+}
+/* Hide on mobile to save performance */
+@media (max-width: 768px) {
+    .mouse-tracker {
+        display: none;
+    }
 }

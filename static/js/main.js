@@ -21,9 +21,20 @@ class AdvancedPortfolio {
         this.setupPerformanceMonitoring();
         this.setupInteractiveElements();
         this.setupTypewriter();
-        this.setupProjectsViewController(); // NEW: Projects view controller
+        this.setupProjectsViewController();
+        this.setupMouseTracker(); // NEW: Mouse tracker initialization
         
-        console.log('Advanced Portfolio initialized with GitHub integration, Typewriter effect, and Projects View Controller');
+        console.log('Advanced Portfolio initialized with GitHub integration, Typewriter effect, Projects View Controller, and Mouse Tracker');
+    }
+
+    /**
+     * Mouse Tracker Setup - NEW METHOD
+     */
+    setupMouseTracker() {
+        // Only initialize on desktop
+        if (window.innerWidth > 768) {
+            this.mouseTracker = new SubtleMouseTracker();
+        }
     }
 
     /**
@@ -989,7 +1000,108 @@ class TypewriterEffect {
 }
 
 /**
- * Projects View Controller Class - NEW CLASS
+ * Subtle Mouse Tracker Class - NEW ADDITION
+ */
+class SubtleMouseTracker {
+    constructor() {
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.currentX = 0;
+        this.currentY = 0;
+        this.tracker = null;
+        this.rafId = null;
+        
+        // Only initialize on desktop
+        if (window.innerWidth > 768) {
+            this.init();
+        }
+    }
+
+    init() {
+        // Create the tracker element
+        this.tracker = document.createElement('div');
+        this.tracker.className = 'mouse-tracker';
+        document.body.appendChild(this.tracker);
+        
+        // Event listeners
+        document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+        document.addEventListener('mouseenter', () => this.show());
+        document.addEventListener('mouseleave', () => this.hide());
+        
+        // Interactive elements hover effect
+        this.setupHoverEffects();
+        
+        // Start animation loop
+        this.animate();
+    }
+
+    handleMouseMove(e) {
+        this.mouseX = e.clientX;
+        this.mouseY = e.clientY;
+    }
+
+    animate() {
+        // Smooth interpolation for lag effect
+        const lerp = 0.1; // Adjust for more/less lag (0.05 = more lag, 0.2 = less lag)
+        
+        this.currentX += (this.mouseX - this.currentX) * lerp;
+        this.currentY += (this.mouseY - this.currentY) * lerp;
+        
+        // Update position
+        if (this.tracker) {
+            this.tracker.style.transform = `translate(${this.currentX}px, ${this.currentY}px)`;
+        }
+        
+        // Continue animation
+        this.rafId = requestAnimationFrame(() => this.animate());
+    }
+
+    setupHoverEffects() {
+        // Elements that should trigger hover effect
+        const interactiveSelectors = [
+            'a', 'button', '.nav-pill', '.project-card', '.paper-card',
+            '.cta-button', '.project-link', '.download-button'
+        ];
+        
+        interactiveSelectors.forEach(selector => {
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest(selector)) {
+                    this.tracker?.classList.add('hovering');
+                }
+            });
+            
+            document.addEventListener('mouseout', (e) => {
+                if (e.target.closest(selector)) {
+                    this.tracker?.classList.remove('hovering');
+                }
+            });
+        });
+    }
+
+    show() {
+        if (this.tracker) {
+            this.tracker.style.opacity = '1';
+        }
+    }
+
+    hide() {
+        if (this.tracker) {
+            this.tracker.style.opacity = '0';
+        }
+    }
+
+    destroy() {
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafId);
+        }
+        if (this.tracker) {
+            this.tracker.remove();
+        }
+    }
+}
+
+/**
+ * Projects View Controller Class
  */
 class ProjectsViewController {
     constructor() {
@@ -1010,9 +1122,6 @@ class ProjectsViewController {
         this.addKeyboardHint();
     }
 
-    /**
-     * Load user's preferred view from localStorage
-     */
     loadSavedView() {
         const savedView = localStorage.getItem('preferredProjectView');
         if (savedView && ['grid', 'list', 'timeline'].includes(savedView)) {
@@ -1021,9 +1130,6 @@ class ProjectsViewController {
         }
     }
 
-    /**
-     * Setup view toggle button functionality
-     */
     setupViewToggle() {
         this.viewButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -1033,9 +1139,6 @@ class ProjectsViewController {
         });
     }
 
-    /**
-     * Switch between grid, list, and timeline views
-     */
     switchView(viewName) {
         // Update buttons
         this.viewButtons.forEach(btn => {
@@ -1088,9 +1191,6 @@ class ProjectsViewController {
         }
     }
 
-    /**
-     * Animate elements when changing views
-     */
     animateViewChange(viewName) {
         switch(viewName) {
             case 'grid':
@@ -1105,9 +1205,6 @@ class ProjectsViewController {
         }
     }
 
-    /**
-     * Stagger animation for grid cards
-     */
     animateGridCards() {
         const cards = document.querySelectorAll('.grid-view .project-card');
         cards.forEach((card, index) => {
@@ -1122,9 +1219,6 @@ class ProjectsViewController {
         });
     }
 
-    /**
-     * Animate list items
-     */
     animateListItems() {
         const items = document.querySelectorAll('.list-view .list-item');
         items.forEach((item, index) => {
@@ -1139,9 +1233,6 @@ class ProjectsViewController {
         });
     }
 
-    /**
-     * Animate timeline items
-     */
     animateTimelineItems() {
         const items = document.querySelectorAll('.timeline-view .timeline-item');
         items.forEach((item, index) => {
@@ -1156,9 +1247,6 @@ class ProjectsViewController {
         });
     }
 
-    /**
-     * Setup keyboard shortcuts for view switching
-     */
     setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
             // Check if user is typing in an input
@@ -1192,9 +1280,6 @@ class ProjectsViewController {
         });
     }
 
-    /**
-     * Show a temporary tooltip for keyboard shortcuts
-     */
     showTooltip(message) {
         const existingTooltip = document.querySelector('.view-tooltip');
         if (existingTooltip) {
@@ -1226,9 +1311,6 @@ class ProjectsViewController {
         }, 2000);
     }
 
-    /**
-     * Add data labels for mobile list view
-     */
     addListDataLabels() {
         const isMobile = window.innerWidth <= 968;
         if (!isMobile) return;
@@ -1246,9 +1328,6 @@ class ProjectsViewController {
         });
     }
 
-    /**
-     * Add keyboard hint to view toggle
-     */
     addKeyboardHint() {
         const viewToggle = document.querySelector('.view-toggle');
         if (viewToggle && !viewToggle.querySelector('.keyboard-hint')) {
@@ -1259,9 +1338,6 @@ class ProjectsViewController {
         }
     }
 
-    /**
-     * Setup entrance animations for initial load
-     */
     setupAnimations() {
         // Add subtle hover effects
         const cards = document.querySelectorAll('.project-card');
@@ -1405,5 +1481,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for module usage
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { AdvancedPortfolio, TypewriterEffect, ProjectsViewController };
+    module.exports = { AdvancedPortfolio, TypewriterEffect, ProjectsViewController, SubtleMouseTracker };
 }
