@@ -6,34 +6,60 @@
 
 {% block content %}
 <div class="main-container">
-    <!-- Floating Background Elements -->
-    <div class="floating-elements">
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-    </div>
 
     <!-- Left Side - Professional Header -->
     <div class="profile-side">
         <div class="professional-header">
-            <h1 class="name-title">{{ personal_info.name|default:"Jem Andrew" }}</h1>
-            <div class="typewriter-text">
-                <span id="typewriter-output"></span>
-                <span class="typewriter-cursor"></span>
-            </div>
-            
-            <div class="credentials-row">
-                <span class="credential-badge primary">BuildChorus</span>
-                <span class="credential-badge secondary">MSc Computer Science</span>
+            <h1 class="name-title">Hi, I’m {{ personal_info.name|default:"Jem Andrew" }}</h1>
+            <p class="role-subtitle">A Software Developer</p>
+            <div class="hero-socials" aria-label="Social links">
+                <a class="bubble" href="https://github.com/Jem_Andrew" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a class="bubble" href="https://linkedin.com/in/JemAndrew" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a class="bubble" href="mailto:andrewjem8@gmail.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
             </div>
         </div>
 
+
         <!-- Personal Bio Section -->
-        <div style="margin: 2rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.08); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);">
-            <p style="font-size: 1.1rem; line-height: 1.6; color: var(--text-gray); margin: 0;">
-                {{ personal_info.bio }}
-            </p>
+        <!-- Resume Download Card (reuses dissertation-card styles) -->
+        <div class="dissertation-card resume-card" aria-label="Download Resume">
+            <div class="paper-stack">
+                <div class="paper-base"></div>
+                <div class="paper-middle"></div>
+                <div class="paper-top">
+                    <h3 class="dissertation-title">Resume</h3>
+                    <h4 class="dissertation-subtitle">One-page CV (PDF)</h4>
+
+                    <div class="dissertation-meta">
+                        <span class="university-badge">Updated {% now "M Y" %}</span>
+                        <span class="file-size">~ PDF</span>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">LLMs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download button reveals on hover (consistent with dissertations) -->
+            <div class="download-reveal">
+                <!-- Option A: static file (quickest) -->
+                <a href="{% static 'documents/Jem Andrew Resume.docx' %}" class="download-button" target="_blank" rel="noopener">
+                    <i class="fas fa-file-arrow-down"></i>
+                    Download CV
+                </a>
+            </div>
         </div>
+
     </div>
 
     <!-- Right Side - Content -->
@@ -42,88 +68,37 @@
         <p class="content-intro">
             {{ personal_info.bio_extended }}
         </p>
-
-        <div class="achievements-grid">
-            <div class="achievement-item">
-                <span class="achievement-number">2+</span>
-                <span class="achievement-label">Years Experience</span>
-            </div>
-            <div class="achievement-item">
-                <span class="achievement-number">84%</span>
-                <span class="achievement-label">Top Module Score</span>
-            </div>
-            <div class="achievement-item">
-                <span class="achievement-number">{{ projects|length|default:"5" }}</span>
-                <span class="achievement-label">Major Projects</span>
-            </div>
-            <div class="achievement-item">
-                <span class="achievement-number">15%</span>
-                <span class="achievement-label">AI Improvement</span>
-            </div>
-        </div>
-
         <div class="experience-section">
             <h2 class="section-title">Current Role</h2>
-            {% if current_position %}
-                <div class="experience-header">
-                    <div class="company-logo">🏗️</div>
+
+            <article class="project-simple-card role-card">
+                <div class="role-header">
+                    <img src="{% static 'images/Buildchorus.jpg' %}" alt="BuildChorus logo" class="role-logo">
                     <div>
-                        <div class="experience-title">{{ current_position.position }}</div>
-                        <div class="experience-company">{{ current_position.company }} • {{ current_position.location|default:"Newcastle, UK" }}</div>
+                    <h3 class="project-simple-title">Software Engineer</h3>
+                    <a href="https://buildchorus.com" target="_blank" rel="noopener" class="brand-link">
+                        BuildChorus
+                    </a>
                     </div>
                 </div>
-                <p class="experience-description">
-                    {{ current_position.description }}
-                </p>
-                {% if current_position.responsibilities %}
-                <ul style="color: var(--text-gray); font-size: 0.95rem; margin-top: 1rem; padding-left: 1.5rem; line-height: 1.6;">
-                    {% for responsibility in current_position.responsibilities %}
-                    <li style="margin-bottom: 0.5rem;">{{ responsibility }}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                <div class="skills-tags">
-                    {% for skill in current_position.skills_list|slice:":6" %}
-                        <span class="skill-tag">{{ skill }}</span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <!-- Fallback content if no position data -->
-                <div class="experience-header">
-                    <div class="company-logo">🏗️</div>
-                    <div>
-                        <div class="experience-title">Software Engineer</div>
-                        <div class="experience-company">BuildChorus • Newcastle, UK</div>
-                    </div>
-                </div>
-                <p class="experience-description">
+
+                <p class="project-simple-description">
                     Working at BuildChorus where I develop full-stack features for our construction management SaaS platform.
                 </p>
-                <ul style="color: var(--text-gray); font-size: 0.95rem; margin-top: 1rem; padding-left: 1.5rem; line-height: 1.6;">
-                    <li style="margin-bottom: 0.5rem;">Building user configurability features for material procurement strategies</li>
-                    <li style="margin-bottom: 0.5rem;">Deploying containerised applications on Google Cloud Platform using Docker</li>
-                    <li style="margin-bottom: 0.5rem;">Optimising PostgreSQL databases for complex construction data</li>
-                    <li style="margin-bottom: 0.5rem;">Collaborating through GitLab workflows and Jira sprint planning</li>
-                </ul>
-                <div class="skills-tags">
-                    <span class="skill-tag">Django 5.0.6</span>
-                    <span class="skill-tag">PostgreSQL 17</span>
-                    <span class="skill-tag">Google OR-Tools</span>
-                    <span class="skill-tag">Docker</span>
-                </div>
-            {% endif %}
-        </div>
 
-        <div class="cta-section">
-            <a href="{% url 'portfolio:education' %}" class="cta-button primary">
-                <i class="fas fa-graduation-cap me-1"></i>View Education
-            </a>
-            <a href="{% url 'portfolio:projects' %}" class="cta-button">
-                <i class="fas fa-laptop-code me-1"></i>View Projects
-            </a>
-            <a href="mailto:{{ personal_info.email|default:'andrewjem8@gmail.com' }}" class="cta-button">
-                <i class="fas fa-envelope me-1"></i>Get in Touch
-            </a>
+                <ul class="role-bullets">
+                    <li>Building user configurability features for material procurement strategies</li>
+                    <li>Deploying containerised apps on Google Cloud Platform using Docker</li>
+                    <li>Optimising PostgreSQL databases for complex construction data</li>
+                    <li>Collaborating through GitLab workflows and Jira sprint planning</li>
+                </ul>
+
+                <div class="project-simple-links">
+                    <a href="https://buildchorus.com" target="_blank" rel="noopener" class="simple-link demo">
+                    <i class="fas fa-external-link-alt"></i> View Website
+                    </a>
+                </div>
+            </article>
         </div>
     </div>
 </div>

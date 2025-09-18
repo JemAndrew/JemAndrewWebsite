@@ -6,20 +6,18 @@ PERSONAL_INFO = {
     'name': 'Jem Andrew',
     'title': 'Software Engineer | MSc Computer Science',
     'email': 'andrewjem8@gmail.com',
-    'location': 'Newcastle, UK',
+    'location': '',
     'linkedin_url': 'https://www.linkedin.com/in/james-andrew-439771333/',
     'github_url': 'https://github.com/JemAndrew',
     'bio': """I'm a software engineer passionate about crafting well-structured, logical backend code. 
               I'm fascinated by machine learning and large language models, particularly model training. 
               I'm well-versed in cybersecurity and working with databases of any scale, and I love putting 
               these skills to the test through my work and personal projects.""",
-    'bio_extended': """My journey began with self-teaching – diving into Codecademy courses and watching free 
-                      online lectures from top universities. Then came my BSc in Biology, which unexpectedly 
-                      sparked my love for coding through R. I was captivated by its creative power to produce 
-                      the scientific figures you see in journals and research papers. This passion led me to 
-                      pursue a Master's in Computer Science, where I fully immersed myself in a much broader 
-                      skill set – from Java and SQL to cybersecurity and ethical hacking with tools like 
-                      Wireshark and nmap.""",
+    'bio_extended': """I started learning to code during my free time before university, exploring free published 
+                      lectures from leading institutions such as MIT and completing as many codeacademy courses as i could do.
+                      Then came my BSc in Biology, which unexpectedly sparked my love for coding through R. 
+                      I loved the creativeness of it, which led to this passion to pursue a Master's in Computer Science, where I fully 
+                      immersed myself in a much broader skill set – from Java and SQL to cybersecurity and ethical hacking.""",
     'typing_phrases': [
         "Software Engineer",
         "Backend Developer", 
@@ -33,8 +31,8 @@ PERSONAL_INFO = {
 EXPERIENCE = [
     {
         'position': 'Software Engineer',
-        'company': 'BuildChorus',
-        'location': 'Newcastle, UK',
+        'company': 'BuildChorus.com',
+        'location': '',
         'start_date': date(2025, 9, 1),
         'end_date': None,
         'is_current': True,
@@ -166,15 +164,15 @@ PROJECTS = [
         'title': 'Bike Route Planning Application',
         'short_description': 'Full-stack cycling route app built with Flask React and MongoDB in a 5-person team.',
         'detailed_description': """Collaborated in a 5-person team to build a cycling route application that scored 85%. 
-                                  I developed the REST API endpoints for user authentication and route management. 
-                                  We had to migrate from Google Places to HERE Maps API when Google deprecated theirs. 
-                                  The stack uses React frontend with Flask backend and MongoDB for data storage. 
-                                  We followed agile methodology with proper sprint planning and Git version control.""",
+                                I developed the REST API endpoints for user authentication and route management. 
+                                We had to migrate from Google Places to HERE Maps API when Google deprecated theirs. 
+                                The stack uses React frontend with Flask backend and MongoDB for data storage. 
+                                We followed agile methodology with proper sprint planning and Git version control.""",
         'technologies': 'Python, Flask, React, MongoDB, HERE Maps API',
         'category': 'academic',
         'status': 'completed',
         'featured': False,
-        'github_url': 'https://github.com/JemAndrew/bike-route-planning',
+        'github_url': 'https://github.com/JemAndrew/cycle_plan',  
         'live_demo_url': None,
         'created_date': date(2025, 3, 1),
         'key_features': [

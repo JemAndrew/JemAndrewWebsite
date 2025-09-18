@@ -4,19 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{% block title %}{{ personal_info.name|default:"Hi My Name Is Jem Andrew" }} - Software Engineer{% endblock %}</title>
     <meta name="description" content="{% block description %}James Andrew - Software Engineer specializing in Django, enterprise SaaS platforms, and full-stack development.{% endblock %}">
-    
+
+    <!-- Performance: preconnect to font hosts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons / Favicons (put files in /static/) -->
+    <link rel="icon" href="{% static 'favicon.ico' %}" sizes="any">
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+
+    <!-- Main CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    
+
+    <!-- Social sharing (safe defaults) -->
+    <meta property="og:title" content="{{ personal_info.name|default:'Jem Andrew' }} — Software Engineer">
+    <meta property="og:description" content="Django backends, data pipelines, and applied ML.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{% static 'og-image.jpg' %}">
+    <meta name="twitter:card" content="summary_large_image">
+
     {% block extra_css %}{% endblock %}
+
+    <!-- JSON-LD: Person schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "{{ personal_info.name|default:'Jem Andrew' }}",
+      "jobTitle": "{{ personal_info.title|default:'Software Engineer' }}",
+      "url": "{{ request.build_absolute_uri|default:'' }}",
+      "worksFor": { "@type": "Organization", "name": "{{ current_position.company|default:'BuildChorus' }}" },
+      "alumniOf": { "@type": "CollegeOrUniversity", "name": "Newcastle University" },
+      "sameAs": [
+        {% if personal_info.github_url %}"{{ personal_info.github_url }}"{% endif %}{% if personal_info.linkedin_url %}{% if personal_info.github_url %},{% endif %}"{{ personal_info.linkedin_url }}"{% endif %}
+      ]
+    }
+    </script>
 </head>
 <body data-page="{% block page_name %}{% endblock %}">
+    <a class="skip-link" href="#main">Skip to content</a>
     <!-- Navigation -->
     <div class="nav-container">
         <nav class="nav-pills">
@@ -33,10 +69,10 @@
     </div>
 
     <!-- Main Content -->
-    <main>
-        {% block content %}
-        {% endblock %}
+    <main id="main" role="main">
+        {% block content %}{% endblock %}
     </main>
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -67,7 +103,7 @@
     </footer>
 
     <!-- Custom JavaScript -->
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
     
     {% block extra_js %}{% endblock %}
 </body>

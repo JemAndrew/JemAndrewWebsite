@@ -1,6 +1,6 @@
 /**
  * Professional Portfolio JavaScript with Advanced Animations and Typewriter Effect
- * Enhanced with GitHub integration, smooth animations, and Projects Navigation
+ * Enhanced with GitHub integration, smooth animations, and Projects View Controller
  */
 
 class AdvancedPortfolio {
@@ -21,9 +21,9 @@ class AdvancedPortfolio {
         this.setupPerformanceMonitoring();
         this.setupInteractiveElements();
         this.setupTypewriter();
-        this.setupProjectsNavigation(); // NEW: Projects navigation
+        this.setupProjectsViewController(); // NEW: Projects view controller
         
-        console.log('Advanced Portfolio initialized with GitHub integration, Typewriter effect, and Projects Navigation');
+        console.log('Advanced Portfolio initialized with GitHub integration, Typewriter effect, and Projects View Controller');
     }
 
     /**
@@ -54,103 +54,13 @@ class AdvancedPortfolio {
     }
 
     /**
-     * Projects Navigation - NEW METHOD
+     * Projects View Controller - NEW INTEGRATED METHOD
      */
-    setupProjectsNavigation() {
+    setupProjectsViewController() {
         // Only run on projects page
-        if (!document.querySelector('.projects-nav')) return;
+        if (!document.querySelector('.projects-page')) return;
         
-        const navItems = document.querySelectorAll('.project-nav-item');
-        const projectCards = document.querySelectorAll('.project-card-wrapper');
-        
-        // Smooth scroll on click
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = item.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    // Update active state
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    item.classList.add('active');
-                    
-                    // Add highlight animation to target card
-                    this.highlightProjectCard(targetElement);
-                }
-            });
-        });
-        
-        // Scroll spy for active navigation
-        if (projectCards.length > 0) {
-            const observerOptions = {
-                root: null,
-                rootMargin: '-20% 0px -70% 0px',
-                threshold: 0
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.id;
-                        navItems.forEach(nav => {
-                            nav.classList.remove('active');
-                            if (nav.getAttribute('href') === `#${id}`) {
-                                nav.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, observerOptions);
-            
-            projectCards.forEach(card => {
-                observer.observe(card);
-            });
-        }
-        
-        // Mobile optimization
-        this.setupProjectsMobileNav(navItems);
-    }
-    
-    highlightProjectCard(element) {
-        const card = element.querySelector('.project-card-item');
-        if (!card) return;
-        
-        // Add highlight effect
-        card.style.transition = 'all 0.3s ease';
-        const originalBoxShadow = card.style.boxShadow;
-        const originalBorderColor = card.style.borderColor;
-        
-        card.style.boxShadow = '0 0 30px rgba(220, 38, 38, 0.4)';
-        card.style.borderColor = 'rgba(220, 38, 38, 0.5)';
-        
-        // Remove highlight after animation
-        setTimeout(() => {
-            card.style.boxShadow = originalBoxShadow || '';
-            card.style.borderColor = originalBorderColor || '';
-        }, 1000);
-    }
-    
-    setupProjectsMobileNav(navItems) {
-        const isMobile = window.innerWidth < 968;
-        if (!isMobile) return;
-        
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // Scroll nav into view if needed on mobile
-                setTimeout(() => {
-                    const nav = document.querySelector('.projects-nav');
-                    if (nav) {
-                        nav.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }
-                }, 500);
-            });
-        });
+        const controller = new ProjectsViewController();
     }
 
     /**
@@ -1078,6 +988,307 @@ class TypewriterEffect {
     }
 }
 
+/**
+ * Projects View Controller Class - NEW CLASS
+ */
+class ProjectsViewController {
+    constructor() {
+        this.currentView = 'grid';
+        this.viewButtons = document.querySelectorAll('.view-btn');
+        this.viewContents = document.querySelectorAll('.view-content');
+        this.projectsContainer = document.querySelector('.projects-container');
+        
+        this.init();
+    }
+
+    init() {
+        this.loadSavedView();
+        this.setupViewToggle();
+        this.setupKeyboardShortcuts();
+        this.setupAnimations();
+        this.addListDataLabels();
+        this.addKeyboardHint();
+    }
+
+    /**
+     * Load user's preferred view from localStorage
+     */
+    loadSavedView() {
+        const savedView = localStorage.getItem('preferredProjectView');
+        if (savedView && ['grid', 'list', 'timeline'].includes(savedView)) {
+            this.currentView = savedView;
+            this.switchView(savedView);
+        }
+    }
+
+    /**
+     * Setup view toggle button functionality
+     */
+    setupViewToggle() {
+        this.viewButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetView = button.dataset.view;
+                this.switchView(targetView);
+            });
+        });
+    }
+
+    /**
+     * Switch between grid, list, and timeline views
+     */
+    switchView(viewName) {
+        // Update buttons
+        this.viewButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+            if (btn.dataset.view === viewName) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+            }
+        });
+
+        // Fade out current view
+        const currentActive = document.querySelector('.view-content.active');
+        if (currentActive) {
+            currentActive.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Hide all views
+                this.viewContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+
+                // Show selected view with fade in
+                const targetContent = document.querySelector(`.${viewName}-view`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                    // Force reflow for animation
+                    void targetContent.offsetWidth;
+                    targetContent.style.opacity = '1';
+                }
+
+                // Update container data attribute
+                this.projectsContainer.setAttribute('data-view', viewName);
+                
+                // Save preference
+                localStorage.setItem('preferredProjectView', viewName);
+                this.currentView = viewName;
+
+                // Trigger view-specific animations
+                this.animateViewChange(viewName);
+            }, 300);
+        } else {
+            // Initial load - no animation needed
+            const targetContent = document.querySelector(`.${viewName}-view`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                targetContent.style.opacity = '1';
+            }
+            this.projectsContainer.setAttribute('data-view', viewName);
+        }
+    }
+
+    /**
+     * Animate elements when changing views
+     */
+    animateViewChange(viewName) {
+        switch(viewName) {
+            case 'grid':
+                this.animateGridCards();
+                break;
+            case 'list':
+                this.animateListItems();
+                break;
+            case 'timeline':
+                this.animateTimelineItems();
+                break;
+        }
+    }
+
+    /**
+     * Stagger animation for grid cards
+     */
+    animateGridCards() {
+        const cards = document.querySelectorAll('.grid-view .project-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }
+
+    /**
+     * Animate list items
+     */
+    animateListItems() {
+        const items = document.querySelectorAll('.list-view .list-item');
+        items.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-20px)';
+            
+            setTimeout(() => {
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, index * 50);
+        });
+    }
+
+    /**
+     * Animate timeline items
+     */
+    animateTimelineItems() {
+        const items = document.querySelectorAll('.timeline-view .timeline-item');
+        items.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-30px)';
+            
+            setTimeout(() => {
+                item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, index * 150);
+        });
+    }
+
+    /**
+     * Setup keyboard shortcuts for view switching
+     */
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Check if user is typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            // Check if on projects page
+            if (!document.querySelector('.projects-page')) return;
+
+            switch(e.key.toLowerCase()) {
+                case 'g':
+                    if (e.ctrlKey || e.metaKey) return;
+                    e.preventDefault();
+                    this.switchView('grid');
+                    this.showTooltip('Switched to Grid View');
+                    break;
+                case 'l':
+                    if (e.ctrlKey || e.metaKey) return;
+                    e.preventDefault();
+                    this.switchView('list');
+                    this.showTooltip('Switched to List View');
+                    break;
+                case 't':
+                    if (e.ctrlKey || e.metaKey) return;
+                    e.preventDefault();
+                    this.switchView('timeline');
+                    this.showTooltip('Switched to Timeline View');
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Show a temporary tooltip for keyboard shortcuts
+     */
+    showTooltip(message) {
+        const existingTooltip = document.querySelector('.view-tooltip');
+        if (existingTooltip) {
+            existingTooltip.remove();
+        }
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'view-tooltip';
+        tooltip.textContent = message;
+        tooltip.style.cssText = `
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        `;
+
+        document.body.appendChild(tooltip);
+
+        setTimeout(() => {
+            tooltip.style.opacity = '0';
+            setTimeout(() => tooltip.remove(), 300);
+        }, 2000);
+    }
+
+    /**
+     * Add data labels for mobile list view
+     */
+    addListDataLabels() {
+        const isMobile = window.innerWidth <= 968;
+        if (!isMobile) return;
+
+        const listItems = document.querySelectorAll('.list-item');
+        listItems.forEach(item => {
+            const cols = item.querySelectorAll('.list-col');
+            const labels = ['Year:', 'Project:', 'Tech:', 'Achievement:', 'Link:'];
+            
+            cols.forEach((col, index) => {
+                if (labels[index]) {
+                    col.setAttribute('data-label', labels[index]);
+                }
+            });
+        });
+    }
+
+    /**
+     * Add keyboard hint to view toggle
+     */
+    addKeyboardHint() {
+        const viewToggle = document.querySelector('.view-toggle');
+        if (viewToggle && !viewToggle.querySelector('.keyboard-hint')) {
+            const hint = document.createElement('div');
+            hint.className = 'keyboard-hint';
+            hint.innerHTML = '<span style="font-size: 0.75rem; color: var(--text-light); margin-left: 1rem;">Press G, L, or T to switch views</span>';
+            viewToggle.appendChild(hint);
+        }
+    }
+
+    /**
+     * Setup entrance animations for initial load
+     */
+    setupAnimations() {
+        // Add subtle hover effects
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+
+        // Animate year markers in timeline on scroll
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideInLeft 0.6s ease forwards';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.year-marker').forEach(marker => {
+                observer.observe(marker);
+            });
+        }
+    }
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     new AdvancedPortfolio();
@@ -1098,6 +1309,38 @@ document.addEventListener('DOMContentLoaded', () => {
         @keyframes slideInDown {
             from { transform: translateY(-10px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .keyboard-hint {
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .keyboard-hint {
+                display: inline-block;
+            }
         }
         
         .notification-content {
@@ -1162,5 +1405,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for module usage
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { AdvancedPortfolio, TypewriterEffect };
+    module.exports = { AdvancedPortfolio, TypewriterEffect, ProjectsViewController };
 }
