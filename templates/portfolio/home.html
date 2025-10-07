@@ -2,104 +2,200 @@
 {% load static %}
 
 {% block title %}Jem Andrew - Software Engineer{% endblock %}
-{% block page_name %}home{% endblock %}
 
 {% block content %}
-<div class="main-container">
-
-    <!-- Left Side - Professional Header -->
-    <div class="profile-side">
-        <div class="professional-header">
-            <h1 class="name-title">Hi, I’m {{ personal_info.name|default:"Jem Andrew" }}</h1>
-            <p class="role-subtitle">A Software Developer</p>
-            <div class="hero-socials" aria-label="Social links">
-                <a class="bubble" href="https://github.com/Jem_Andrew" target="_blank" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
+<h1 style="color: red; font-size: 3rem; padding: 5rem; background: white;">TEMPLATE IS LOADING!</h1>
+<!-- Hero Section -->
+<section class="section" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div class="container">
+        <div style="max-width: 800px;">
+            <!-- Small intro -->
+            <p style="color: var(--primary-light); font-family: var(--font-mono); font-size: 0.95rem; margin-bottom: 1.5rem;">
+                Hi, my name is
+            </p>
+            
+            <!-- Big name -->
+            <h1 style="font-size: clamp(3rem, 8vw, 5rem); margin-bottom: 0.5rem; line-height: 1.1;">
+                Jem Andrew
+            </h1>
+            
+            <!-- Subtitle -->
+            <h2 style="font-size: clamp(2rem, 6vw, 4rem); color: var(--text-muted); font-weight: 600; margin-bottom: 2rem; line-height: 1.1;">
+                I build things for the web.
+            </h2>
+            
+            <!-- Bio paragraph -->
+            <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; line-height: 1.8; margin-bottom: 3rem;">
+                I'm a software engineer specialising in backend development with 
+                <span style="color: var(--primary-light);">Django</span> and 
+                <span style="color: var(--primary-light);">Python</span>. 
+                Currently building enterprise SaaS platforms at 
+                <a href="https://buildchorus.com" target="_blank" style="color: var(--primary-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;">BuildChorus</a>.
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                <a href="/projects/" class="btn btn-primary">
+                    <i class="fas fa-code"></i>
+                    View My Work
                 </a>
-                <a class="bubble" href="https://linkedin.com/in/JemAndrew" target="_blank" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a class="bubble" href="mailto:andrewjem8@gmail.com" aria-label="Email">
+                <a href="mailto:andrewjem8@gmail.com" class="btn">
                     <i class="fas fa-envelope"></i>
+                    Get In Touch
                 </a>
             </div>
-        </div>
-
-
-        <!-- Personal Bio Section -->
-        <!-- Resume Download Card (reuses dissertation-card styles) -->
-        <div class="paper-card" aria-label="Download Resume">
-            <div class="paper-stack">
-                <div class="paper-base"></div>
-                <div class="paper-middle"></div>
-                <div class="paper-top">
-                    <h3 class="paper-title">Resume</h3>
-                    <h4 class="paper-subtitle">One-page CV (PDF)</h4>
-
-                    <div class="paper-meta">
-                        <span class="university-badge">Updated {% now "M Y" %}</span>
-                        <span class="file-size">~ PDF</span>
+            
+            <!-- Quick stats -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-light); margin-bottom: 0.25rem;">
+                        {{ projects|length }}+
                     </div>
-
-                    <div style="margin-top: 1rem;">
-                        <span class="skill-tag">Django</span>
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">PostgreSQL</span>
-                        <span class="skill-tag">LLMs</span>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">
+                        Projects Built
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-light); margin-bottom: 0.25rem;">
+                        2
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">
+                        Degrees
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-light); margin-bottom: 0.25rem;">
+                        3+
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 0.9rem;">
+                        Years Coding
                     </div>
                 </div>
             </div>
-
-            <!-- Download button reveals on hover (consistent with dissertations) -->
-            <div class="download-reveal">
-                <!-- Option A: static file (quickest) -->
-                <a href="{% static 'documents/Jem Andrew Resume.docx' %}" class="download-button" target="_blank" rel="noopener">
-                    <i class="fas fa-file-arrow-down"></i>
-                    Download CV
-                </a>
-            </div>
         </div>
-
     </div>
+</section>
 
-    <!-- Right Side - Content -->
-    <div class="content-side">
-        <!-- Journey Story -->
-        <p class="home-section-title">
-            {{ personal_info.bio_extended }}
-        </p>
-        <div class="experience-section">
-            <h2 class="section-title">Current Role</h2>
-
-            <article class="project-simple-card role-card">
-                <div class="role-header">
-                    <img src="{% static 'images/Buildchorus.jpg' %}" alt="BuildChorus logo" class="role-logo">
-                    <div>
-                    <h3 class="project-simple-title">Software Engineer</h3>
-                    <a href="https://buildchorus.com" target="_blank" rel="noopener" class="brand-link">
-                        BuildChorus
-                    </a>
-                    </div>
-                </div>
-
-                <p class="project-simple-description">
-                    Working at BuildChorus where I develop full-stack features for our construction management SaaS platform.
+<!-- About Section -->
+<section class="section" style="min-height: auto; padding: 6rem 0;">
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
+            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">01.</span>
+            About Me
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+            <!-- Left: Bio -->
+            <div>
+                <p style="margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
+                    {{ personal_info.bio_extended|default:"I started learning to code during my free time before university, exploring free published lectures from leading institutions. Then came my BSc in Biology, which unexpectedly sparked my love for coding through R." }}
                 </p>
-
-                <ul class="role-bullets">
-                    <li>Building user configurability features for material procurement strategies</li>
-                    <li>Deploying containerised apps on Google Cloud Platform using Docker</li>
-                    <li>Optimising PostgreSQL databases for complex construction data</li>
-                    <li>Collaborating through GitLab workflows and Jira sprint planning</li>
-                </ul>
-
-                <div class="project-simple-links">
-                    <a href="https://buildchorus.com" target="_blank" rel="noopener" class="project-link primary">
-                    <i class="fas fa-external-link-alt"></i> View Website
-                    </a>
+                
+                <p style="margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
+                    I love the creativity of it, which led to pursuing a Master's in Computer Science, where I fully immersed myself in a much broader skill set – from Java and SQL to cybersecurity and machine learning.
+                </p>
+                
+                <p style="color: var(--text-secondary); line-height: 1.8;">
+                    These days, I focus on building scalable backend systems and exploring AI/ML applications.
+                </p>
+                
+                <!-- Tech stack -->
+                <div style="margin-top: 2rem;">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Technologies I work with:
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
+                            Python & Django
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
+                            PostgreSQL
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
+                            JavaScript & React
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
+                            Docker & GCP
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
+                            PyTorch & ML
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
+                            REST APIs
+                        </div>
+                    </div>
                 </div>
-            </article>
+            </div>
+            
+            <!-- Right: Image or visual element -->
+            <div style="position: relative;">
+                <div style="aspect-ratio: 1; background: var(--bg-card); border: 2px solid var(--primary); border-radius: 8px; position: relative; overflow: hidden;">
+                    <!-- Placeholder for profile image -->
+                    <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 8rem; color: var(--border);">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    {# When you add an image, replace the icon above with: #}
+                    {# <img src="{% static 'images/profile.jpg' %}" alt="Jem Andrew" style="width: 100%; height: 100%; object-fit: cover;"> #}
+                </div>
+                <!-- Decorative border effect -->
+                <div style="position: absolute; inset: 20px; border: 2px solid var(--primary); border-radius: 8px; z-index: -1; transition: all 0.3s;"></div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Featured Work Preview -->
+<section class="section" style="min-height: auto; padding: 6rem 0;">
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
+            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
+            Featured Work
+        </h2>
+        
+        <div class="grid grid-2" style="margin-bottom: 3rem;">
+            {% for project in projects|slice:":2" %}
+            <div class="card">
+                <div class="card-meta">
+                    <span class="tag">{{ project.get_category_display }}</span>
+                    <span style="margin-left: auto; color: var(--text-muted);">{{ project.created_date.year }}</span>
+                </div>
+                
+                <h3 class="card-title">{{ project.title }}</h3>
+                
+                <p class="card-description">
+                    {{ project.short_description }}
+                </p>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0;">
+                    {% for tech in project.technology_list|slice:":3" %}
+                    <span class="tag" style="font-size: 0.8rem;">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+                
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank" class="btn" style="margin-top: 1rem;">
+                    <i class="fab fa-github"></i>
+                    View Code
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="/projects/" class="btn btn-primary">
+                View All Projects
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}

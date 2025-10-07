@@ -1,300 +1,275 @@
 {% extends 'portfolio/base.html' %}
-{% load static %}
 
-{% block title %}Education - {{ personal_info.name|default:"Jem Andrew" }}{% endblock %}
-{% block page_name %}education{% endblock %}
+{% block title %}Education - Jem Andrew{% endblock %}
 
 {% block content %}
-<div class="main-container">
-    <!-- Left Side - Academic Research -->
-    <div class="left-side">
-        <div class="academic-research-header professional-header">
-            <h1 class="name-title">Academic Research</h2>
-            <p class="content-intro">
-                Downloadable dissertations showcasing research in medical AI and CRISPR gene editing
-            </p>
-        </div>
-
-        <!-- Dissertation Downloads Container -->
-        <div class="dissertation-downloads">
-            <!-- MSc Dissertation Card -->
-            <div class="paper-card dissertation-msc" data-degree="msc">
-                <div class="paper-stack">
-                    <div class="paper-base"></div>
-                    <div class="paper-middle"></div>
-                    <div class="paper-top">
-                        <h3 class="paper-title">
-                            <i class="fas fa-graduation-cap" style="color: var(--primary-red); margin-right: .5rem;"></i>
-                            MSc Dissertation
-                        </h3>
-                        <h4 class="paper-subtitle">
-                            CNN Architectures for Automated Skin Cancer Detection
-                        </h4>
-
-                        <div class="paper-meta">
-                            <span class="university-badge">
-                                <i class="fas fa-university" style="margin-right: .3rem;"></i>
-                                Newcastle
-                            </span>
-                            <span class="file-size">
-                                <i class="fas fa-file-pdf" style="margin-right: .3rem;"></i>
-                                2.3 MB
-                            </span>
-                        </div>
-
-                        <div class="skills-tags" style="margin-top: 1rem;">
-                            <span class="skill-tag">PyTorch</span>
-                            <span class="skill-tag">CNN</span>
-                            <span class="skill-tag">Medical AI</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="download-reveal">
-                    <a href="{% url 'portfolio:download_msc' %}" class="download-button">
-                        <i class="fas fa-download"></i>
-                        Download PDF
-                    </a>
-                </div>
-            </div>
-
-            <!-- Spacer to align BSc with its degree box -->
-            <div class="dissertation-spacer"></div>
-
-            <!-- BSc Dissertation Card -->
-            <div class="paper-card dissertation-bsc" data-degree="bsc">
-                <div class="paper-stack">
-                    <div class="paper-base"></div>
-                    <div class="paper-middle"></div>
-                    <div class="paper-top">
-                        <h3 class="paper-title">
-                            <i class="fas fa-dna" style="color: var(--primary-red); margin-right: .5rem;"></i>
-                            BSc Dissertation
-                        </h3>
-                        <h4 class="paper-subtitle">
-                            CRISPR Gene Editing in Wheat and Barley Disease Resistance
-                        </h4>
-
-                        <div class="paper-meta">
-                            <span class="university-badge">
-                                <i class="fas fa-university" style="margin-right: .3rem;"></i>
-                                Newcastle
-                            </span>
-                            <span class="file-size">
-                                <i class="fas fa-file-pdf" style="margin-right: .3rem;"></i>
-                                1.8 MB
-                            </span>
-                        </div>
-
-                        <div class="skills-tags" style="margin-top: 1rem;">
-                            <span class="skill-tag">R</span>
-                            <span class="skill-tag">Bioinformatics</span>
-                            <span class="skill-tag">CRISPR</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="download-reveal">
-                    <a href="{% url 'portfolio:download_bsc' %}" class="download-button">
-                        <i class="fas fa-download"></i>
-                        Download PDF
-                    </a>
-                </div>
-            </div>
-        </div>
+<!-- Page Header -->
+<section style="padding: 8rem 0 4rem 0;">
+    <div class="container">
+        <p style="color: var(--primary-light); font-family: var(--font-mono); font-size: 0.95rem; margin-bottom: 1rem;">
+            My Academic Journey
+        </p>
+        <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1.5rem;">
+            Education
+        </h1>
+        <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; line-height: 1.8;">
+            From biology to computer science – a journey that combined scientific rigour with computational thinking.
+        </p>
     </div>
+</section>
 
-    <!-- Right Side - Academic Timeline -->
-    <div class="right-side">
-        <div class="education-hero">
-            <h1 class="section-title">My Degrees</h1>
-        </div>
-
-        <!-- Timeline Section -->
-        <div class="timeline-section">
-            
-            
-            <!-- MSc Computer Science -->
-            <div class="timeline-item degree-msc with-connector" data-degree="msc">
-                <div class="degree-header">
-                    <div>
-                        <div class="degree-title">
-                            <i class="fas fa-laptop-code" style="color: var(--primary-red); margin-right: .5rem;"></i>
-                            MSc Computer Science
-                        </div>
-                        <div class="institution">Newcastle University</div>
-                        <div class="duration">
-                            2024 - 2025 • <strong style="color: var(--text-white);">Merit</strong>
-                        </div>
-                    </div>
-                    <div class="degree-icon" style="font-size: 2rem; opacity: .2;">
-                        <i class="fas fa-award"></i>
-                    </div>
-                </div>
-
-                <div class="modules-grid">
-                    <div class="module-item highlight">
-                        <span class="module-name">Advanced Programming</span>
-                        <span class="module-grade"><strong>84%</strong></span>
-                    </div>
-                    <div class="module-item highlight">
-                        <span class="module-name">Software Engineering & Team</span>
-                        <span class="module-grade"><strong>84%</strong></span>
-                    </div>
-                    <div class="module-item highlight">
-                        <span class="module-name">Database Systems</span>
-                        <span class="module-grade"><strong>83%</strong></span>
-                    </div>
-                    <div class="module-item highlight">
-                        <span class="module-name">Computer Networks</span>
-                        <span class="module-grade"><strong>82%</strong></span>
-                    </div>
-                    <div class="module-item highlight">
-                        <span class="module-name">Cybersecurity</span>
-                        <span class="module-grade"><strong>77%</strong></span>
-                    </div>
-                    <div class="module-item highlight">
-                        <span class="module-name">Programming & Data</span>
-                        <span class="module-grade"><strong>76%</strong></span>
-                    </div>
-                </div>
-
-                <p class="degree-description" style="margin-top: 1rem;">
-                    <strong>Dissertation:</strong> Comparison of Novel vs Standard CNN Architectures for Automated Skin Cancer Detection.
-                    Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning architectures.
-                </p>
-
-                <div class="skills-tags">
-                    <span class="skill-tag">PyTorch</span>
-                    <span class="skill-tag">Python</span>
-                    <span class="skill-tag">Machine Learning</span>
-                    <span class="skill-tag">CNN</span>
-                    <span class="skill-tag">Medical AI</span>
-                </div>
-            </div>
-
-            <!-- BSc Biology -->
-            <div class="timeline-item degree-bsc with-connector" data-degree="bsc">
-                <div class="degree-header">
-                    <div>
-                        <div class="degree-title">
-                            <i class="fas fa-microscope" style="color: var(--primary-red); margin-right: .5rem;"></i>
-                            BSc (Hons) Biology
-                        </div>
-                        <div class="institution">Newcastle University</div>
-                        <div class="duration">
-                            2021 - 2024 • <strong style="color: var(--text-white);">Upper Second-Class Honours (2:1)</strong>
-                        </div>
-                    </div>
-                    <div class="degree-icon" style="font-size: 2rem; opacity: .2;">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                </div>
-
-                <div class="modules-grid">
-                    <div class="module-item highlight">
-                        <span class="module-name">Research Project</span>
-                        <span class="module-grade"><strong>81%</strong></span>
-                    </div>
-                    <div class="module-item highlight">
-                        <span class="module-name">Molecular Biology Research</span>
-                        <span class="module-grade"><strong>73%</strong></span>
-                    </div>
-                    <div class="module-item highlight">
-                        <span class="module-name">Microbial Genomics</span>
-                        <span class="module-grade"><strong>70%</strong></span>
-                    </div>
-                    <div class="module-item">
-                        <span class="module-name">Physiological Zoology</span>
-                        <span class="module-grade">66%</span>
-                    </div>
-                    <div class="module-item">
-                        <span class="module-name">Vertebrate Biology</span>
-                        <span class="module-grade">65%</span>
-                    </div>
-                    <div class="module-item">
-                        <span class="module-name">Animal Function</span>
-                        <span class="module-grade">62%</span>
-                    </div>
-                </div>
-
-                <p class="degree-description" style="margin-top: 1rem;">
-                    <strong>Dissertation (81%):</strong> A Systematic Review of CRISPR Gene Editing in Enhancing Fusarium Head Blight Resistance
-                    in Wheat and Barley. This research sparked my interest in computational approaches to biological
-                    problems and led me to pursue computer science.
-                </p>
-
-                <div class="skills-tags">
-                    <span class="skill-tag">R</span>
-                    <span class="skill-tag">Statistical Analysis</span>
-                    <span class="skill-tag">Bioinformatics</span>
-                    <span class="skill-tag">Research Methods</span>
-                    <span class="skill-tag">Scientific Writing</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Key Takeaways -->
-    </div>
-</div>
-
-<!-- Hover connection script -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Highlight connections on hover
-    const dissertationCards = document.querySelectorAll('.paper-card');
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    
-    dissertationCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            const degree = this.getAttribute('data-degree');
-            const correspondingTimeline = document.querySelector(`.timeline-item[data-degree="${degree}"]`);
-            if (correspondingTimeline) {
-                correspondingTimeline.style.borderColor = 'rgba(220, 38, 38, 0.5)';
-                correspondingTimeline.style.transform = 'translateX(-4px)';
-            }
-        });
+<!-- Degrees Timeline -->
+<section style="padding: 4rem 0;">
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
+            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">01.</span>
+            Degrees
+        </h2>
         
-        card.addEventListener('mouseleave', function() {
-            const degree = this.getAttribute('data-degree');
-            const correspondingTimeline = document.querySelector(`.timeline-item[data-degree="${degree}"]`);
-            if (correspondingTimeline) {
-                correspondingTimeline.style.borderColor = '';
-                correspondingTimeline.style.transform = '';
-            }
-        });
-    });
-});
-</script>
-<script>
-// Temporary alignment helper - remove after fixing
-document.addEventListener('DOMContentLoaded', function() {
-    // Add visual guides
-    document.querySelectorAll('.paper-card').forEach(card => {
-        const guide = document.createElement('div');
-        guide.style.cssText = `
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            width: 50px;
-            height: 2px;
-            background: lime;
-            z-index: 9999;
-            pointer-events: none;
-        `;
-        card.appendChild(guide);
-    });
-    
-    // Log positions
-    const mscCard = document.querySelector('[data-degree="msc"]');
-    const mscBox = document.querySelector('.degree-msc');
-    const bscCard = document.querySelector('[data-degree="bsc"]');
-    const bscBox = document.querySelector('.degree-bsc');
-    
-    console.log('MSc Card Center:', mscCard.offsetTop + (mscCard.offsetHeight / 2));
-    console.log('MSc Box Top:', mscBox.offsetTop);
-    console.log('BSc Card Center:', bscCard.offsetTop + (bscCard.offsetHeight / 2));
-    console.log('BSc Box Top:', bscBox.offsetTop);
-});
-</script>
+        <div style="position: relative;">
+            <!-- Timeline line -->
+            <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border);"></div>
+            
+            {% for education in education_list %}
+            <div class="card" style="margin-bottom: 3rem; margin-left: 3rem; position: relative;">
+                <!-- Timeline dot -->
+                <div style="position: absolute; left: -3.5rem; top: 2rem; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; border: 3px solid var(--bg-dark);"></div>
+                
+                <!-- Degree header -->
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 class="card-title" style="margin-bottom: 0.5rem;">
+                            {{ education.degree_type }} {{ education.subject }}
+                        </h3>
+                        <div class="card-subtitle">
+                            {{ education.institution }}
+                        </div>
+                        <div class="card-meta">
+                            {{ education.start_date|date:"Y" }} - {{ education.end_date|date:"Y" }}
+                            {% if education.is_current %}(Current){% endif %}
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-light);">
+                            {{ education.grade }}
+                        </div>
+                        {% if education.duration_years %}
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">
+                            {{ education.duration_years }} years
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <p class="card-description" style="margin-bottom: 1.5rem;">
+                    {{ education.description }}
+                </p>
+                
+                <!-- Modules grid (if available) -->
+                {% if education.modules %}
+                <div style="margin: 2rem 0;">
+                    <h4 style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 1rem; font-weight: 500;">
+                        Key Modules
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
+                        {% for module in education.modules %}
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 6px; transition: all 0.2s;">
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">
+                                {{ module.name }}
+                            </span>
+                            <span style="color: var(--primary-light); font-weight: 600; font-size: 0.95rem;">
+                                {{ module.grade }}%
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Technologies/Skills -->
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;">
+                    {% for tech in education.technologies_list %}
+                    <span class="tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Dissertations Section -->
+<section style="padding: 4rem 0;">
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
+            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
+            Research & Dissertations
+        </h2>
+        
+        <div class="grid grid-2">
+            <!-- MSc Dissertation -->
+            <div class="card dissertation-card" style="position: relative; overflow: visible; cursor: pointer;">
+                <!-- Icon -->
+                <div style="width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i class="fas fa-brain" style="font-size: 2rem; color: var(--primary-light);"></i>
+                </div>
+                
+                <!-- Title -->
+                <h3 class="card-title" style="margin-bottom: 1rem;">
+                    MSc Dissertation
+                </h3>
+                
+                <!-- Subtitle -->
+                <div class="card-subtitle" style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;">
+                    CNN Architectures for Automated Skin Cancer Detection
+                </div>
+                
+                <!-- Meta info -->
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                        <i class="fas fa-graduation-cap"></i>
+                        Newcastle University
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                        <i class="fas fa-file-pdf"></i>
+                        PDF Document
+                    </span>
+                </div>
+                
+                <!-- Description -->
+                <p class="card-description" style="margin-bottom: 1.5rem;">
+                    Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning architectures for automated dermatological diagnosis.
+                </p>
+                
+                <!-- Tags -->
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+                    <span class="tag">PyTorch</span>
+                    <span class="tag">CNN</span>
+                    <span class="tag">Medical AI</span>
+                </div>
+                
+                <!-- Download button -->
+                <a href="{% url 'portfolio:download_msc' %}" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-download"></i>
+                    Download MSc Dissertation
+                </a>
+            </div>
+            
+            <!-- BSc Dissertation -->
+            <div class="card dissertation-card" style="position: relative; overflow: visible; cursor: pointer;">
+                <!-- Icon -->
+                <div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i class="fas fa-dna" style="font-size: 2rem; color: var(--accent);"></i>
+                </div>
+                
+                <!-- Title -->
+                <h3 class="card-title" style="margin-bottom: 1rem;">
+                    BSc Dissertation
+                </h3>
+                
+                <!-- Subtitle -->
+                <div class="card-subtitle" style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;">
+                    CRISPR Gene Editing for Disease Resistance in Crops
+                </div>
+                
+                <!-- Meta info -->
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                        <i class="fas fa-graduation-cap"></i>
+                        Newcastle University
+                    </span>
+                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                        <i class="fas fa-file-pdf"></i>
+                        PDF Document
+                    </span>
+                </div>
+                
+                <!-- Description -->
+                <p class="card-description" style="margin-bottom: 1.5rem;">
+                    A systematic review of CRISPR gene editing techniques in enhancing Fusarium Head Blight resistance in wheat and barley.
+                </p>
+                
+                <!-- Tags -->
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+                    <span class="tag" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--accent);">R</span>
+                    <span class="tag" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--accent);">Bioinformatics</span>
+                    <span class="tag" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--accent);">CRISPR</span>
+                </div>
+                
+                <!-- Download button -->
+                <a href="{% url 'portfolio:download_bsc' %}" class="btn" style="width: 100%; border-color: var(--accent); color: var(--accent);">
+                    <i class="fas fa-download"></i>
+                    Download BSc Dissertation
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Academic Achievements -->
+<section style="padding: 4rem 0;">
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
+            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">03.</span>
+            Highlights
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div class="card" style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; color: var(--primary-light); margin-bottom: 1rem;">
+                    84%
+                </div>
+                <div style="color: var(--text-secondary);">
+                    Highest Module Grade
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+                    Advanced Programming
+                </div>
+            </div>
+            
+            <div class="card" style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; color: var(--primary-light); margin-bottom: 1rem;">
+                    Merit
+                </div>
+                <div style="color: var(--text-secondary);">
+                    MSc Final Grade
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+                    Computer Science
+                </div>
+            </div>
+            
+            <div class="card" style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; color: var(--primary-light); margin-bottom: 1rem;">
+                    2:1
+                </div>
+                <div style="color: var(--text-secondary);">
+                    BSc Honours
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+                    Biology
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add hover effect for dissertation cards -->
+<style>
+.dissertation-card {
+    transition: all 0.3s ease;
+}
+
+.dissertation-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+}
+
+.dissertation-card:hover .btn {
+    transform: translateY(-2px);
+}
+</style>
 {% endblock %}
