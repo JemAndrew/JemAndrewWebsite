@@ -434,33 +434,40 @@ body {
     margin-bottom: 2rem;
 }
 
-/* FIXED: Dissertation downloads positioning */
 .dissertation-downloads {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0;
+    gap: 0;  /* Remove gap, we'll control spacing manually */
+    align-items: flex-start;
+    justify-content: flex-start;  /* Changed from center */
     margin: 0;
     padding: 0;
-    margin-top: 1rem;
+    margin-top: 8rem;  /* Push down to start aligning with first degree box */
 }
 
-.dissertation-downloads .paper-card {
+/* MSc dissertation card - align with MSc degree box */
+.paper-card.dissertation-msc,
+.paper-card[data-degree="msc"] {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+/* Spacer between dissertations - matches the gap between degree boxes */
+.dissertation-spacer {
+    height: 280px;  /* Adjust this to match the space between your degree boxes */
+}
+
+/* BSc dissertation card */
+.paper-card.dissertation-bsc,
+.paper-card[data-degree="bsc"] {
+    margin-top: 0;
     margin-bottom: 0;
 }
 
-/* FIXED: Spacer for BSc alignment */
-.dissertation-spacer {
-    height: 230px;
-}
-
-/* Connection lines that show relationship */
-.paper-card.dissertation-msc {
-    position: relative;
-}
-
-.paper-card.dissertation-bsc {
-    position: relative;
+/* Ensure timeline items have consistent heights */
+.timeline-item.degree-msc,
+.timeline-item.degree-bsc {
+    min-height: 360px;  /* Match dissertation card height */
 }
 
 .paper-card[data-degree="msc"]::after {
@@ -618,7 +625,7 @@ body {
     padding: 2rem;
     margin-bottom: 2rem;
     backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother, longer transition */
     position: relative;
     overflow: hidden;
 }
@@ -636,13 +643,29 @@ body {
 }
 
 .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-12px) scale(1.02); /* More dramatic lift */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); /* Larger shadow */
+    border-color: rgba(255, 255, 255, 0.25);
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.15), 
+        rgba(255, 255, 255, 0.08)); /* Brighter on hover */
 }
 
 .project-card:hover::before {
     opacity: 1;
+}
+
+/* Smooth internal element transitions on hover */
+
+
+.project-card:hover .project-tech {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.project-card:hover .tech-tag {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .project-header {
@@ -706,6 +729,25 @@ body {
     color: var(--text-light);
     font-weight: 400;
     transition: all 0.2s ease;
+}
+
+/* Project category badges */
+.project-category.personal {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.project-category.academic {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.project-category.professional {
+    background: rgba(251, 146, 60, 0.2);  /* Orange */
+    color: #fb923c;
+    border: 1px solid rgba(251, 146, 60, 0.3);
 }
 
 .tech-tag:hover {
@@ -819,6 +861,66 @@ body {
     border-radius: 50%;
     transform: translateY(-50%);
     box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Add smooth transition */
+    z-index: 2; /* Ensure it stays above other elements */
+}
+
+/* Enhanced connector on hover - make it larger and glow more */
+.timeline-item.with-connector:hover::before {
+    width: 12px;
+    height: 12px;
+    left: -10px; /* Adjust position for larger size */
+    background: var(--accent-red);
+    box-shadow: 
+        0 0 16px rgba(220, 38, 38, 0.9),
+        0 0 24px rgba(220, 38, 38, 0.5);
+    transform: translateY(-50%) scale(1.2); /* Pulse effect */
+}
+
+/* Optional: Add a connecting line that appears on hover */
+.timeline-item.with-connector::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(220, 38, 38, 0.3) 20%,
+        rgba(220, 38, 38, 0.3) 80%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.timeline-item.with-connector:hover::after {
+    opacity: 1;
+}
+
+/* Make the connector pulse when dissertation card is hovered */
+.timeline-item.with-connector.degree-msc::before,
+.timeline-item.with-connector.degree-bsc::before {
+    animation: none; /* Default no animation */
+}
+
+/* Add pulse animation class that JavaScript can toggle */
+@keyframes connectorPulse {
+    0%, 100% {
+        transform: translateY(-50%) scale(1);
+        box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.5);
+        box-shadow: 0 0 20px rgba(220, 38, 38, 1);
+    }
+}
+
+.timeline-item.with-connector.connector-pulse::before {
+    animation: connectorPulse 0.6s ease-in-out;
 }
 
 .degree-title {
@@ -1390,9 +1492,17 @@ body {
 /* ============================================ */
 
 .project-card {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1), 
+        rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother, longer transition */
+    position: relative;
+    overflow: hidden;
 }
 
 .project-card[style*="display: none"] {

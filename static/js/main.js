@@ -1366,117 +1366,82 @@ class ProjectsViewController {
 }
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    new AdvancedPortfolio();
+document.addEventListener('DOMContentLoaded', function() {
+    // Enhanced highlight connections on hover
+    const dissertationCards = document.querySelectorAll('.paper-card');
+    const timelineItems = document.querySelectorAll('.timeline-item');
     
-    // Add additional animation keyframes
-    const additionalStyles = document.createElement('style');
-    additionalStyles.textContent = `
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-        
-        @keyframes slideInDown {
-            from { transform: translateY(-10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateX(-50%) translateY(20px);
-                opacity: 0;
+    // When hovering dissertation card, animate the corresponding degree box
+    dissertationCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            const degree = this.getAttribute('data-degree');
+            const correspondingTimeline = document.querySelector(`.timeline-item.degree-${degree}`);
+            
+            if (correspondingTimeline) {
+                // Apply enhanced hover state
+                correspondingTimeline.style.borderColor = 'rgba(220, 38, 38, 0.5)';
+                correspondingTimeline.style.transform = 'translateY(-8px) translateX(-4px) scale(1.01)';
+                correspondingTimeline.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.25)';
+                correspondingTimeline.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08))';
+                
+                // Add pulse animation to connector dot
+                correspondingTimeline.classList.add('connector-pulse');
             }
-            to {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1;
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            const degree = this.getAttribute('data-degree');
+            const correspondingTimeline = document.querySelector(`.timeline-item.degree-${degree}`);
+            
+            if (correspondingTimeline) {
+                // Remove enhanced hover state
+                correspondingTimeline.style.borderColor = '';
+                correspondingTimeline.style.transform = '';
+                correspondingTimeline.style.boxShadow = '';
+                correspondingTimeline.style.background = '';
+                
+                // Remove pulse animation after it completes
+                setTimeout(() => {
+                    correspondingTimeline.classList.remove('connector-pulse');
+                }, 600); // Match animation duration
             }
-        }
-        
-        @keyframes slideInLeft {
-            from {
-                transform: translateX(-20px);
-                opacity: 0;
+        });
+    });
+    
+    // When hovering degree box, pulse the corresponding dissertation card
+    timelineItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            // Extract degree type from class (degree-msc or degree-bsc)
+            const classList = Array.from(this.classList);
+            const degreeClass = classList.find(cls => cls.startsWith('degree-'));
+            
+            if (degreeClass) {
+                const degree = degreeClass.replace('degree-', '');
+                const correspondingCard = document.querySelector(`.paper-card[data-degree="${degree}"]`);
+                
+                if (correspondingCard) {
+                    // Subtle pulse effect on dissertation card
+                    correspondingCard.style.transform = 'scale(1.08)';
+                    correspondingCard.style.filter = 'brightness(1.1)';
+                }
             }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            const classList = Array.from(this.classList);
+            const degreeClass = classList.find(cls => cls.startsWith('degree-'));
+            
+            if (degreeClass) {
+                const degree = degreeClass.replace('degree-', '');
+                const correspondingCard = document.querySelector(`.paper-card[data-degree="${degree}"]`);
+                
+                if (correspondingCard) {
+                    correspondingCard.style.transform = '';
+                    correspondingCard.style.filter = '';
+                }
             }
-        }
-        
-        .keyboard-hint {
-            display: none;
-        }
-        
-        @media (min-width: 768px) {
-            .keyboard-hint {
-                display: inline-block;
-            }
-        }
-        
-        .notification-content {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .notification-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.25rem;
-            cursor: pointer;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s ease;
-        }
-        
-        .notification-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            border-radius: var(--radius-lg);
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            font-size: 1.25rem;
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .back-to-top:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: var(--shadow-glow);
-        }
-    `;
-    document.head.appendChild(additionalStyles);
+        });
+    });
 });
 
 // Export for module usage

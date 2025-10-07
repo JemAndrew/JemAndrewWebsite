@@ -115,8 +115,8 @@
             
             
             <!-- MSc Computer Science -->
-            <div class="timeline-item degree-msc" data-degree="msc">
-                <div class="degree-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div class="timeline-item degree-msc with-connector" data-degree="msc">
+                <div class="degree-header">
                     <div>
                         <div class="degree-title">
                             <i class="fas fa-laptop-code" style="color: var(--primary-red); margin-right: .5rem;"></i>
@@ -174,8 +174,8 @@
             </div>
 
             <!-- BSc Biology -->
-            <div class="timeline-item degree-bsc" data-degree="bsc">
-                <div class="degree-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div class="timeline-item degree-bsc with-connector" data-degree="bsc">
+                <div class="degree-header">
                     <div>
                         <div class="degree-title">
                             <i class="fas fa-microscope" style="color: var(--primary-red); margin-right: .5rem;"></i>
@@ -264,6 +264,37 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+});
+</script>
+<script>
+// Temporary alignment helper - remove after fixing
+document.addEventListener('DOMContentLoaded', function() {
+    // Add visual guides
+    document.querySelectorAll('.paper-card').forEach(card => {
+        const guide = document.createElement('div');
+        guide.style.cssText = `
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            width: 50px;
+            height: 2px;
+            background: lime;
+            z-index: 9999;
+            pointer-events: none;
+        `;
+        card.appendChild(guide);
+    });
+    
+    // Log positions
+    const mscCard = document.querySelector('[data-degree="msc"]');
+    const mscBox = document.querySelector('.degree-msc');
+    const bscCard = document.querySelector('[data-degree="bsc"]');
+    const bscBox = document.querySelector('.degree-bsc');
+    
+    console.log('MSc Card Center:', mscCard.offsetTop + (mscCard.offsetHeight / 2));
+    console.log('MSc Box Top:', mscBox.offsetTop);
+    console.log('BSc Card Center:', bscCard.offsetTop + (bscCard.offsetHeight / 2));
+    console.log('BSc Box Top:', bscBox.offsetTop);
 });
 </script>
 {% endblock %}

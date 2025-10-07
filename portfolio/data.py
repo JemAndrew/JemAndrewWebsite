@@ -97,6 +97,32 @@ EDUCATION = [
 
 # Projects - Updated with more authentic descriptions
 PROJECTS = [
+            {
+            'title': 'Litigation Intelligence Platform',
+            'short_description': 'AI-powered legal document analysis system processing 18,000+ documents in 48 hours, extracting structured evidence and generating tribunal-ready deliverables.',
+            'detailed_description': """Engineered a production-grade legal AI system that analyses large-scale commercial litigation 
+                                    documents using a 4-pass iterative architecture with Anthropic's Claude models. The system 
+                                    intelligently triages thousands of documents, extracts structured legal intelligence including 
+                                    breaches, contradictions and timeline events, conducts autonomous recursive investigations, and 
+                                    generates tribunal-ready work products. Achieved 30% cost reduction and 40% speed improvement over 
+                                    previous approaches through intelligent document selection, confidence-tracked analysis reaching 95% 
+                                    certainty, and a sophisticated multi-tier memory architecture combining vector databases with 
+                                    knowledge graphs.""",
+            'technologies': 'Python, Anthropic Claude API, ChromaDB, SQLite, RAG Architecture, Extended Thinking, BM25 Retrieval',
+            'category': 'professional',
+            'status': 'completed',
+            'featured': True,
+            'github_url': None,  # Confidential commercial work
+            'live_demo_url': None,  # Confidential commercial work
+            'created_date': date(2025, 10, 1),
+            'key_features': [
+                '4-pass iterative architecture processing 18,000+ documents in 30-48 hours',
+                'Autonomous recursive investigation engine with depth-controlled AI decision-making',
+                'Multi-tier memory system with vector database and knowledge graph integration',
+                'Structured legal extraction mapping directly to claim elements (breach, causation, damages)',
+                'Cost optimised at £0.014-0.021 per document with 95% confidence tracking'
+            ]
+        },
     {
         'title': 'Cryptocurrency Exchange Platform',
         'short_description': 'Built a custom order matching engine with price-time priority algorithm handling 1000+ orders per second.',
@@ -111,7 +137,7 @@ PROJECTS = [
         'featured': True,
         'github_url': 'https://github.com/JemAndrew/crypto-exchange',
         'live_demo_url': None,
-        'created_date': date(2024, 1, 1),
+        'created_date': date(2025, 1, 1),
         'key_features': [
             'Order matching engine with price-time priority',
             'Real-time WebSocket price feeds',
@@ -174,7 +200,7 @@ PROJECTS = [
         'featured': False,
         'github_url': 'https://github.com/JemAndrew/cycle_plan',  
         'live_demo_url': None,
-        'created_date': date(2025, 3, 1),
+        'created_date': date(2024, 3, 1),
         'key_features': [
             'REST API for authentication and routes',
             'Integration with HERE Maps API',
@@ -256,7 +282,7 @@ def get_personal_info():
     return info
 
 def get_all_projects():
-    """Get all projects"""
+    """Get all projects sorted by date (newest first)"""
     projects = []
     for i, project_data in enumerate(PROJECTS, 1):
         class ProjectObj:
@@ -274,6 +300,10 @@ def get_all_projects():
         
         proj_obj = ProjectObj(project_data, i)
         projects.append(proj_obj)
+    
+    # Sort by created_date descending (newest first)
+    projects.sort(key=lambda x: x.created_date, reverse=True)
+    
     return projects
 
 def get_featured_projects(limit=3):
