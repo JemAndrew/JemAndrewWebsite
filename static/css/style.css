@@ -169,11 +169,13 @@ body {
 /* 6. TYPOGRAPHY
 /* ============================================ */
 
+/* Main page headings - used consistently across all pages */
 .name-title, 
-.page-title {
+.page-title,
+.education-title {
     font-size: 3.5rem;
     font-weight: 800;
-    line-height: 1.05;
+    line-height: 1.25;
     margin-bottom: 0.5rem;
     background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
     -webkit-background-clip: text;
@@ -183,18 +185,7 @@ body {
     letter-spacing: -0.02em;
 }
 
-.education-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: left;
-}
-
+/* Secondary headings - role descriptions, subtitles */
 .role-subtitle, 
 .subtitle {
     font-size: 2.25rem;
@@ -205,15 +196,41 @@ body {
     text-align: left;
     opacity: 0.9;
 }
+.home-section-title{
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-white);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    text-align: left;
+    opacity: 0.9; 
+}
 
-.section-title {
+/* Section headings - consistent across all pages */
+.section-title,
+.academic-research-title {
     font-size: 2rem;
+    line-height:1.2;
     font-weight: 600;
+    margin-top: 10rem;
     margin-bottom: 1rem;
     color: var(--text-white);
     letter-spacing: 0.5px;
 }
 
+/* Special case: Academic research title needs larger size */
+.academic-research-title {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Body text for introductions */
 .content-intro {
     font-size: 1.35rem;
     line-height: 1.7;
@@ -1258,6 +1275,7 @@ body {
     background: rgba(0, 0, 0, 0.2);
     padding: 0.3rem;
     border-radius: 0.75rem;
+    width: fit-content;
 }
 
 .org-btn {
