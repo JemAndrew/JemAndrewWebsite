@@ -1,9 +1,4 @@
 /* ============================================
-   FRESH PORTFOLIO - MINIMAL AESTHETIC BASE
-   Blue colour scheme, smooth transitions, clean design
-   ============================================ */
-
-/* ============================================
    1. CSS VARIABLES - Your Design System
    ============================================ */
 :root {
@@ -55,7 +50,7 @@
 }
 
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     overflow-x: hidden;
 }
 
@@ -213,8 +208,18 @@ a:hover {
 .page-container {
     min-height: 100vh;
     padding-top: var(--nav-height);
-    opacity: 0;
-    animation: fadeIn var(--transition-medium) ease forwards;
+    animation: fadeInPage 0.9s ease-in;
+}
+
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeIn {
@@ -462,13 +467,17 @@ a:hover {
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    opacity: 1;
+    opacity: 0; /* Start hidden - no JavaScript needed */
+    visibility: hidden;
+    pointer-events: none;
     transition: opacity var(--transition-medium);
 }
 
-.loading.hidden {
-    opacity: 0;
-    pointer-events: none;
+/* Only show loading if explicitly enabled via JavaScript */
+.loading.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .spinner {
@@ -502,4 +511,26 @@ a:hover {
 *:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
+}
+
+/* Gentle bounce animation */
+@keyframes gentleBounce {
+    0%, 100% {
+        transform: translateY(2px);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(15px);
+        opacity: 1;
+    }
+}
+
+/* Pulse animation on hover for extra feedback */
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+    }
 }

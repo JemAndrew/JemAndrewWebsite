@@ -13,8 +13,8 @@ class PortfolioApp {
         // Core functionality
         this.setupLoadingScreen();
         this.setupNavigation();
-        this.setupPageTransitions();
-        this.setupScrollAnimations();
+       // this.setupPageTransitions(); 
+       //  this.setupScrollAnimations();
         this.setupMobileMenu();
         
         // Enhanced features
@@ -29,17 +29,13 @@ class PortfolioApp {
     // 2. LOADING SCREEN
     // ============================================
     setupLoadingScreen() {
-        window.addEventListener('load', () => {
-            const loading = document.getElementById('loadingScreen');
-            if (!loading) return;
-
-            setTimeout(() => {
-                loading.style.opacity = '0';
-                setTimeout(() => {
-                    loading.remove();
-                }, 400);
-            }, 500);
-        });
+        // Loading screen is hidden by default in CSS
+        // Only show it if you specifically want a loading state
+        // For now, we'll just ensure it's hidden
+        const loading = document.getElementById('loadingScreen');
+        if (loading) {
+            loading.remove(); // Remove it immediately
+        }
     }
 
     // ============================================
@@ -101,11 +97,7 @@ class PortfolioApp {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
 
-                // Don't intercept:
-                // - External links
-                // - Links with target="_blank"
-                // - Current page
-                // - Hash links
+                // Don't intercept
                 if (
                     link.target === '_blank' ||
                     href === window.location.pathname ||
@@ -118,18 +110,14 @@ class PortfolioApp {
 
                 e.preventDefault();
 
-                // Fade out current page
-                const pageContent = document.getElementById('pageContent');
-                if (pageContent) {
-                    pageContent.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    pageContent.style.opacity = '0';
-                    pageContent.style.transform = 'translateY(-20px)';
-                }
+                // Simple opacity fade only (no transform)
+                document.body.style.transition = 'opacity 0.2s ease';
+                document.body.style.opacity = '0';
 
-                // Navigate after animation
+                // Navigate after quick fade
                 setTimeout(() => {
                     window.location.href = href;
-                }, 300);
+                }, 200);
             });
         });
     }
@@ -140,32 +128,38 @@ class PortfolioApp {
     setupScrollAnimations() {
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -100px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    // Add stagger delay
-                    setTimeout(() => {
-                        entry.target.classList.add('animate-on-scroll');
-                    }, index * 50);
+                    // Add class immediately (no stagger delay)
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    
+                    // Trigger animation on next frame
+                    requestAnimationFrame(() => {
+                        entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    });
                     
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        // Observe elements
+        // Only observe elements that are NOT currently visible
         const elements = document.querySelectorAll('.card, .section > *:not(script)');
         elements.forEach(el => {
-            // Don't animate if already visible
             const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight) {
-                el.classList.add('animate-on-scroll');
-            } else {
+            
+            // Only animate elements that are below the fold
+            if (rect.top > window.innerHeight) {
                 observer.observe(el);
             }
+            // Elements already visible stay as-is (no animation)
         });
     }
 
