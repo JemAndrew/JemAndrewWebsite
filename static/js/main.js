@@ -163,6 +163,50 @@ class PortfolioApp {
         });
     }
 
+        // ============================================
+    // 9. SCROLL DOWN BUTTON (Home page only)
+    // ============================================
+    setupScrollDown() {
+        const scrollDownBtn = document.getElementById('scrollDownBtn');
+        if (!scrollDownBtn) return;
+
+        // Set initial styles (matching back-to-top)
+        scrollDownBtn.style.transition = 'all 0.3s ease';
+        scrollDownBtn.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
+
+        // Hover effects - matching back-to-top button with glow
+        scrollDownBtn.addEventListener('mouseenter', () => {
+            scrollDownBtn.style.transform = 'translateY(-4px)';
+            scrollDownBtn.style.boxShadow = '0 8px 20px rgba(59, 130, 246, 0.4)';
+        });
+
+        scrollDownBtn.addEventListener('mouseleave', () => {
+            scrollDownBtn.style.transform = 'translateY(0)';
+            scrollDownBtn.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
+        });
+
+        // Hide on scroll down, matching back-to-top behaviour
+        let ticking = false;
+
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                scrollDownBtn.style.opacity = '0';
+                scrollDownBtn.style.visibility = 'hidden';
+            } else {
+                scrollDownBtn.style.opacity = '1';
+                scrollDownBtn.style.visibility = 'visible';
+            }
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(handleScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
     // ============================================
     // 6. MOBILE MENU
     // ============================================

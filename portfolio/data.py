@@ -7,7 +7,7 @@ PERSONAL_INFO = {
     'title': 'Software Engineer | MSc Computer Science',
     'email': 'andrewjem8@gmail.com',
     'location': '',
-    'linkedin_url': 'https://www.linkedin.com/in/james-andrew-439771333/',
+    'linkedin_url': 'https://www.linkedin.com/in/jem-andrew-439771333/',
     'github_url': 'https://github.com/JemAndrew',
     'bio': """I'm a software engineer passionate about crafting well-structured, logical backend code. 
               I'm fascinated by machine learning and large language models, particularly model training. 
