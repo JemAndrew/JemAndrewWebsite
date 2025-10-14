@@ -3,26 +3,37 @@
 {% block title %}Education - Jem Andrew{% endblock %}
 
 {% block content %}
-<!-- Page Header -->
+<!-- Page Header with Download CV Button -->
 <section style="padding: 8rem 0 4rem 0;">
     <div class="container">
         <p style="color: var(--primary-light); font-family: var(--font-mono); font-size: 0.95rem; margin-bottom: 1rem;">
             My Academic Journey
         </p>
-        <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1.5rem;">
-            Education
-        </h1>
-        <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; line-height: 1.8;">
-            From biology to computer science – a journey that combined scientific rigour with computational thinking.
-        </p>
+        <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 2rem; margin-bottom: 1.5rem;">
+            <div>
+                <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem;">
+                    Education
+                </h1>
+                <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; line-height: 1.8;">
+                    From biology to computer science – a journey that combined scientific rigour with computational thinking.
+                </p>
+            </div>
+            
+            <!-- NEW: Download CV Button -->
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="{% url 'portfolio:download_msc' %}" class="btn btn-primary" style="white-space: nowrap;">
+                    <i class="fas fa-download"></i>
+                    Download Full CV
+                </a>
+            </div>
+        </div>
     </div>
 </section>
-
 <!-- Degrees Timeline -->
-<section style="padding: 4rem 0;">
+<section style="padding: 0 0;">
     <div class="container">
         <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">01.</span>
+            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
             Degrees
         </h2>
         
@@ -67,15 +78,37 @@
                     {{ education.description }}
                 </p>
                 
-                <!-- Modules grid (if available) -->
+                <!-- NEW: Top 3 Modules + Expandable -->
                 {% if education.modules %}
                 <div style="margin: 2rem 0;">
-                    <h4 style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 1rem; font-weight: 500;">
-                        Key Modules
-                    </h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
-                        {% for module in education.modules %}
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 6px; transition: all 0.2s;">
+                    <div style="display: flex; justify-content: space-between; align-items: centre; margin-bottom: 1rem;">
+                        <h4 style="color: var(--text-secondary); font-size: 1rem; font-weight: 500;">
+                            Key Modules
+                        </h4>
+                        <button class="toggle-modules-btn" data-education="{{ education.degree_type }}" style="background: transparent; border: 1px solid var(--border); padding: 0.4rem 1rem; border-radius: 6px; color: var(--primary-light); cursor: pointer; font-size: 0.85rem; transition: all 0.2s;">
+                            <i class="fas fa-plus"></i>
+                            <span>View All</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Top 3 modules (always visible) -->
+                    <div class="modules-grid-top3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
+                        {% for module in education.modules|slice:":3" %}
+                        <div class="module-item" style="display: flex; justify-content: space-between; align-items: centre; padding: 0.75rem 1rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 6px; transition: all 0.2s;">
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">
+                                {{ module.name }}
+                            </span>
+                            <span style="color: var(--primary-light); font-weight: 600; font-size: 0.95rem;">
+                                {{ module.grade }}%
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Remaining modules (hidden by default) -->
+                    <div class="modules-grid-rest" data-education="{{ education.degree_type }}" style="display: none; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem; margin-top: 0.75rem;">
+                        {% for module in education.modules|slice:"3:" %}
+                        <div class="module-item" style="display: flex; justify-content: space-between; align-items: centre; padding: 0.75rem 1rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 6px; transition: all 0.2s;">
                             <span style="color: var(--text-secondary); font-size: 0.9rem;">
                                 {{ module.name }}
                             </span>
@@ -100,19 +133,22 @@
     </div>
 </section>
 
-<!-- Dissertations Section -->
+<!-- Dissertations Section - ENHANCED HOVER EFFECTS -->
 <section style="padding: 4rem 0;">
     <div class="container">
         <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
+            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">03.</span>
             Research & Dissertations
         </h2>
         
         <div class="grid grid-2">
-            <!-- MSc Dissertation -->
-            <div class="card dissertation-card" style="position: relative; overflow: visible; cursor: pointer;">
+            <!-- MSc Dissertation - ENHANCED -->
+            <div class="card dissertation-card enhanced" style="position: relative; overflow: visible; cursor: pointer;">
+                <!-- Glow effect on hover -->
+                <div class="card-glow"></div>
+                
                 <!-- Icon -->
-                <div style="width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <div style="width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; display: flex; align-items: centre; justify-content: centre; margin-bottom: 1.5rem; transition: all 0.3s;">
                     <i class="fas fa-brain" style="font-size: 2rem; color: var(--primary-light);"></i>
                 </div>
                 
@@ -128,11 +164,11 @@
                 
                 <!-- Meta info -->
                 <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
                         <i class="fas fa-graduation-cap"></i>
                         Newcastle University
                     </span>
-                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
                         <i class="fas fa-file-pdf"></i>
                         PDF Document
                     </span>
@@ -151,16 +187,19 @@
                 </div>
                 
                 <!-- Download button -->
-                <a href="{% url 'portfolio:download_msc' %}" class="btn btn-primary" style="width: 100%;">
+                <a href="{% url 'portfolio:download_msc' %}" class="btn btn-primary dissertation-download-btn" style="width: 100%;">
                     <i class="fas fa-download"></i>
                     Download MSc Dissertation
                 </a>
             </div>
             
-            <!-- BSc Dissertation -->
-            <div class="card dissertation-card" style="position: relative; overflow: visible; cursor: pointer;">
+            <!-- BSc Dissertation - ENHANCED -->
+            <div class="card dissertation-card enhanced" style="position: relative; overflow: visible; cursor: pointer;">
+                <!-- Glow effect on hover -->
+                <div class="card-glow"></div>
+                
                 <!-- Icon -->
-                <div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; display: flex; align-items: centre; justify-content: centre; margin-bottom: 1.5rem; transition: all 0.3s;">
                     <i class="fas fa-dna" style="font-size: 2rem; color: var(--accent);"></i>
                 </div>
                 
@@ -176,11 +215,11 @@
                 
                 <!-- Meta info -->
                 <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
                         <i class="fas fa-graduation-cap"></i>
                         Newcastle University
                     </span>
-                    <span style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
                         <i class="fas fa-file-pdf"></i>
                         PDF Document
                     </span>
@@ -199,7 +238,7 @@
                 </div>
                 
                 <!-- Download button -->
-                <a href="{% url 'portfolio:download_bsc' %}" class="btn" style="width: 100%; border-color: var(--accent); color: var(--accent);">
+                <a href="{% url 'portfolio:download_bsc' %}" class="btn dissertation-download-btn" style="width: 100%; border-color: var(--accent); color: var(--accent);">
                     <i class="fas fa-download"></i>
                     Download BSc Dissertation
                 </a>
@@ -208,68 +247,101 @@
     </div>
 </section>
 
-<!-- Academic Achievements -->
-<section style="padding: 4rem 0;">
-    <div class="container">
-        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">03.</span>
-            Highlights
-        </h2>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-            <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: var(--primary-light); margin-bottom: 1rem;">
-                    84%
-                </div>
-                <div style="color: var(--text-secondary);">
-                    Highest Module Grade
-                </div>
-                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
-                    Advanced Programming
-                </div>
-            </div>
-            
-            <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: var(--primary-light); margin-bottom: 1rem;">
-                    Merit
-                </div>
-                <div style="color: var(--text-secondary);">
-                    MSc Final Grade
-                </div>
-                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
-                    Computer Science
-                </div>
-            </div>
-            
-            <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="font-size: 3rem; color: var(--primary-light); margin-bottom: 1rem;">
-                    2:1
-                </div>
-                <div style="color: var(--text-secondary);">
-                    BSc Honours
-                </div>
-                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
-                    Biology
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Add hover effect for dissertation cards -->
+<!-- NEW: Enhanced hover effects CSS -->
 <style>
-.dissertation-card {
-    transition: all 0.3s ease;
+/* Highlight cards with better styling */
+.highlight-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%);
+    transition: all 0.4s ease;
 }
 
-.dissertation-card:hover {
-    transform: translateY(-8px);
+.highlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.highlight-card:hover::before {
+    opacity: 1;
+}
+
+.highlight-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.25);
+}
+
+/* Module toggle button hover */
+.toggle-modules-btn:hover {
+    background: rgba(59, 130, 246, 0.1);
     border-color: var(--primary);
-    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
 }
 
-.dissertation-card:hover .btn {
+/* Module items hover */
+.module-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--primary);
+    transform: translateX(4px);
+}
+
+/* Enhanced dissertation cards */
+.dissertation-card.enhanced {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dissertation-card.enhanced .card-glow {
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 14px;
+    opacity: 0;
+    filter: blur(20px);
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.dissertation-card.enhanced:hover {
+    transform: translateY(-12px) scale(1.02);
+    border-color: var(--primary);
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+}
+
+.dissertation-card.enhanced:hover .card-glow {
+    opacity: 0.6;
+}
+
+.dissertation-card.enhanced:hover .dissertation-download-btn {
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Smooth icon rotation on hover */
+.dissertation-card.enhanced:hover .fa-brain,
+.dissertation-card.enhanced:hover .fa-dna {
+    animation: iconFloat 2s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Counter animation will be handled by JS */
+.counter {
+    transition: all 0.3s ease;
 }
 </style>
 {% endblock %}
