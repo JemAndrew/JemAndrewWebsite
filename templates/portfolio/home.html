@@ -86,14 +86,14 @@
 <!-- About Section with Experience -->
 <section id="about" class="section" style="min-height: auto; padding: 6rem 0;">
     <div class="container">
-        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">01.</span>
-            About Me
-        </h2>
-        
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
             <!-- Left: Bio -->
             <div>
+                <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
+                    <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">01.</span>
+                    About Me
+                </h2>
+                
                 <p style="margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
                     I started learning to code during my free time before university, exploring free published lectures from leading institutions such as MIT and completing as many Codeacademy courses as I could do. Then came my BSc in Biology, which unexpectedly sparked my love for coding through R.
                 </p>
@@ -105,138 +105,76 @@
                 <p style="color: var(--text-secondary); line-height: 1.8;">
                     These days, I focus on building scalable backend systems and exploring AI/ML applications.
                 </p>
-                
-                <!-- Tech stack -->
-                <div style="margin-top: 2rem;">
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-                        Technologies I work with:
-                    </p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
-                            Python & Django
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
-                            PostgreSQL
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
-                            JavaScript & React
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
-                            Docker & GCP
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
-                            PyTorch & ML
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-                            <i class="fas fa-chevron-right" style="color: var(--primary-light); font-size: 0.7rem;"></i>
-                            REST APIs
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
- <div>
-                <!-- BuildChorus Experience -->
-                <h3 style="font-size: 2rem; margin-bottom: 2rem; color: var(--text-primary);">
-                    <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
-                    Experience
-                </h3>
-                
-                {% if current_position %}
-                <div class="card" style="height: fit-content; margin-bottom: 2rem;">
-                    <!-- Company & Role -->
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-                            <h4 class="card-title" style="font-size: 1.2rem; margin: 0;">
-                                {{ current_position.position }}
-                            </h4>
-                            <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">
-                                Current
-                            </span>
-                        </div>
-                        <div class="card-subtitle" style="font-size: 1rem; margin-bottom: 0.5rem;">
-                            {{ current_position.company }}
-                        </div>
-                        <div style="color: var(--text-muted); font-size: 0.85rem;">
-                            {{ current_position.start_date|date:"M Y" }} - Present • {{ current_position.duration_display }}
-                        </div>
-                    </div>
-                    
-                    <!-- Key Achievements (Compact) -->
-                    <div style="margin-bottom: 1rem;">
-                        <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                            {{ current_position.description }}
-                        </p>
-                        
-                        <div style="margin-top: 0.75rem;">
-                            <p style="color: var(--primary-light); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem;">
-                                Key Achievements:
-                            </p>
-                            <ul style="margin: 0; padding-left: 1.25rem; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
-                                {% for achievement in current_position.achievements|slice:":3" %}
-                                <li style="margin-bottom: 0.4rem;">{{ achievement }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- Tech Stack (Compact) -->
-                    <div style="border-top: 1px solid var(--border); padding-top: 0.75rem;">
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                            {% for skill in current_position.skills_list|slice:":5" %}
-                            <span class="tag" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">{{ skill }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                
-                <!-- Featured Project - Litigation -->
-                <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text-primary);">
-                    <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1rem; font-weight: 400;">03.</span>
-                    Featured Project
-                </h3>
-                
-                {% for project in projects %}
-                    {% if "Litigation" in project.title %}
-                    <div class="card" style="height: fit-content; margin-bottom: 1.5rem;">
-                        <div class="card-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <span class="tag">{{ project.get_category_display }}</span>
-                            <span style="color: var(--text-muted); font-size: 0.85rem;">{{ project.created_date.year }}</span>
-                        </div>
-                        
-                        <h4 class="card-title" style="font-size: 1.1rem; margin-bottom: 0.75rem;">{{ project.title }}</h4>
-                        
-                        <p class="card-description" style="font-size: 0.85rem; margin-bottom: 0.75rem; line-height: 1.6;">
-                            {{ project.short_description }}
-                        </p>
-                        
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem;">
-                            {% for tech in project.technology_list|slice:":5" %}
-                            <span class="tag" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">{{ tech }}</span>
-                            {% endfor %}
-                        </div>
-                        
-                        {% if project.category == 'professional' %}
-                        <button class="btn" style="font-size: 0.85rem; padding: 0.5rem 1rem; cursor: not-allowed; opacity: 0.6; width: 100%;" disabled>
-                            <i class="fas fa-lock"></i>
-                            Confidential Project
-                        </button>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-                {% endfor %}
-                
                 <!-- View all projects link -->
                 <a href="/projects/" class="btn btn-primary" style="width: 100%; justify-content: center;">
                     View All Projects
                     <i class="fas fa-arrow-right"></i>
                 </a>
+            </div>
+            
+            <!-- Right: Experience -->
+            <div>
+                <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
+                    <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
+                    Experience
+                </h2>
+                
+                {% if current_positions %}
+                    {% for position in current_positions %}
+                    <div class="card" style="height: fit-content; margin-bottom: 2rem;">
+                        <!-- Company & Role -->
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <h4 class="card-title" style="font-size: 1.2rem; margin: 0;">
+                                    {{ position.position }}
+                                </h4>
+                                <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">
+                                    Current
+                                </span>
+                            </div>
+                            <div class="card-subtitle" style="font-size: 1rem; margin-bottom: 0.5rem;">
+                                {{ position.company }}
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 0.85rem;">
+                                {{ position.start_date|date:"M Y" }} - Present • {{ position.duration_display }}
+                            </div>
+                        </div>
+                        
+                        <!-- Key Achievements (Compact) -->
+                        <div style="margin-bottom: 1rem;">
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                {{ position.description }}
+                            </p>
+                            
+                            {% if position.achievements %}
+                            <div style="margin-top: 0.75rem;">
+                                <p style="color: var(--primary-light); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem;">
+                                    Key Achievements:
+                                </p>
+                                <ul style="margin: 0; padding-left: 1.25rem; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
+                                    {% for achievement in position.achievements|slice:":3" %}
+                                    <li style="margin-bottom: 0.4rem;">{{ achievement }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Tech Stack (Compact) -->
+                        <div style="border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                {% for skill in position.skills_list|slice:":5" %}
+                                <span class="tag" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: var(--text-muted);">No current positions found.</p>
+                {% endif %}
+                
+            
             </div>
         </div>
     </div>

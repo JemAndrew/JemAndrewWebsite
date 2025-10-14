@@ -10,9 +10,10 @@ PERSONAL_INFO = {
     'linkedin_url': 'https://www.linkedin.com/in/jem-andrew-439771333/',
     'github_url': 'https://github.com/JemAndrew',
     'bio': """I'm a software engineer passionate about crafting well-structured, logical backend code. 
-              I'm fascinated by machine learning and large language models, particularly model training. 
-              I'm well-versed in cybersecurity and working with databases of any scale, and I love putting 
-              these skills to the test through my work and personal projects.""",
+          Currently working with Django at BuildChorus whilst consulting on AI-powered legal tech. 
+          I'm fascinated by machine learning and large language models, particularly model training. 
+          I'm well-versed in cybersecurity and working with databases of any scale, and I love putting 
+          these skills to the test through my work and personal projects.""",
     'bio_extended': """I started learning to code during my free time before university, exploring free published 
                       lectures from leading institutions such as MIT and completing as many codeacademy courses as i could do.
                       Then came my BSc in Biology, which unexpectedly sparked my love for coding through R. 
@@ -29,6 +30,30 @@ PERSONAL_INFO = {
 
 # Professional Experience - Updated with cleaner format
 EXPERIENCE = [
+    
+    {
+        'position': 'Freelance AI Consultant',
+        'company': 'Law Firm Client',
+        'location': 'Remote',
+        'start_date': date(2025, 10, 1),
+        'end_date': None,
+        'is_current': True,
+        'description': """Developing and maintaining an AI-powered legal document analysis system for ongoing commercial litigation. 
+                         Providing continuous analysis and improvements as new case materials emerge.""",
+        'responsibilities': [
+            'Engineering production-grade legal AI system processing 18,000+ documents',
+            'Implementing 4-pass iterative architecture with confidence tracking',
+            'Delivering tribunal-ready work products for complex litigation',
+            'Maintaining and improving system based on case requirements'
+        ],
+        'skills_gained': 'Python, Anthropic Claude API, RAG Architecture, ChromaDB, Legal Tech, Client Management',
+        'achievements': [
+            'Achieved 30% cost reduction vs traditional analysis methods',
+            '40% speed improvement over previous approaches',
+            '95% confidence certainty in extracted legal intelligence',
+            'Processing 18,000+ documents in 30-48 hours'
+        ]
+    },
     {
         'position': 'Software Engineer',
         'company': 'BuildChorus.com',
@@ -50,7 +75,7 @@ EXPERIENCE = [
             'Integrated Google OR-Tools for complex scheduling optimisation',
             'Deployed solutions for enterprise construction management'
         ]
-    }
+    },
 ]
 
 # Education - Updated with correct dates and actual grades
@@ -336,6 +361,36 @@ def get_current_experience():
                 exp_obj.duration_display = f"{months} month{'s' if months != 1 else ''}"
         return exp_obj
     return None
+
+def get_all_current_experience():
+    """Get all current positions"""
+    current_positions = [exp for exp in EXPERIENCE if exp.get('is_current', False)]
+    experiences = []
+    
+    for exp in current_positions:
+        exp_obj = type('Experience', (), exp)()
+        exp_obj.skills_list = exp['skills_gained'].split(', ')
+        if 'responsibilities' in exp:
+            exp_obj.responsibilities = exp['responsibilities']
+        if 'achievements' in exp:
+            exp_obj.achievements = exp['achievements']
+        if exp_obj.start_date:
+            if exp_obj.is_current:
+                duration_days = (date.today() - exp_obj.start_date).days
+            elif exp_obj.end_date:
+                duration_days = (exp_obj.end_date - exp_obj.start_date).days
+            else:
+                duration_days = 0
+            
+            years = duration_days // 365
+            months = (duration_days % 365) // 30
+            if years > 0:
+                exp_obj.duration_display = f"{years} year{'s' if years != 1 else ''}, {months} month{'s' if months != 1 else ''}"
+            else:
+                exp_obj.duration_display = f"{months} month{'s' if months != 1 else ''}"
+        experiences.append(exp_obj)
+    
+    return experiences
 
 def get_all_experience():
     """Get all experience"""

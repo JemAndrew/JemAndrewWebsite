@@ -18,9 +18,11 @@ class PortfolioApp {
         this.setupMobileMenu();
         
         // Enhanced features
+        this.setupScrollDown();
         this.setupSmoothScroll();
         this.setupBackToTop();
         this.setupKeyboardNavigation();
+        this.setupExpandableProjects();
         
         console.log('✅ All systems ready');
     }
@@ -399,6 +401,197 @@ class PortfolioApp {
             timeout = setTimeout(() => func.apply(this, args), wait);
         };
     }
+
+    // ============================================
+    // 13. EXPANDABLE PROJECT CARDS
+    // ============================================
+    setupExpandableProjects() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card-compact');
+        const emptyState = document.getElementById('emptyState');
+        
+        if (!projectCards.length) return; // Exit if not on projects page
+        
+        // Filter functionality
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+                
+                // Update active button
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                
+                // Filter and collapse cards
+                let visibleCount = 0;
+                
+                projectCards.forEach(card => {
+                    const category = card.dataset.category;
+                    
+                    // Collapse any expanded cards
+                    this.collapseProjectCard(card);
+                    
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeIn 0.4s ease forwards';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide empty state
+                if (emptyState) {
+                    emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+                }
+            });
+        });
+        
+        // Expand/collapse functionality
+        projectCards.forEach(card => {
+            const header = card.querySelector('.card-compact-header');
+            
+            header.addEventListener('click', (e) => {
+                // Don't expand if clicking buttons/links
+                if (e.target.closest('.btn') || e.target.closest('a')) {
+                    return;
+                }
+                
+                const isExpanded = card.dataset.expanded === 'true';
+                
+                if (isExpanded) {
+                    this.collapseProjectCard(card);
+                } else {
+                    // Collapse all other cards first
+                    projectCards.forEach(otherCard => {
+                        if (otherCard !== card) {
+                            this.collapseProjectCard(otherCard);
+                        }
+                    });
+                    
+                    // Expand this card
+                    this.expandProjectCard(card);
+                }
+            });
+        });
+
+        
+ }
+ // ============================================
+// 13. EXPANDABLE PROJECT CARDS
+// ============================================
+    setupExpandableProjects() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card-compact');
+        const emptyState = document.getElementById('emptyState');
+        
+        if (!projectCards.length) return; // Exit if not on projects page
+        
+        // Filter functionality
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+                
+                // Update active button
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                
+                // Filter and collapse cards
+                let visibleCount = 0;
+                
+                projectCards.forEach(card => {
+                    const category = card.dataset.category;
+                    
+                    // Collapse any expanded cards
+                    this.collapseProjectCard(card);
+                    
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeIn 0.4s ease forwards';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide empty state
+                if (emptyState) {
+                    emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+                }
+            });
+        });
+        
+        // Expand/collapse functionality
+        projectCards.forEach(card => {
+            const header = card.querySelector('.card-compact-header');
+            
+            header.addEventListener('click', (e) => {
+                // Don't expand if clicking buttons/links
+                if (e.target.closest('.btn') || e.target.closest('a')) {
+                    return;
+                }
+                
+                const isExpanded = card.dataset.expanded === 'true';
+                
+                if (isExpanded) {
+                    this.collapseProjectCard(card);
+                } else {
+                    // Collapse all other cards first
+                    projectCards.forEach(otherCard => {
+                        if (otherCard !== card) {
+                            this.collapseProjectCard(otherCard);
+                        }
+                    });
+                    
+                    // Expand this card
+                    this.expandProjectCard(card);
+                }
+            });
+        });
+ }
+
+    expandProjectCard(card) {
+        const body = card.querySelector('.card-compact-body');
+        const icon = card.querySelector('.expand-icon i');
+        const expandBtn = card.querySelector('.expand-icon');
+        
+        card.dataset.expanded = 'true';
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.style.padding = '0 1.5rem';
+        
+        // Change icon
+        icon.classList.remove('fa-plus');
+        icon.classList.add('fa-times');
+        icon.style.transform = 'rotate(90deg)';
+        
+        // Style changes
+        expandBtn.style.background = 'rgba(59, 130, 246, 0.2)';
+        card.style.borderColor = 'var(--primary)';
+        card.style.boxShadow = '0 8px 30px rgba(59, 130, 246, 0.15)';
+    }
+
+    collapseProjectCard(card) {
+        const body = card.querySelector('.card-compact-body');
+        const icon = card.querySelector('.expand-icon i');
+        const expandBtn = card.querySelector('.expand-icon');
+        
+        card.dataset.expanded = 'false';
+        body.style.maxHeight = '0';
+        body.style.padding = '0 1.5rem';
+        
+        // Reset icon
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-plus');
+        icon.style.transform = 'rotate(0deg)';
+        
+        // Reset styles
+        expandBtn.style.background = 'rgba(59, 130, 246, 0.1)';
+        card.style.borderColor = 'var(--border)';
+        card.style.boxShadow = '0 4px 6px var(--shadow)';
+    }
 }
 
 // ============================================
@@ -418,3 +611,4 @@ if (document.readyState === 'loading') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = PortfolioApp;
 }
+

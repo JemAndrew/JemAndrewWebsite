@@ -59,27 +59,29 @@ def home_view(request):
         form = ContactForm()
     
     # Get data for home page
-    current_position = data.get_current_experience()
+    current_positions = data.get_all_current_experience()  # NEW: Get all current positions
     core_skills = data.get_skills_by_category()
-    all_projects = data.get_all_projects()  # Add this
+    all_projects = data.get_all_projects()
     github_data = get_github_data()
     
     # Get just the highlights for home page
     featured_skills = {}
     for category, skills in core_skills.items():
-        featured_skills[category] = skills[:3]  # Top 3 skills per category
+        featured_skills[category] = skills[:3]
     
     context.update({
-        'current_position': current_position,
+        'current_positions': current_positions,  # CHANGED: Was current_position
         'featured_skills': featured_skills,
-        'projects': all_projects,  # Add this for the counter
+        'projects': all_projects,
         'form': form,
         'page_title': 'Home - Professional Overview',
-        'meta_description': 'James Andrew - Software Engineer at BuildChorus specializing in Django, enterprise SaaS platforms, and full-stack development.',
+        'meta_description': 'James Andrew - Software Engineer at BuildChorus specialising in Django, enterprise SaaS platforms, and full-stack development.',
         **github_data
     })
     
     return render(request, 'portfolio/home.html', context)
+
+
 
 # PAGE 2: Education
 def education_view(request):
