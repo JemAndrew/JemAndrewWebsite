@@ -6,193 +6,100 @@
 {% block content %}
 
 <!-- Hero Section -->
-<section class="section" style="min-height: 90vh; display: flex; align-items: center; justify-content: center; position: relative;">
+<section class="hero-section">
     <div class="container">
-        <div style="max-width: 800px;">
-            <!-- Small intro -->
-            <p style="color: var(--primary-light); font-family: var(--font-mono); font-size: 0.95rem; margin-bottom: 1.5rem;">
-                Hi, my name is
-            </p>
-            
-            <!-- Big name -->
-            <h1 style="font-size: clamp(3rem, 8vw, 5rem); margin-bottom: 0.5rem; line-height: 1.1;">
-                Jem Andrew
-            </h1>
-            
-            <!-- Subtitle -->
-            <h2 style="font-size: clamp(2rem, 6vw, 4rem); color: var(--text-muted); font-weight: 600; margin-bottom: 2rem; line-height: 1.1;">
-                I'm a Software Engineer.
-            </h2>
-            
-            <!-- Bio paragraph -->
-            <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; line-height: 1.8; margin-bottom: 3rem;">
-                I'm a software engineer specialising in backend development with 
-                <span style="color: var(--primary-light);">Django</span> and 
-                <span style="color: var(--primary-light);">Python</span>. 
-                Currently building enterprise SaaS platforms at 
-                <a href="https://buildchorus.com" target="_blank" style="color: var(--primary-light); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;">BuildChorus</a>.
-            </p>
-            
-            <!-- CTA Buttons -->
-            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                <a href="/projects/" class="btn btn-primary">
-                    <i class="fas fa-code"></i>
-                    View My Work
-                </a>
-                <a href="mailto:andrewjem8@gmail.com" class="btn">
-                    <i class="fas fa-envelope"></i>
-                    Get In Touch
-                </a>
+        <div class="hero-grid">
+            <!-- Left - Hero Content -->
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Available for opportunities
+                </div>
                 
+                <h1 class="hero-title">
+                    Jem Andrew
+                </h1>
+                
+                <h2 style="font-size: clamp(1.4rem, 2.5vw, 1.9rem); color: var(--primary); font-weight: 600; margin-bottom: 1.5rem;">
+                    Software Engineer | MSc Computer Science
+                </h2>
+                
+                <p class="hero-subtitle">
+                    I'm a software engineer passionate about crafting well-structured, logical backend code. 
+                    Currently working with <strong>Django at BuildChorus</strong> whilst consulting on 
+                    <strong>AI-powered legal tech</strong>. I'm fascinated by machine learning and large 
+                    language models, particularly model training.
+                </p>
+                
+                <p class="hero-subtitle">
+                    I'm well-versed in cybersecurity and working with databases of any scale, and I love 
+                    putting these skills to the test through my work and personal projects.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="mailto:andrewjem8@gmail.com" class="btn btn-primary btn-large">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email Me</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" class="btn btn-outline btn-large">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/JemAndrew" target="_blank" class="btn btn-outline btn-large">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
             </div>
             
-            <!-- Quick stats -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-                <div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-light); margin-bottom: 0.25rem;">
-                        {{ projects|length }}+
+            <!-- Right - Experience Cards -->
+            <div class="experience-cards">
+                <div class="floating-card main">
+                    <div class="card-header">
+                        <h3 class="card-title">Freelance AI Consultant</h3>
+                        <p class="card-subtitle">Law Firm Client | Oct 2025 - Present</p>
                     </div>
-                    <div style="color: var(--text-muted); font-size: 0.9rem;">
-                        Projects Built
+                    
+                    <ul class="card-achievements">
+                        <li>Engineering production-grade legal AI system processing 18,000+ documents</li>
+                        <li>Implementing 4-pass iterative architecture with confidence tracking</li>
+                        <li>Delivering tribunal-ready work products for complex litigation</li>
+                        <li>Achieved 30% cost reduction and 40% speed improvement</li>
+                    </ul>
+                    
+                    <div class="card-skills">
+                        <span class="tag">Python</span>
+                        <span class="tag">Claude API</span>
+                        <span class="tag">RAG Architecture</span>
+                        <span class="tag">ChromaDB</span>
+                        <span class="tag">Legal Tech</span>
                     </div>
                 </div>
                 
-                <div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-light); margin-bottom: 0.25rem;">
-                        2
+                <div class="floating-card secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Software Engineer</h3>
+                        <p class="card-subtitle">BuildChorus | Sept 2025 - Present</p>
                     </div>
-                    <div style="color: var(--text-muted); font-size: 0.9rem;">
-                        Degrees
-                    </div>
-                </div>
-                
-                <div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-light); margin-bottom: 0.25rem;">
-                        3+
-                    </div>
-                    <div style="color: var(--text-muted); font-size: 0.9rem;">
-                        Years Coding
+                    
+                    <ul class="card-achievements">
+                        <li>Building user configurability features for material procurement strategies</li>
+                        <li>Deploying containerised applications on Google Cloud Platform</li>
+                        <li>Optimising PostgreSQL databases for complex construction data</li>
+                    </ul>
+                    
+                    <div class="card-skills">
+                        <span class="tag">Django</span>
+                        <span class="tag">PostgreSQL</span>
+                        <span class="tag">GCP</span>
+                        <span class="tag">Docker</span>
+                        <span class="tag">Auth0</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Scroll down button - BOTTOM RIGHT CORNER -->
-    <a href="#about" id="scrollDownBtn" style="position: fixed; bottom: 2rem; right: 2rem; width: 50px; height: 50px; background: var(--primary); border: none; border-radius: 50%; color: white; font-size: 1.2rem; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-        <i class="fas fa-chevron-down"></i>
-    </a>
 </section>
 
-<!-- About Section with Experience -->
-<section id="about" class="section" style="min-height: auto; padding: 6rem 0;">
-    <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
-            <!-- Left: Bio -->
-            <div>
-                <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-                    <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">01.</span>
-                    About Me
-                </h2>
-                
-                <p style="margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
-                    I started learning to code during my free time before university, exploring free published lectures from leading institutions such as MIT and completing as many Codeacademy courses as I could do. Then came my BSc in Biology, which unexpectedly sparked my love for coding through R.
-                </p>
-                
-                <p style="margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
-                    I loved the creativeness of it, which led to this passion to pursue a Master's in Computer Science, where I fully immersed myself in a much broader skill set – from Java and SQL to cybersecurity and ethical hacking.
-                </p>
-                
-                <p style="color: var(--text-secondary); line-height: 1.8;">
-                    These days, I focus on building scalable backend systems and exploring AI/ML applications.
-                </p>
-                <!-- View all projects link -->
-                <a href="/projects/" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    View All Projects
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            
-            <!-- Right: Experience -->
-            <div>
-                <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-                    <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
-                    Experience
-                </h2>
-                
-                {% if current_positions %}
-                    {% for position in current_positions %}
-                    <div class="card" style="height: fit-content; margin-bottom: 2rem;">
-                        <!-- Company & Role -->
-                        <div style="margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-                                <h4 class="card-title" style="font-size: 1.2rem; margin: 0;">
-                                    {{ position.position }}
-                                </h4>
-                                <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">
-                                    Current
-                                </span>
-                            </div>
-                            <div class="card-subtitle" style="font-size: 1rem; margin-bottom: 0.5rem;">
-                                {{ position.company }}
-                            </div>
-                            <div style="color: var(--text-muted); font-size: 0.85rem;">
-                                {{ position.start_date|date:"M Y" }} - Present • {{ position.duration_display }}
-                            </div>
-                        </div>
-                        
-                        <!-- Key Achievements (Compact) -->
-                        <div style="margin-bottom: 1rem;">
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                {{ position.description }}
-                            </p>
-                            
-                            {% if position.achievements %}
-                            <div style="margin-top: 0.75rem;">
-                                <p style="color: var(--primary-light); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem;">
-                                    Key Achievements:
-                                </p>
-                                <ul style="margin: 0; padding-left: 1.25rem; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
-                                    {% for achievement in position.achievements|slice:":3" %}
-                                    <li style="margin-bottom: 0.4rem;">{{ achievement }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- Tech Stack (Compact) -->
-                        <div style="border-top: 1px solid var(--border); padding-top: 0.75rem;">
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
-                                {% for skill in position.skills_list|slice:":5" %}
-                                <span class="tag" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">{{ skill }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <p style="color: var(--text-muted);">No current positions found.</p>
-                {% endif %}
-                
-            
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Responsive styles -->
-<style>
-@media (max-width: 768px) {
-    section#about .container > div[style*="grid-template-columns"] {
-        grid-template-columns: 1fr !important;
-        gap: 3rem !important;
-    }
-    
-    #scrollDownBtn {
-        bottom: 1rem !important;
-        right: 1rem !important;
-    }
-}
-</style>
 {% endblock %}

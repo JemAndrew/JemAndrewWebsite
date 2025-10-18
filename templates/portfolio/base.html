@@ -6,75 +6,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Jem Andrew - Software Engineer{% endblock %}</title>
     
-    <!-- Preconnect for performance -->
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Your CSS -->
+    <!-- CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading" id="loadingScreen">
-        <div class="spinner"></div>
-    </div>
-
     <!-- Navigation -->
     <nav class="nav" id="mainNav">
         <div class="nav-container">
-            <a href="/" class="nav-logo">JA</a>
+            <a href="/" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>
+                JA
+                <span class="logo-bracket">/&gt;</span>
+            </a>
             
-            <ul class="nav-links" id="navLinks">
+            <ul class="nav-links desktop-nav">
                 <li><a href="/" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
                 <li><a href="/projects/" class="nav-link {% if request.resolver_match.url_name == 'projects' %}active{% endif %}">Projects</a></li>
                 <li><a href="/education/" class="nav-link {% if request.resolver_match.url_name == 'education' %}active{% endif %}">Education</a></li>
             </ul>
             
-            <!-- Mobile menu button -->
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <a href="mailto:andrewjem8@gmail.com" class="nav-email">
+                <i class="fas fa-envelope"></i>
+                <span>andrewjem8@gmail.com</span>
+            </a>
+            
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
             </button>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu-content">
+                <nav class="mobile-nav">
+                    <a href="/" class="mobile-nav-link">
+                        <span class="mobile-nav-number">01</span>
+                        Home
+                    </a>
+                    <a href="/projects/" class="mobile-nav-link">
+                        <span class="mobile-nav-number">02</span>
+                        Projects
+                    </a>
+                    <a href="/education/" class="mobile-nav-link">
+                        <span class="mobile-nav-number">03</span>
+                        Education
+                    </a>
+                </nav>
+                
+                <div class="mobile-contact">
+                    <a href="mailto:andrewjem8@gmail.com" class="mobile-email">
+                        andrewjem8@gmail.com
+                    </a>
+                    <div class="mobile-social">
+                        <a href="https://github.com/JemAndrew" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="page-container" id="pageContent">
+    <main class="page-container">
         {% block content %}{% endblock %}
     </main>
 
+    <!-- Floating CV Button -->
+    <a href="{% url 'portfolio:download_msc' %}" class="floating-cta visible">
+        <span class="floating-cta-text">Download CV</span>
+        <i class="fas fa-download"></i>
+    </a>
+
     <!-- Footer -->
-    <footer style="background: var(--bg-card); padding: 3rem 0; margin-top: 4rem; border-top: 1px solid var(--border);">
-        <div class="container" style="text-align: center;">
-            <div style="display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 1rem;">
-                <a href="https://github.com/JemAndrew" target="_blank" style="font-size: 1.5rem; color: var(--text-secondary); transition: color 0.2s;">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" style="font-size: 1.5rem; color: var(--text-secondary); transition: color 0.2s;">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="mailto:andrewjem8@gmail.com" style="font-size: 1.5rem; color: var(--text-secondary); transition: color 0.2s;">
-                    <i class="fas fa-envelope"></i>
-                </a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-social">
+                    <a href="https://github.com/JemAndrew" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="mailto:andrewjem8@gmail.com">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+                <p class="footer-text">
+                    © {% now "Y" %} Jem Andrew. Built with Django.
+                </p>
             </div>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">
-                © {% now "Y" %} Jem Andrew. Built with Django.
-            </p>
         </div>
     </footer>
 
     <!-- JavaScript -->
     <script src="{% static 'js/main.js' %}"></script>
-    
     {% block extra_js %}{% endblock %}
 </body>
 </html>
