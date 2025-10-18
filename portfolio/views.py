@@ -36,46 +36,19 @@ def get_github_data():
 # PAGE 1: Professional Overview
 def home_view(request):
     """
-    Main professional overview page
-    Focus: Contact, BuildChorus experience, core skills
+    Home/Hero page - clean single screen view
     """
     context = get_site_context()
     
-    # Handle contact form submission
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            subject = form.cleaned_data['subject']
-            message = form.cleaned_data['message']
-            
-            logger.info(f"Contact form submission: {name} ({email}) - {subject}")
-            messages.success(request, "Thank you for your message! I'll get back to you soon.")
-            form = ContactForm()
-        else:
-            messages.error(request, "Please correct the errors below.")
-    else:
-        form = ContactForm()
-    
     # Get data for home page
-    current_positions = data.get_all_current_experience()  # NEW: Get all current positions
-    core_skills = data.get_skills_by_category()
-    all_projects = data.get_all_projects()
+    current_positions = data.get_all_current_experience()
     github_data = get_github_data()
     
-    # Get just the highlights for home page
-    featured_skills = {}
-    for category, skills in core_skills.items():
-        featured_skills[category] = skills[:3]
-    
     context.update({
-        'current_positions': current_positions,  # CHANGED: Was current_position
-        'featured_skills': featured_skills,
-        'projects': all_projects,
-        'form': form,
-        'page_title': 'Home - Professional Overview',
-        'meta_description': 'James Andrew - Software Engineer at BuildChorus specialising in Django, enterprise SaaS platforms, and full-stack development.',
+        'current_positions': current_positions,
+        'page_title': 'Home - Jem Andrew',
+        'page_class': 'home-page',  # This prevents scrolling on home page
+        'meta_description': 'Jem Andrew - Software Engineer at BuildChorus specialising in Django, AI, and backend development.',
         **github_data
     })
     
@@ -281,3 +254,26 @@ def api_skills_view(request):
             })
     
     return JsonResponse({'skills': skills_data})
+
+# portfolio/views.py - Add this function to your existing views.py
+
+def about_view(request):
+    """
+    About Me page - detailed background and skills
+    """
+    context = get_site_context()
+    
+    # Get data for about page
+    current_positions = data.get_all_current_experience()
+    core_skills = data.get_skills_by_category()
+    github_data = get_github_data()
+    
+    context.update({
+        'current_positions': current_positions,
+        'core_skills': core_skills,
+        'page_title': 'About Me - Jem Andrew',
+        'meta_description': 'Learn more about Jem Andrew - software engineer passionate about backend development, AI, and clean code.',
+        **github_data
+    })
+    
+    return render(request, 'portfolio/about.html', context)

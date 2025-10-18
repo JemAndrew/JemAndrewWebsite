@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<!-- Hero Section -->
+<!-- Hero Section - One Screen, No Scroll -->
 <section class="hero-section">
     <div class="container">
         <div class="hero-grid">
@@ -20,34 +20,43 @@
                     Jem Andrew
                 </h1>
                 
-                <h2 style="font-size: clamp(1.4rem, 2.5vw, 1.9rem); color: var(--primary); font-weight: 600; margin-bottom: 1.5rem;">
+                <h2 style="font-size: clamp(1.1rem, 1.8vw, 1.4rem); color: var(--primary); font-weight: 600; margin-bottom: 0.8rem;">
                     Software Engineer | MSc Computer Science
                 </h2>
                 
                 <p class="hero-subtitle">
                     I'm a software engineer passionate about crafting well-structured, logical backend code. 
                     Currently working with <strong>Django at BuildChorus</strong> whilst consulting on 
-                    <strong>AI-powered legal tech</strong>. I'm fascinated by machine learning and large 
-                    language models, particularly model training.
+                    <strong>AI-powered legal tech</strong>.
                 </p>
                 
                 <p class="hero-subtitle">
-                    I'm well-versed in cybersecurity and working with databases of any scale, and I love 
-                    putting these skills to the test through my work and personal projects.
+                    I'm fascinated by machine learning and large language models. I'm well-versed in 
+                    cybersecurity and databases of any scale.
                 </p>
                 
-                <div class="hero-actions">
-                    <a href="mailto:andrewjem8@gmail.com" class="btn btn-primary btn-large">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email Me</span>
+                <!-- Animated CV Button -->
+                <div class="cv-button-container">
+                    <div class="cv-button-bg"></div>
+                    <a href="{% url 'portfolio:download_msc' %}" class="cv-button">
+                        <span class="cv-button-text">Download CV</span>
+                        <i class="fas fa-download cv-button-icon"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" class="btn btn-outline btn-large">
+                </div>
+                
+                <!-- Social Links -->
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" class="social-link">
                         <i class="fab fa-linkedin"></i>
                         <span>LinkedIn</span>
                     </a>
-                    <a href="https://github.com/JemAndrew" target="_blank" class="btn btn-outline btn-large">
+                    <a href="https://github.com/JemAndrew" target="_blank" class="social-link">
                         <i class="fab fa-github"></i>
                         <span>GitHub</span>
+                    </a>
+                    <a href="mailto:andrewjem8@gmail.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
                     </a>
                 </div>
             </div>
@@ -63,7 +72,6 @@
                     <ul class="card-achievements">
                         <li>Engineering production-grade legal AI system processing 18,000+ documents</li>
                         <li>Implementing 4-pass iterative architecture with confidence tracking</li>
-                        <li>Delivering tribunal-ready work products for complex litigation</li>
                         <li>Achieved 30% cost reduction and 40% speed improvement</li>
                     </ul>
                     
@@ -100,6 +108,5 @@
         </div>
     </div>
 </section>
-
 
 {% endblock %}
