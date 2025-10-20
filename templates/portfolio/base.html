@@ -21,7 +21,7 @@
     
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body{% if page_class %} class="{{ page_class }}"{% endif %}>
     <!-- Cylindrical Pill Navigation -->
     <nav class="nav" id="mainNav">
         <div class="nav-container">
