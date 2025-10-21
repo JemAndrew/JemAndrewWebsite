@@ -1,265 +1,534 @@
 {% extends 'portfolio/base.html' %}
+{% load static %}
 
 {% block title %}Projects - Jem Andrew{% endblock %}
 
 {% block content %}
-<!-- Projects Hero -->
-<section class="projects-hero">
-    <div class="floating-shapes">
-        <div class="gradient-square square-1"></div>
-        <div class="gradient-square square-2"></div>
-        <div class="gradient-square square-3"></div>
-    </div>
+
+<!-- Split-Screen Container -->
+<div class="projects-split-container">
     
-    <div class="projects-header">
-        <span class="section-label">// Portfolio</span>
-        <h1 class="projects-title">
-            My <span class="gradient-text">Projects</span>
-        </h1>
-        <p class="projects-subtitle">
-            From professional systems to personal experiments – a collection of projects that 
-            showcase my technical skills and problem-solving approach.
-        </p>
-        
-        <!-- Filter buttons -->
-        <div class="filter-container">
-            <button class="filter-btn active" data-filter="all">All Projects</button>
-            <button class="filter-btn" data-filter="professional">Professional</button>
-            <button class="filter-btn" data-filter="personal">Personal</button>
-            <button class="filter-btn" data-filter="academic">Academic</button>
+    <!-- LEFT SIDEBAR (STICKY) -->
+    <aside class="projects-left">
+        <!-- Avatar -->
+        <div class="projects-left-avatar" id="projectsLeftAvatar">
+            <div class="avatar-loading">Loading...</div>
         </div>
-    </div>
-</section>
-
-<!-- Projects Grid -->
-<section class="projects-container">
-    <div class="projects-grid">
         
-        <!-- Project 1: Litigation Intelligence Platform -->
-        <div class="project-card" data-category="professional">
-            <div class="project-header">
-                <div class="project-icon">
-                    <i class="fas fa-briefcase"></i>
+        <!-- Name & Title -->
+        <h1 class="projects-left-name">Jem Andrew</h1>
+        <p class="projects-left-title">Software Engineer</p>
+        
+        <!-- Project Count -->
+        <div class="projects-count">
+            <i class="fas fa-folder"></i>
+            <span id="projectCount">6 Projects</span>
+        </div>
+        
+        <div class="sidebar-divider"></div>
+        
+        <!-- Category Filters -->
+        <div class="projects-filters">
+            <div class="filter-label">Filter Projects</div>
+            
+            <button class="sidebar-filter active" data-filter="all">
+                <span class="filter-bullet">●</span>
+                <span class="filter-text">All Projects</span>
+                <span class="filter-count">(6)</span>
+            </button>
+            
+            <button class="sidebar-filter" data-filter="professional">
+                <span class="filter-bullet">○</span>
+                <span class="filter-text">Professional</span>
+                <span class="filter-count">(1)</span>
+            </button>
+            
+            <button class="sidebar-filter" data-filter="personal">
+                <span class="filter-bullet">○</span>
+                <span class="filter-text">Personal</span>
+                <span class="filter-count">(3)</span>
+            </button>
+            
+            <button class="sidebar-filter" data-filter="academic">
+                <span class="filter-bullet">○</span>
+                <span class="filter-text">Academic</span>
+                <span class="filter-count">(2)</span>
+            </button>
+        </div>
+        
+        <div class="sidebar-divider"></div>
+        
+        <!-- Quick Navigation -->
+        <div class="projects-quick-nav">
+            <div class="filter-label">Quick Navigation</div>
+            
+            <a href="#litigation" class="nav-project-link">
+                <i class="fas fa-arrow-right"></i>
+                <span>Litigation Platform</span>
+            </a>
+            
+            <a href="#crypto" class="nav-project-link">
+                <i class="fas fa-arrow-right"></i>
+                <span>Crypto Exchange</span>
+            </a>
+            
+            <a href="#medical" class="nav-project-link">
+                <i class="fas fa-arrow-right"></i>
+                <span>Medical AI System</span>
+            </a>
+            
+            <a href="#cluedo" class="nav-project-link">
+                <i class="fas fa-arrow-right"></i>
+                <span>Holiday Cluedo</span>
+            </a>
+            
+            <a href="#bike" class="nav-project-link">
+                <i class="fas fa-arrow-right"></i>
+                <span>Bike Route App</span>
+            </a>
+            
+            <a href="#portfolio-project" class="nav-project-link">
+                <i class="fas fa-arrow-right"></i>
+                <span>Portfolio Website</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-divider"></div>
+        
+        <!-- External Links -->
+        <div class="projects-external-links">
+            <a href="https://github.com/JemAndrew" target="_blank" class="external-link">
+                <i class="fab fa-github"></i>
+                <span>GitHub Profile</span>
+            </a>
+            
+            <a href="mailto:andrewjem8@gmail.com" class="external-link">
+                <i class="fas fa-envelope"></i>
+                <span>Email Me</span>
+            </a>
+        </div>
+        
+        <!-- Status -->
+        <div class="projects-status">
+            <span class="status-dot"></span>
+            <span>Always building</span>
+        </div>
+    </aside>
+    
+    <!-- RIGHT CONTENT (SCROLLING) -->
+    <main class="projects-right">
+        
+        <!-- Header -->
+        <div class="projects-right-header">
+            <span class="section-label">// Portfolio</span>
+            <h2 class="projects-right-title">My Projects</h2>
+            <p class="projects-right-subtitle">
+                From professional systems to personal experiments – a collection showcasing 
+                technical skills and problem-solving approach.
+            </p>
+        </div>
+        
+        <!-- Projects List -->
+        <div class="projects-list">
+            
+            <!-- Project 1: Litigation Intelligence Platform -->
+            <div class="project-card" data-category="professional" id="litigation">
+                <div class="project-header">
+                    <div class="project-icon">⚖️</div>
+                    
+                    <div class="project-info">
+                        <h3 class="project-title">Litigation Intelligence Platform</h3>
+                        <div class="project-meta">
+                            <span class="project-badge badge-professional">Professional</span>
+                            <span class="project-year">2025</span>
+                            <span class="project-status">⚡ Currently Building</span>
+                        </div>
+                        <p class="project-summary">
+                            Developed two AI systems for civil litigation: document matching pipeline 
+                            and conversational RAG chatbot with cumulative knowledge graphs.
+                        </p>
+                    </div>
+                    
+                    <button class="expand-btn" aria-label="Expand project">
+                        <i class="fas fa-plus"></i>
+                    </button>
                 </div>
                 
-                <div class="project-info">
-                    <h3 class="project-title">Litigation Intelligence Platform</h3>
-                    <p class="project-summary">
-                        AI-powered legal document analysis system processing 18,000+ documents in 48 hours, 
-                        extracting structured evidence and generating tribunal-ready deliverables.
-                    </p>
-                </div>
-                
-                <div class="project-meta">
-                    <span class="project-badge badge-professional">Professional</span>
-                    <span class="project-year">2025</span>
-                </div>
-                
-                <div class="expand-btn">
-                    <i class="fas fa-plus"></i>
+                <div class="project-body">
+                    <div class="project-body-inner">
+                        <div class="tech-pills-header">
+                            <span class="tech-label">Technologies</span>
+                        </div>
+                        <div class="tech-pills">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Claude API</span>
+                            <span class="tech-pill">ChromaDB</span>
+                            <span class="tech-pill">Legal-BERT</span>
+                            <span class="tech-pill">BM25</span>
+                            <span class="tech-pill">RAG</span>
+                            <span class="tech-pill">Excel</span>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h4 class="section-heading">🔍 Document Matching Pipeline</h4>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Fuzzy matching for duplicate detection</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Excel analytics with confidence scoring</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Claude Vision API verification</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h4 class="section-heading">💬 Conversational RAG Chatbot</h4>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Natural language queries across case documents</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Cumulative knowledge graph learning per session</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Automated tribunal-ready documentation</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-actions">
+                            <button class="action-btn action-btn-secondary" disabled>
+                                <i class="fas fa-lock"></i>
+                                Confidential Project
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="project-body">
-                <div class="project-body-inner">
-                    <p class="project-description">
-                        Engineered a production-grade legal AI system that analyses large-scale commercial litigation 
-                        documents using a 4-pass iterative architecture with Anthropic's Claude models. Achieved 30% 
-                        cost reduction and 40% speed improvement through intelligent document selection and confidence-tracked 
-                        analysis reaching 95% certainty.
-                    </p>
+            <!-- Project 2: Cryptocurrency Exchange -->
+            <div class="project-card" data-category="personal" id="crypto">
+                <div class="project-header">
+                    <div class="project-icon">🔗</div>
                     
-                    <div class="features-section">
-                        <h4 class="section-heading">Key Features</h4>
-                        <div class="features-list">
-                            <div class="feature-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span class="feature-text">
-                                    4-pass iterative architecture processing 18,000+ documents in 30-48 hours
-                                </span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span class="feature-text">
-                                    Autonomous recursive investigation engine with AI decision-making
-                                </span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span class="feature-text">
-                                    Multi-tier memory system with vector database integration
-                                </span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span class="feature-text">
-                                    Cost optimised at £0.014-0.021 per document with 95% confidence
-                                </span>
+                    <div class="project-info">
+                        <h3 class="project-title">Cryptocurrency Exchange Platform</h3>
+                        <div class="project-meta">
+                            <span class="project-badge badge-personal">Personal</span>
+                            <span class="project-year">2025</span>
+                        </div>
+                        <p class="project-summary">
+                            Built a cryptocurrency exchange from scratch with custom order matching 
+                            engine and real-time WebSocket price feeds.
+                        </p>
+                    </div>
+                    
+                    <button class="expand-btn" aria-label="Expand project">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="project-body">
+                    <div class="project-body-inner">
+                        <div class="tech-pills-header">
+                            <span class="tech-label">Technologies</span>
+                        </div>
+                        <div class="tech-pills">
+                            <span class="tech-pill">Django</span>
+                            <span class="tech-pill">PostgreSQL</span>
+                            <span class="tech-pill">WebSockets</span>
+                            <span class="tech-pill">REST API</span>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h4 class="section-heading">⚡ Core Features</h4>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Order matching engine with price-time priority</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Real-time WebSocket price feeds</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">High-frequency transaction processing</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div>
-                        <h4 class="section-heading">Technologies</h4>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Claude API</span>
-                            <span class="tech-tag">ChromaDB</span>
-                            <span class="tech-tag">RAG Architecture</span>
-                            <span class="tech-tag">SQLite</span>
+                        
+                        <div class="project-actions">
+                            <a href="https://github.com/JemAndrew/crypto-exchange" target="_blank" class="action-btn action-btn-primary">
+                                <i class="fab fa-github"></i>
+                                View Code
+                            </a>
                         </div>
                     </div>
-                    
-                    <div class="project-actions">
-                        <button class="action-btn action-btn-secondary" disabled>
-                            <i class="fas fa-lock"></i>
-                            Confidential
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Project 2: Cryptocurrency Exchange -->
-        <div class="project-card" data-category="personal">
-            <div class="project-header">
-                <div class="project-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                
-                <div class="project-info">
-                    <h3 class="project-title">Cryptocurrency Exchange Platform</h3>
-                    <p class="project-summary">
-                        Built a custom order matching engine with price-time priority algorithm handling 1000+ orders per second.
-                    </p>
-                </div>
-                
-                <div class="project-meta">
-                    <span class="project-badge badge-personal">Personal</span>
-                    <span class="project-year">2025</span>
-                </div>
-                
-                <div class="expand-btn">
-                    <i class="fas fa-plus"></i>
                 </div>
             </div>
             
-            <div class="project-body">
-                <div class="project-body-inner">
-                    <p class="project-description">
-                        Built a cryptocurrency exchange from scratch focused on stablecoin trading. The core is a custom 
-                        order matching engine using price-time priority that handles over 1000 orders per second. Real-time 
-                        WebSocket connections keep prices live and the database schema carefully manages relationships between 
-                        orders, trades and wallets.
-                    </p>
+            <!-- Project 3: Medical AI Diagnostic System -->
+            <div class="project-card" data-category="academic" id="medical">
+                <div class="project-header">
+                    <div class="project-icon">🧠</div>
                     
-                    <div>
-                        <h4 class="section-heading">Technologies</h4>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Django</span>
-                            <span class="tech-tag">PostgreSQL</span>
-                            <span class="tech-tag">WebSockets</span>
-                            <span class="tech-tag">REST API</span>
+                    <div class="project-info">
+                        <h3 class="project-title">Medical AI Diagnostic System</h3>
+                        <div class="project-meta">
+                            <span class="project-badge badge-academic">Academic</span>
+                            <span class="project-year">2025</span>
+                        </div>
+                        <p class="project-summary">
+                            MSc dissertation comparing CNN architectures for automated skin cancer 
+                            detection with FDA-compliant evaluation framework.
+                        </p>
+                    </div>
+                    
+                    <button class="expand-btn" aria-label="Expand project">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="project-body">
+                    <div class="project-body-inner">
+                        <div class="tech-pills-header">
+                            <span class="tech-label">Technologies</span>
+                        </div>
+                        <div class="tech-pills">
+                            <span class="tech-pill">PyTorch</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">CNN</span>
+                            <span class="tech-pill">Medical AI</span>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h4 class="section-heading">🔬 Research Contributions</h4>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Compared ResNet, DenseNet, and custom architectures</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Advanced data augmentation and ensemble methods</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">FDA-compliant evaluation framework</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-actions">
+                            <button class="action-btn action-btn-secondary" disabled>
+                                <i class="fas fa-graduation-cap"></i>
+                                Academic Research
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="project-actions">
-                        <a href="https://github.com/JemAndrew/crypto-exchange" target="_blank" class="action-btn action-btn-primary">
-                            <i class="fab fa-github"></i>
-                            View Code
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Project 3: Medical AI Diagnostic System -->
-        <div class="project-card" data-category="academic">
-            <div class="project-header">
-                <div class="project-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                
-                <div class="project-info">
-                    <h3 class="project-title">Medical AI Diagnostic System</h3>
-                    <p class="project-summary">
-                        MSc dissertation using CNN architectures for skin cancer detection achieving 15% improvement over baselines.
-                    </p>
-                </div>
-                
-                <div class="project-meta">
-                    <span class="project-badge badge-academic">Academic</span>
-                    <span class="project-year">2025</span>
-                </div>
-                
-                <div class="expand-btn">
-                    <i class="fas fa-plus"></i>
                 </div>
             </div>
             
-            <div class="project-body">
-                <div class="project-body-inner">
-                    <p class="project-description">
-                        My MSc dissertation project where I developed CNNs for automated skin cancer detection. 
-                        I compared multiple architectures including ResNet, DenseNet and custom designs. Through 
-                        advanced data augmentation and ensemble methods I achieved 15% better accuracy than baseline models.
-                    </p>
+            <!-- Project 4: Holiday Cluedo PWA -->
+            <div class="project-card" data-category="personal" id="cluedo">
+                <div class="project-header">
+                    <div class="project-icon">🎮</div>
                     
-                    <div>
-                        <h4 class="section-heading">Technologies</h4>
-                        <div class="tech-stack">
-                            <span class="tech-tag">PyTorch</span>
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">CNN</span>
-                            <span class="tech-tag">Medical AI</span>
+                    <div class="project-info">
+                        <h3 class="project-title">Holiday Cluedo PWA</h3>
+                        <div class="project-meta">
+                            <span class="project-badge badge-personal">Personal</span>
+                            <span class="project-year">2023</span>
+                        </div>
+                        <p class="project-summary">
+                            Browser-based multiplayer Cluedo game with offline capability and 
+                            Fisher-Yates shuffle algorithm for fair play.
+                        </p>
+                    </div>
+                    
+                    <button class="expand-btn" aria-label="Expand project">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="project-body">
+                    <div class="project-body-inner">
+                        <div class="tech-pills-header">
+                            <span class="tech-label">Technologies</span>
+                        </div>
+                        <div class="tech-pills">
+                            <span class="tech-pill">JavaScript</span>
+                            <span class="tech-pill">PWA</span>
+                            <span class="tech-pill">Service Workers</span>
+                            <span class="tech-pill">WebSockets</span>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h4 class="section-heading">🎲 Game Features</h4>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Support for 20+ concurrent users</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Offline gameplay with service workers</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Fisher-Yates shuffle for fair distribution</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-actions">
+                            <a href="https://github.com/JemAndrew/holiday-cluedo" target="_blank" class="action-btn action-btn-primary">
+                                <i class="fab fa-github"></i>
+                                View Code
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Project 5: Bike Route Planning -->
+            <div class="project-card" data-category="academic" id="bike">
+                <div class="project-header">
+                    <div class="project-icon">🚴</div>
+                    
+                    <div class="project-info">
+                        <h3 class="project-title">Bike Route Planning Application</h3>
+                        <div class="project-meta">
+                            <span class="project-badge badge-academic">Academic</span>
+                            <span class="project-year">2024</span>
+                        </div>
+                        <p class="project-summary">
+                            Full-stack cycling route application built in a team of 5, integrating 
+                            HERE Maps API for route planning.
+                        </p>
+                    </div>
+                    
+                    <button class="expand-btn" aria-label="Expand project">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="project-body">
+                    <div class="project-body-inner">
+                        <div class="tech-pills-header">
+                            <span class="tech-label">Technologies</span>
+                        </div>
+                        <div class="tech-pills">
+                            <span class="tech-pill">Flask</span>
+                            <span class="tech-pill">React</span>
+                            <span class="tech-pill">MongoDB</span>
+                            <span class="tech-pill">HERE Maps</span>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h4 class="section-heading">🛠️ Development Highlights</h4>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">REST API for authentication and routes</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">HERE Maps API integration</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Agile team collaboration</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-actions">
+                            <a href="https://github.com/JemAndrew/cycle_plan" target="_blank" class="action-btn action-btn-primary">
+                                <i class="fab fa-github"></i>
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project 6: Portfolio Website -->
+            <div class="project-card" data-category="personal" id="portfolio-project">
+                <div class="project-header">
+                    <div class="project-icon">💼</div>
+                    
+                    <div class="project-info">
+                        <h3 class="project-title">Portfolio Website</h3>
+                        <div class="project-meta">
+                            <span class="project-badge badge-personal">Personal</span>
+                            <span class="project-year">2024</span>
+                        </div>
+                        <p class="project-summary">
+                            Professional portfolio showcasing projects and skills through clean 
+                            design, responsive layouts, and efficient code.
+                        </p>
+                    </div>
+                    
+                    <button class="expand-btn" aria-label="Expand project">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="project-body">
+                    <div class="project-body-inner">
+                        <div class="tech-pills-header">
+                            <span class="tech-label">Technologies</span>
+                        </div>
+                        <div class="tech-pills">
+                            <span class="tech-pill">Django</span>
+                            <span class="tech-pill">CSS3</span>
+                            <span class="tech-pill">JavaScript</span>
+                            <span class="tech-pill">WhiteNoise</span>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h4 class="section-heading">✨ Design Features</h4>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Responsive modern design</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Optimised performance</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="feature-text">Clean code architecture</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-actions">
+                            <a href="https://github.com/JemAndrew/portfolio" target="_blank" class="action-btn action-btn-primary">
+                                <i class="fab fa-github"></i>
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
         
-    </div>
-</section>
+    </main>
+    
+</div>
 
-<script>
-// Project card expand/collapse
-document.querySelectorAll('.project-header').forEach(header => {
-    header.addEventListener('click', function(e) {
-        if (e.target.closest('button')) return;
-        
-        const card = this.closest('.project-card');
-        const isExpanded = card.classList.contains('expanded');
-        
-        // Collapse all cards
-        document.querySelectorAll('.project-card').forEach(c => {
-            c.classList.remove('expanded');
-        });
-        
-        // Expand clicked card if it wasn't expanded
-        if (!isExpanded) {
-            card.classList.add('expanded');
-        }
-    });
-});
-
-// Filter functionality
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const filter = this.dataset.filter;
-        
-        // Update active button
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        
-        // Filter cards
-        document.querySelectorAll('.project-card').forEach(card => {
-            if (filter === 'all' || card.dataset.category === filter) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    });
-});
-</script>
 {% endblock %}

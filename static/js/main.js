@@ -29,9 +29,24 @@ class ModernPortfolio {
             this.setupModulesToggle();
         }
         
+        if (document.querySelector('.projects-split-container')) {
+            this.setupProjectsPage();
+        }
+        
         console.log('✅ All systems ready');
     }
-
+    setupProjectsPage() {
+    console.log('✅ Setting up projects page');
+    
+    // Category filtering
+    this.setupProjectFiltering();
+    
+    // Quick navigation
+    this.setupProjectNavigation();
+    
+    // Expandable cards 
+    this.setupExpandableProjects();
+    }
     // ============================================
     // LOAD AVATARS - FLEXIBLE
     // ============================================
@@ -61,7 +76,38 @@ class ModernPortfolio {
                 menuAvatarContainer.innerHTML = svgText;
                 console.log('✅ Menu avatar loaded');
             }
-            
+            const aboutLeftAvatar = document.getElementById('aboutLeftAvatar');
+            if (aboutLeftAvatar) {
+                aboutLeftAvatar.innerHTML = svgText;
+                console.log('✅ About page left avatar loaded');
+                
+                // Optional: Add subtle hover effect for about avatar
+                aboutLeftAvatar.style.transition = 'transform 0.3s ease';
+                aboutLeftAvatar.addEventListener('mouseenter', () => {
+                    aboutLeftAvatar.style.transform = 'scale(1.05)';
+                });
+                aboutLeftAvatar.addEventListener('mouseleave', () => {
+                    aboutLeftAvatar.style.transform = 'scale(1)';
+                });
+            }
+
+            // Add this to your existing loadAvatars() function in main.js
+            // Find the loadAvatars() method and ADD this section after the about avatar code:
+
+            // Load into PROJECTS PAGE header avatar
+            const projectsLeftAvatar = document.getElementById('projectsLeftAvatar');
+            if (projectsLeftAvatar) {
+                projectsLeftAvatar.innerHTML = svgText;
+                console.log('✅ Projects left avatar loaded');
+                
+                projectsLeftAvatar.style.transition = 'transform 0.3s ease';
+                projectsLeftAvatar.addEventListener('mouseenter', () => {
+                    projectsLeftAvatar.style.transform = 'scale(1.05)';
+                });
+                projectsLeftAvatar.addEventListener('mouseleave', () => {
+                    projectsLeftAvatar.style.transform = 'scale(1)';
+                });
+            }
             // Load into HERO avatar - try BOTH possible IDs
             let heroContainer = document.getElementById('avatarContainer');
             if (!heroContainer) {
@@ -107,7 +153,7 @@ class ModernPortfolio {
             }
         }
     }
-
+    
     // ============================================
     // EYE TRACKING - WORKS WITH ANY CONTAINER
     // ============================================
@@ -168,7 +214,55 @@ class ModernPortfolio {
             console.warn('⚠️ No eyes found in SVG');
         }
     }
-
+    setupProjectFiltering() {
+        const filterButtons = document.querySelectorAll('.sidebar-filter');
+        const projectCards = document.querySelectorAll('.project-card');
+        const projectCount = document.getElementById('projectCount');
+        
+        if (!filterButtons.length) return;
+        
+        console.log('✅ Project filtering initialised');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+                
+                // Update active state
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    const bullet = btn.querySelector('.filter-bullet');
+                    if (bullet) bullet.textContent = '○';
+                });
+                
+                button.classList.add('active');
+                const activeBullet = button.querySelector('.filter-bullet');
+                if (activeBullet) activeBullet.textContent = '●';
+                
+                // Filter projects
+                let visibleCount = 0;
+                projectCards.forEach(card => {
+                    const category = card.dataset.category;
+                    
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                        
+                        // Collapse expanded cards when filtering
+                        this.collapseProjectCard(card);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update count
+                if (projectCount) {
+                    const label = filter === 'all' ? 'Projects' : 
+                                filter.charAt(0).toUpperCase() + filter.slice(1) + ' Projects';
+                    projectCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'Project' : label}`;
+                }
+            });
+        });
+    }
     // ============================================
     // FULLSCREEN MENU
     // ============================================
@@ -220,6 +314,37 @@ class ModernPortfolio {
         console.log('✅ Menu ready');
     }
 
+    setupProjectNavigation() {
+        const navLinks = document.querySelectorAll('.nav-project-link');
+        
+        if (!navLinks.length) return;
+        
+        console.log('✅ Project navigation initialised');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const targetId = link.getAttribute('href').substring(1);
+                const targetCard = document.getElementById(targetId);
+                
+                if (targetCard) {
+                    // Smooth scroll to project
+                    targetCard.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Optional: Expand the card after scrolling
+                    setTimeout(() => {
+                        if (!targetCard.classList.contains('expanded')) {
+                            this.expandProjectCard(targetCard);
+                        }
+                    }, 600);
+                }
+            });
+        });
+    }
     // ============================================
     // THEME TOGGLE
     // ============================================
