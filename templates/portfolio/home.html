@@ -5,124 +5,51 @@
 
 {% block content %}
 
-<!-- Hero Section with All Design Elements -->
-<section class="hero-section">
-    
-    <!-- Floating Gradient Squares (Seán style) -->
-    <div class="floating-shapes">
-        <div class="gradient-square square-1"></div>
-        <div class="gradient-square square-2"></div>
-        <div class="gradient-square square-3"></div>
-    </div>
-    
-    <!-- Subtle Circle Blurs (Ram style) -->
-    <div class="circle-blur circle-1"></div>
-    <div class="circle-blur circle-2"></div>
-    
-    <div class="hero-container">
-        <!-- LEFT: Content -->
-        <div class="hero-content">
-            <!-- Available Badge -->
-            <div class="hero-badge">
-                <span class="status-dot"></span>
-                Available for opportunities
+<!-- Centred Hero Section -->
+<section class="hero-centered">
+    <div class="hero-centered-content">
+        <!-- Large Avatar + Name Section -->
+        <div class="hero-avatar-name">
+            <!-- CRITICAL: Use avatarContainer ID for eye tracking to work -->
+            <div class="hero-large-avatar">
+                <div class="avatar-container" id="avatarContainer">
+                    <!-- SVG loads here automatically -->
+                    <div class="avatar-loading">Loading...</div>
+                </div>
             </div>
             
-            <!-- Title with Gradient Text -->
-            <h1 class="hero-title">
-                Hey, I'm<br>
-                <span class="gradient-text">Jem Andrew</span>
-            </h1>
-            
-            <!-- Subtitle -->
-            <p class="hero-subtitle">
-                Software Engineer | MSc Computer Science
-            </p>
-            
-            <!-- Description -->
-            <p class="hero-description">
-                I'm passionate about crafting well-structured backend code. 
-                Currently working with <strong>Django at BuildChorus</strong> whilst 
-                consulting on <strong>AI-powered legal tech</strong>.
-            </p>
-            
-            <!-- CTA Buttons -->
-            <div class="cta-group">
-                <!-- Circular CV Button (Kenneth style) -->
-                <div class="cta-circular">
-                    <a href="{% url 'portfolio:download_msc' %}" class="cta-circle">
-                        <span>Download<br>CV</span>
-                        <i class="fas fa-download"></i>
-                    </a>
-                </div>
-                
-                <!-- View Projects Button -->
-                <a href="{% url 'portfolio:projects' %}" class="btn btn-primary">
-                    <span>View Projects</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                
-                <!-- Contact Button -->
-                <a href="mailto:andrewjem8@gmail.com" class="btn btn-secondary">
-                    <span>Get in Touch</span>
-                    <i class="fas fa-envelope"></i>
-                </a>
+            <div class="hero-text-block">
+                <h1 class="hero-centered-title">
+                    Hey, I'm<br>
+                    <span class="hero-name">Jem Andrew</span>
+                </h1>
             </div>
         </div>
         
-        <!-- RIGHT: Visual/Illustration Area -->
-        <div class="hero-visual">
-            <div class="illustration-container">
-                <!-- Centre Graphic (Seán style eye) -->
-                <div class="centre-graphic">
-                    <div class="eye-graphic">
-                        <span class="eye-ray"></span>
-                        <span class="eye-ray"></span>
-                        <span class="eye-ray"></span>
-                        <span class="eye-ray"></span>
-                        <div class="eye-pupil"></div>
-                    </div>
-                </div>
-                
-                <!-- TODO: Replace with custom illustration from Fiverr/Upwork -->
-                <!-- <img src="{% static 'images/portrait-illustration.svg' %}" alt="Jem Andrew"> -->
-            </div>
+        <!-- Subtitle -->
+        <p class="hero-centered-subtitle">
+            Software Engineer | Machine Learning Engineer | Data Analyst
+        </p>
+        
+        <!-- Description -->
+        <p class="hero-centered-description">
+            I'm passionate about crafting well-structured backend code. 
+            Currently working with <strong>Django at BuildChorus</strong> whilst 
+            consulting on <strong>AI-powered legal tech</strong>.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="hero-centered-ctas">
+            <a href="{% url 'portfolio:projects' %}" class="btn-hero btn-hero-primary">
+                View Projects
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="mailto:andrewjem8@gmail.com" class="btn-hero btn-hero-secondary">
+                Get in Touch
+                <i class="fas fa-envelope"></i>
+            </a>
         </div>
     </div>
 </section>
-
-<!-- Sticky Social Sidebar (Ram style) -->
-<div class="social-sidebar">
-    <a href="https://github.com/JemAndrew" target="_blank" aria-label="GitHub">
-        <i class="fab fa-github"></i>
-    </a>
-    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" aria-label="LinkedIn">
-        <i class="fab fa-linkedin"></i>
-    </a>
-    <a href="mailto:andrewjem8@gmail.com" aria-label="Email">
-        <i class="fas fa-envelope"></i>
-    </a>
-    <div class="social-line"></div>
-</div>
-
-<!-- Rotating Badge (Adeola style) -->
-<div class="rotating-badge">
-    <svg class="badge-circle" viewBox="0 0 100 100">
-        <defs>
-            <path 
-                id="circlePath" 
-                d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-            />
-        </defs>
-        <text class="badge-text">
-            <textPath href="#circlePath">
-                AVAILABLE FOR HIRE • AVAILABLE FOR HIRE • 
-            </textPath>
-        </text>
-    </svg>
-    <div class="badge-centre">
-        <i class="fas fa-code"></i>
-    </div>
-</div>
 
 {% endblock %}

@@ -22,38 +22,74 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Simple Horizontal Navigation -->
-    <nav class="nav">
-        <div class="nav-container">
-            <!-- Logo -->
-            <a href="/" class="nav-logo">
-                Jem Andrew
+    <!-- Fullscreen Menu Overlay (on ALL pages) -->
+    <div class="fullscreen-menu" id="fullscreenMenu">
+        <button class="menu-close" id="menuClose">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <nav class="fullscreen-nav">
+            <a href="/" class="menu-link">
+                <span class="link-number">00</span>
+                <span class="link-text">Home</span>
             </a>
-            
-            <!-- Navigation Links + Theme Toggle -->
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="{% url 'portfolio:projects' %}">Projects</a>
-                <a href="{% url 'portfolio:education' %}">Education</a>
-                <a href="mailto:andrewjem8@gmail.com">Contact</a>
-                
-                <!-- Theme Toggle Button -->
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon" id="themeIcon"></i>
-                </button>
-            </div>
+            <a href="{% url 'portfolio:about' %}" class="menu-link">
+                <span class="link-number">01</span>
+                <span class="link-text">About Me</span>
+            </a>
+            <a href="{% url 'portfolio:projects' %}" class="menu-link">
+                <span class="link-number">02</span>
+                <span class="link-text">Projects</span>
+            </a>
+            <a href="{% url 'portfolio:education' %}" class="menu-link">
+                <span class="link-number">03</span>
+                <span class="link-text">Education</span>
+            </a>
+            <a href="mailto:andrewjem8@gmail.com" class="menu-link">
+                <span class="link-number">04</span>
+                <span class="link-text">Contact</span>
+            </a>
+        </nav>
+        
+        <!-- Social links at bottom -->
+        <div class="menu-social">
+            <a href="https://github.com/JemAndrew" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="mailto:andrewjem8@gmail.com">
+                <i class="fas fa-envelope"></i>
+            </a>
         </div>
-    </nav>
+    </div>
+
+    <!-- Nav Pill (on ALL pages) -->
+    <div class="nav-pill" id="navPill">
+        <div class="pill-avatar" id="avatarPillContainer">
+            <!-- Small avatar loads here via JS -->
+        </div>
+        <button class="pill-menu" id="menuToggle">
+            <span>Menu</span>
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Theme toggle in pill -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+    </div>
 
     <!-- Main Content -->
     <main class="page-container">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer (Simple) -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div style="text-align: centre; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem;">
+            <div style="text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem;">
                 <p>© {% now "Y" %} Jem Andrew. Built with Django & British English.</p>
             </div>
         </div>
