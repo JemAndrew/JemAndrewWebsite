@@ -5,108 +5,124 @@
 
 {% block content %}
 
-<!-- Hero Section - Spacious Kenny Style -->
+<!-- Hero Section with All Design Elements -->
 <section class="hero-section">
-    <div class="container">
-        <div class="hero-grid">
-            <!-- Left - Hero Content -->
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="badge-dot"></span>
-                    Available for opportunities
-                </div>
-                
-                <h1 class="hero-title">
-                    Jem Andrew
-                </h1>
-                
-                <h2 style="font-size: 1.15rem; color: var(--primary); font-weight: 600; margin: 0;">
-                    Software Engineer | MSc Computer Science
-                </h2>
-                
-                <p class="hero-subtitle">
-                    I'm a software engineer passionate about crafting well-structured, logical backend code. 
-                    Currently working with <strong>Django at BuildChorus</strong> whilst consulting on 
-                    <strong>AI-powered legal tech</strong>.
-                </p>
-                
-                <p class="hero-subtitle">
-                    I'm fascinated by machine learning and large language models. I'm well-versed in 
-                    cybersecurity and databases of any scale.
-                </p>
-                
-                <!-- Animated CV Button -->
-                <div class="cv-button-container">
-                    <div class="cv-button-bg"></div>
-                    <a href="{% url 'portfolio:download_msc' %}" class="cv-button">
-                        <span class="cv-button-text">Download CV</span>
-                        <i class="fas fa-download cv-button-icon"></i>
-                    </a>
-                </div>
-                
-                <!-- Social Links -->
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" class="social-link">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="https://github.com/JemAndrew" target="_blank" class="social-link">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </a>
-                    <a href="mailto:andrewjem8@gmail.com" class="social-link">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email</span>
-                    </a>
-                </div>
+    
+    <!-- Floating Gradient Squares (Seán style) -->
+    <div class="floating-shapes">
+        <div class="gradient-square square-1"></div>
+        <div class="gradient-square square-2"></div>
+        <div class="gradient-square square-3"></div>
+    </div>
+    
+    <!-- Subtle Circle Blurs (Ram style) -->
+    <div class="circle-blur circle-1"></div>
+    <div class="circle-blur circle-2"></div>
+    
+    <div class="hero-container">
+        <!-- LEFT: Content -->
+        <div class="hero-content">
+            <!-- Available Badge -->
+            <div class="hero-badge">
+                <span class="status-dot"></span>
+                Available for opportunities
             </div>
             
-            <!-- Right - Experience Cards -->
-            <div class="experience-cards">
-                <div class="floating-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Freelance AI Consultant</h3>
-                        <p class="card-subtitle">Law Firm Client | Oct 2025 - Present</p>
-                    </div>
-                    
-                    <ul class="card-achievements">
-                        <li>Engineering production-grade legal AI system processing 18,000+ documents</li>
-                        <li>Implementing 4-pass iterative architecture with confidence tracking</li>
-                        <li>Achieved 30% cost reduction and 40% speed improvement</li>
-                    </ul>
-                    
-                    <div class="card-skills">
-                        <span class="tag">Python</span>
-                        <span class="tag">Claude API</span>
-                        <span class="tag">RAG Architecture</span>
-                        <span class="tag">ChromaDB</span>
-                        <span class="tag">Legal Tech</span>
+            <!-- Title with Gradient Text -->
+            <h1 class="hero-title">
+                Hey, I'm<br>
+                <span class="gradient-text">Jem Andrew</span>
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="hero-subtitle">
+                Software Engineer | MSc Computer Science
+            </p>
+            
+            <!-- Description -->
+            <p class="hero-description">
+                I'm passionate about crafting well-structured backend code. 
+                Currently working with <strong>Django at BuildChorus</strong> whilst 
+                consulting on <strong>AI-powered legal tech</strong>.
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="cta-group">
+                <!-- Circular CV Button (Kenneth style) -->
+                <div class="cta-circular">
+                    <a href="{% url 'portfolio:download_msc' %}" class="cta-circle">
+                        <span>Download<br>CV</span>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+                
+                <!-- View Projects Button -->
+                <a href="{% url 'portfolio:projects' %}" class="btn btn-primary">
+                    <span>View Projects</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                
+                <!-- Contact Button -->
+                <a href="mailto:andrewjem8@gmail.com" class="btn btn-secondary">
+                    <span>Get in Touch</span>
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- RIGHT: Visual/Illustration Area -->
+        <div class="hero-visual">
+            <div class="illustration-container">
+                <!-- Centre Graphic (Seán style eye) -->
+                <div class="centre-graphic">
+                    <div class="eye-graphic">
+                        <span class="eye-ray"></span>
+                        <span class="eye-ray"></span>
+                        <span class="eye-ray"></span>
+                        <span class="eye-ray"></span>
+                        <div class="eye-pupil"></div>
                     </div>
                 </div>
                 
-                <div class="floating-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Software Engineer</h3>
-                        <p class="card-subtitle">BuildChorus | Sept 2025 - Present</p>
-                    </div>
-                    
-                    <ul class="card-achievements">
-                        <li>Building user configurability features for material procurement</li>
-                        <li>Deploying containerised applications on Google Cloud Platform</li>
-                        <li>Optimising PostgreSQL databases for complex construction data</li>
-                    </ul>
-                    
-                    <div class="card-skills">
-                        <span class="tag">Django</span>
-                        <span class="tag">PostgreSQL</span>
-                        <span class="tag">GCP</span>
-                        <span class="tag">Docker</span>
-                        <span class="tag">Auth0</span>
-                    </div>
-                </div>
+                <!-- TODO: Replace with custom illustration from Fiverr/Upwork -->
+                <!-- <img src="{% static 'images/portrait-illustration.svg' %}" alt="Jem Andrew"> -->
             </div>
         </div>
     </div>
 </section>
+
+<!-- Sticky Social Sidebar (Ram style) -->
+<div class="social-sidebar">
+    <a href="https://github.com/JemAndrew" target="_blank" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="mailto:andrewjem8@gmail.com" aria-label="Email">
+        <i class="fas fa-envelope"></i>
+    </a>
+    <div class="social-line"></div>
+</div>
+
+<!-- Rotating Badge (Adeola style) -->
+<div class="rotating-badge">
+    <svg class="badge-circle" viewBox="0 0 100 100">
+        <defs>
+            <path 
+                id="circlePath" 
+                d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+            />
+        </defs>
+        <text class="badge-text">
+            <textPath href="#circlePath">
+                AVAILABLE FOR HIRE • AVAILABLE FOR HIRE • 
+            </textPath>
+        </text>
+    </svg>
+    <div class="badge-centre">
+        <i class="fas fa-code"></i>
+    </div>
+</div>
 
 {% endblock %}

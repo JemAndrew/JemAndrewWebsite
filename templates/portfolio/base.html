@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -21,87 +21,40 @@
     
     {% block extra_css %}{% endblock %}
 </head>
-<body{% if page_class %} class="{{ page_class }}"{% endif %}>
-    <!-- Cylindrical Pill Navigation -->
-    <nav class="nav" id="mainNav">
+<body>
+    <!-- Simple Horizontal Navigation -->
+    <nav class="nav">
         <div class="nav-container">
+            <!-- Logo -->
             <a href="/" class="nav-logo">
-                <span class="logo-bracket">&lt;</span>
                 Jem Andrew
-                <span class="logo-bracket">/&gt;</span>
             </a>
             
-            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-        </div>
-    </nav>
-    
-    <!-- Mobile Menu Dropdown -->
-    <div class="mobile-menu" id="mobileMenu">
-        <div class="mobile-menu-content">
-            <nav class="mobile-nav">
-                <a href="/" class="mobile-nav-link">
-                    <span class="mobile-nav-number">01</span>
-                    Home
-                </a>
-                <a href="/projects/" class="mobile-nav-link">
-                    <span class="mobile-nav-number">02</span>
-                    Projects
-                </a>
-                <a href="/education/" class="mobile-nav-link">
-                    <span class="mobile-nav-number">03</span>
-                    Education
-                </a>
-            </nav>
-            
-            <div class="mobile-contact">
-                <a href="mailto:andrewjem8@gmail.com" class="mobile-email">
-                    andrewjem8@gmail.com
-                </a>
-                <div class="mobile-social">
-                    <a href="https://github.com/JemAndrew" target="_blank">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                </div>
+            <!-- Navigation Links + Theme Toggle -->
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="{% url 'portfolio:projects' %}">Projects</a>
+                <a href="{% url 'portfolio:education' %}">Education</a>
+                <a href="mailto:andrewjem8@gmail.com">Contact</a>
+                
+                <!-- Theme Toggle Button -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
             </div>
         </div>
-    </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="page-container">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Floating CV Button -->
-    <a href="{% url 'portfolio:download_msc' %}" class="floating-cta visible">
-        <span class="floating-cta-text">Download CV</span>
-        <i class="fas fa-download"></i>
-    </a>
-
-    <!-- Footer -->
+    <!-- Footer (Simple) -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-social">
-                    <a href="https://github.com/JemAndrew" target="_blank">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="mailto:andrewjem8@gmail.com">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </div>
-                <p class="footer-text">
-                    © {% now "Y" %} Jem Andrew. Built with Django.
-                </p>
+            <div style="text-align: centre; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem;">
+                <p>© {% now "Y" %} Jem Andrew. Built with Django & British English.</p>
             </div>
         </div>
     </footer>

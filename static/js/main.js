@@ -1,19 +1,20 @@
 // ============================================
-// PORTFOLIO APP - FIXED HAMBURGER MENU
+// MODERN PORTFOLIO APP - SIMPLIFIED
 // ============================================
 
-class PortfolioApp {
+class ModernPortfolio {
     constructor() {
         this.init();
     }
 
     init() {
-        console.log('🚀 Portfolio initialised');
+        console.log('🚀 Modern Portfolio initialised');
         
-        this.setupHamburgerMenu();
-        this.setupFloatingCTA();
-        this.setupBackToTop();
-        this.setupKeyboardNavigation();
+        // Core features
+        this.setupThemeToggle();
+        this.setupSmoothScroll();
+        this.setupAnimations();
+        this.setupInteractiveElements();
         
         // Only setup projects if on projects page
         if (document.querySelector('.project-card-compact')) {
@@ -29,194 +30,140 @@ class PortfolioApp {
     }
 
     // ============================================
-    // HAMBURGER MENU - FIXED
+    // THEME TOGGLE
     // ============================================
-    setupHamburgerMenu() {
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    setupThemeToggle() {
+        const toggle = document.getElementById('themeToggle');
+        const icon = document.getElementById('themeIcon');
         
-        if (!hamburgerBtn || !mobileMenu) {
-            console.warn('⚠️ Hamburger menu elements not found');
-            return;
-        }
-
-        // Toggle menu on hamburger click
-        hamburgerBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isOpen = mobileMenu.classList.contains('active');
+        if (!toggle || !icon) return;
+        
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Update icon based on theme
+        this.updateThemeIcon(icon, currentTheme);
+        
+        // Toggle theme on click
+        toggle.addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
             
-            if (isOpen) {
-                this.closeMobileMenu();
-            } else {
-                this.openMobileMenu();
-            }
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            this.updateThemeIcon(icon, newTheme);
+            
+            // Add rotation animation
+            toggle.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                toggle.style.transform = 'rotate(0deg)';
+            }, 300);
         });
+    }
+    
+    updateThemeIcon(icon, theme) {
+        if (theme === 'dark') {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    }
 
-        // Close menu when clicking a link
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                this.closeMobileMenu();
-            });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (mobileMenu.classList.contains('active')) {
-                if (!mobileMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-                    this.closeMobileMenu();
+    // ============================================
+    // SMOOTH SCROLL
+    // ============================================
+    setupSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(anchor.getAttribute('href'));
+                
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
-            }
+            });
         });
     }
 
-    openMobileMenu() {
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
+    // ============================================
+    // SCROLL ANIMATIONS
+    // ============================================
+    setupAnimations() {
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
         
-        hamburgerBtn.classList.add('active');
-        mobileMenu.classList.add('active');
-        hamburgerBtn.setAttribute('aria-expanded', 'true');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
         
-        // Prevent body scroll on mobile only
-        if (window.innerWidth < 968) {
-            document.body.style.overflow = 'hidden';
+        // Observe all sections and cards
+        document.querySelectorAll('.section, .card, .project-card-compact').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    }
+
+    // ============================================
+    // INTERACTIVE ELEMENTS
+    // ============================================
+    setupInteractiveElements() {
+        // Eye follows mouse (if eye graphic exists)
+        const eyePupil = document.querySelector('.eye-pupil');
+        const eyeGraphic = document.querySelector('.eye-graphic');
+        
+        if (eyePupil && eyeGraphic) {
+            document.addEventListener('mousemove', (e) => {
+                const rect = eyeGraphic.getBoundingClientRect();
+                const eyeCentreX = rect.left + rect.width / 2;
+                const eyeCentreY = rect.top + rect.height / 2;
+                
+                const angle = Math.atan2(
+                    e.clientY - eyeCentreY,
+                    e.clientX - eyeCentreX
+                );
+                
+                const distance = Math.min(
+                    Math.hypot(e.clientX - eyeCentreX, e.clientY - eyeCentreY) / 20,
+                    15
+                );
+                
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                eyePupil.style.transform = `translate(${x}px, ${y}px)`;
+            });
         }
         
-        console.log('✅ Menu opened');
-    }
-
-    closeMobileMenu() {
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
+        // Floating shapes parallax
+        const shapes = document.querySelectorAll('.gradient-square');
         
-        hamburgerBtn.classList.remove('active');
-        mobileMenu.classList.remove('active');
-        hamburgerBtn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-        
-        console.log('✅ Menu closed');
-    }
-
-    // ============================================
-    // FLOATING CV BUTTON
-    // ============================================
-    setupFloatingCTA() {
-        const floatingCTA = document.querySelector('.floating-cta');
-        if (!floatingCTA) return;
-
-        let ticking = false;
-
-        const handleScroll = () => {
-            // Show after scrolling 400px
-            if (window.scrollY > 400) {
-                floatingCTA.classList.add('visible');
-            } else {
-                floatingCTA.classList.remove('visible');
-            }
-            ticking = false;
-        };
-
-        // Initial check
-        handleScroll();
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(handleScroll);
-                ticking = true;
-            }
-        }, { passive: true });
-    }
-
-    // ============================================
-    // BACK TO TOP BUTTON
-    // ============================================
-    setupBackToTop() {
-        const backToTop = document.createElement('button');
-        backToTop.id = 'backToTop';
-        backToTop.innerHTML = '<i class="fas fa-chevron-up"></i>';
-        backToTop.setAttribute('aria-label', 'Back to top');
-        backToTop.style.cssText = `
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            width: 45px;
-            height: 45px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            color: var(--primary);
-            font-size: 1rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 99;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        `;
-
-        document.body.appendChild(backToTop);
-
-        let isVisible = false;
-        let ticking = false;
-
-        const toggleVisibility = () => {
-            const shouldShow = window.scrollY > 500;
-
-            if (shouldShow && !isVisible) {
-                backToTop.style.opacity = '1';
-                backToTop.style.visibility = 'visible';
-                isVisible = true;
-            } else if (!shouldShow && isVisible) {
-                backToTop.style.opacity = '0';
-                backToTop.style.visibility = 'hidden';
-                isVisible = false;
-            }
-
-            ticking = false;
-        };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(toggleVisibility);
-                ticking = true;
-            }
-        }, { passive: true });
-
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 10;
+                const x = (mouseX - 0.5) * speed;
+                const y = (mouseY - 0.5) * speed;
+                
+                shape.style.transform = `translate(${x}px, ${y}px)`;
             });
-        });
-
-        backToTop.addEventListener('mouseenter', () => {
-            backToTop.style.transform = 'translateY(-3px)';
-            backToTop.style.borderColor = 'var(--primary)';
-            backToTop.style.boxShadow = '0 4px 12px rgba(94, 173, 173, 0.2)';
-        });
-
-        backToTop.addEventListener('mouseleave', () => {
-            backToTop.style.transform = 'translateY(0)';
-            backToTop.style.borderColor = 'var(--border)';
-            backToTop.style.boxShadow = 'none';
-        });
-    }
-
-    // ============================================
-    // KEYBOARD NAVIGATION
-    // ============================================
-    setupKeyboardNavigation() {
-        document.addEventListener('keydown', (e) => {
-            // Escape key closes mobile menu
-            if (e.key === 'Escape') {
-                const mobileMenu = document.getElementById('mobileMenu');
-                if (mobileMenu?.classList.contains('active')) {
-                    this.closeMobileMenu();
-                }
-            }
         });
     }
 
@@ -298,10 +245,9 @@ class PortfolioApp {
         
         icon.classList.remove('fa-plus');
         icon.classList.add('fa-times');
-        icon.style.transform = 'rotate(90deg)';
         
         expandBtn.style.background = 'rgba(94, 173, 173, 0.15)';
-        card.style.borderColor = 'var(--primary)';
+        card.style.borderColor = 'var(--accent-mint)';
         card.style.boxShadow = '0 8px 20px rgba(94, 173, 173, 0.15)';
     }
 
@@ -315,7 +261,6 @@ class PortfolioApp {
         
         icon.classList.remove('fa-times');
         icon.classList.add('fa-plus');
-        icon.style.transform = 'rotate(0deg)';
         
         expandBtn.style.background = 'rgba(94, 173, 173, 0.08)';
         card.style.borderColor = 'var(--border)';
@@ -358,13 +303,13 @@ class PortfolioApp {
 // ============================================
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        new PortfolioApp();
+        new ModernPortfolio();
     });
 } else {
-    new PortfolioApp();
+    new ModernPortfolio();
 }
 
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = PortfolioApp;
+    module.exports = ModernPortfolio;
 }
