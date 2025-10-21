@@ -55,6 +55,13 @@ class ModernPortfolio {
                 console.log('✅ Pill avatar loaded');
             }
             
+            // Load into MENU avatar (fullscreen menu)
+            const menuAvatarContainer = document.getElementById('menuAvatarContainer');
+            if (menuAvatarContainer) {
+                menuAvatarContainer.innerHTML = svgText;
+                console.log('✅ Menu avatar loaded');
+            }
+            
             // Load into HERO avatar - try BOTH possible IDs
             let heroContainer = document.getElementById('avatarContainer');
             if (!heroContainer) {
@@ -82,6 +89,17 @@ class ModernPortfolio {
                 pillContainer.innerHTML = `
                     <div style="width: 100%; height: 100%; display: flex; align-items: center; 
                                 justify-content: center; font-weight: 700; font-size: 1.2rem; 
+                                color: var(--accent-primary);">
+                        JA
+                    </div>
+                `;
+            }
+            
+            const menuAvatarContainer = document.getElementById('menuAvatarContainer');
+            if (menuAvatarContainer) {
+                menuAvatarContainer.innerHTML = `
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; 
+                                justify-content: center; font-weight: 700; font-size: 1.5rem; 
                                 color: var(--accent-primary);">
                         JA
                     </div>
