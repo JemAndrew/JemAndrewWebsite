@@ -3,137 +3,263 @@
 {% block title %}Projects - Jem Andrew{% endblock %}
 
 {% block content %}
-<!-- Page Header -->
-<section style="padding: 8rem 0 4rem 0;">
-    <div class="container">
-        <p style="color: var(--primary-light); font-family: var(--font-mono); font-size: 0.95rem; margin-bottom: 1rem;">
-            My Work
-        </p>
-        <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1.5rem;">
-            Projects
-        </h1>
-        <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; line-height: 1.8;">
-            From professional systems to personal experiments – a collection of projects that showcase my technical skills and problem-solving approach.
-        </p>
+<!-- Projects Hero -->
+<section class="projects-hero">
+    <div class="floating-shapes">
+        <div class="gradient-square square-1"></div>
+        <div class="gradient-square square-2"></div>
+        <div class="gradient-square square-3"></div>
     </div>
-</section>
-
-<!-- Filters -->
-<section style="padding: 2rem 0;">
-    <div class="container">
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-            <span style="color: var(--text-muted); font-size: 0.9rem; margin-right: 0.5rem;">Filter:</span>
-            <button class="filter-btn active" data-filter="all">All ({{ projects|length }})</button>
-            <button class="filter-btn" data-filter="professional">Professional (1)</button>
-            <button class="filter-btn" data-filter="personal">Personal (3)</button>
-            <button class="filter-btn" data-filter="academic">Academic (2)</button>
+    
+    <div class="projects-header">
+        <span class="section-label">// Portfolio</span>
+        <h1 class="projects-title">
+            My <span class="gradient-text">Projects</span>
+        </h1>
+        <p class="projects-subtitle">
+            From professional systems to personal experiments – a collection of projects that 
+            showcase my technical skills and problem-solving approach.
+        </p>
+        
+        <!-- Filter buttons -->
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="professional">Professional</button>
+            <button class="filter-btn" data-filter="personal">Personal</button>
+            <button class="filter-btn" data-filter="academic">Academic</button>
         </div>
     </div>
 </section>
 
-<!-- Projects Grid - Expandable Cards -->
-<section style="padding: 2rem 0 6rem 0;">
-    <div class="container">
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-            
-            {% for project in projects %}
-            <div class="project-card-compact" data-category="{{ project.category }}" data-expanded="false">
-                <!-- Collapsed View -->
-                <div class="card-compact-header">
-                    <!-- Icon -->
-                    <div class="project-icon">
-                        {% if project.category == 'professional' %}
-                            <i class="fas fa-briefcase"></i>
-                        {% elif project.category == 'academic' %}
-                            <i class="fas fa-graduation-cap"></i>
-                        {% else %}
-                            <i class="fas fa-code"></i>
-                        {% endif %}
-                    </div>
-                    
-                    <!-- Title & Summary -->
-                    <div class="project-header-content">
-                        <h3 class="project-title">{{ project.title }}</h3>
-                        <p class="project-summary">{{ project.short_description|truncatewords:15 }}</p>
-                    </div>
-                    
-                    <!-- Badges & Expand Icon -->
-                    <div class="project-header-meta">
-                        <span class="tag category-badge badge-{{ project.category }}">
-                            {{ project.get_category_display }}
-                        </span>
-                        <span class="project-year">{{ project.created_date.year }}</span>
-                        <div class="expand-icon">
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
+<!-- Projects Grid -->
+<section class="projects-container">
+    <div class="projects-grid">
+        
+        <!-- Project 1: Litigation Intelligence Platform -->
+        <div class="project-card" data-category="professional">
+            <div class="project-header">
+                <div class="project-icon">
+                    <i class="fas fa-briefcase"></i>
                 </div>
                 
-                <!-- Expanded Content -->
-                <div class="card-compact-body">
-                    <div class="card-compact-body-inner">
-                        <!-- Full Description -->
-                        <p class="project-description">
-                            {{ project.detailed_description|default:project.short_description }}
-                        </p>
-                        
-                        <!-- Key Features -->
-                        {% if project.key_features %}
-                        <div class="project-features">
-                            <h4 class="section-heading">Key Features</h4>
-                            <ul class="features-list">
-                                {% for feature in project.key_features %}
-                                <li>{{ feature }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}
-                        
-                        <!-- Tech Stack -->
-                        <div class="project-tech">
-                            <h4 class="section-heading">Technologies</h4>
-                            <div class="tech-tags">
-                                {% for tech in project.technology_list %}
-                                <span class="tag">{{ tech }}</span>
-                                {% endfor %}
+                <div class="project-info">
+                    <h3 class="project-title">Litigation Intelligence Platform</h3>
+                    <p class="project-summary">
+                        AI-powered legal document analysis system processing 18,000+ documents in 48 hours, 
+                        extracting structured evidence and generating tribunal-ready deliverables.
+                    </p>
+                </div>
+                
+                <div class="project-meta">
+                    <span class="project-badge badge-professional">Professional</span>
+                    <span class="project-year">2025</span>
+                </div>
+                
+                <div class="expand-btn">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            
+            <div class="project-body">
+                <div class="project-body-inner">
+                    <p class="project-description">
+                        Engineered a production-grade legal AI system that analyses large-scale commercial litigation 
+                        documents using a 4-pass iterative architecture with Anthropic's Claude models. Achieved 30% 
+                        cost reduction and 40% speed improvement through intelligent document selection and confidence-tracked 
+                        analysis reaching 95% certainty.
+                    </p>
+                    
+                    <div class="features-section">
+                        <h4 class="section-heading">Key Features</h4>
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="feature-text">
+                                    4-pass iterative architecture processing 18,000+ documents in 30-48 hours
+                                </span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="feature-text">
+                                    Autonomous recursive investigation engine with AI decision-making
+                                </span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="feature-text">
+                                    Multi-tier memory system with vector database integration
+                                </span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span class="feature-text">
+                                    Cost optimised at £0.014-0.021 per document with 95% confidence
+                                </span>
                             </div>
                         </div>
-                        
-                        <!-- Action Buttons -->
-                        <div class="project-actions">
-                            {% if project.github_url %}
-                            <a href="{{ project.github_url }}" target="_blank" class="btn btn-primary" onclick="event.stopPropagation();">
-                                <i class="fab fa-github"></i>
-                                View Code
-                            </a>
-                            {% elif project.category == 'professional' %}
-                            <button class="btn btn-disabled" disabled>
-                                <i class="fas fa-lock"></i>
-                                Confidential
-                            </button>
-                            {% endif %}
-                            
-                            {% if project.live_demo_url %}
-                            <a href="{{ project.live_demo_url }}" target="_blank" class="btn" onclick="event.stopPropagation();">
-                                <i class="fas fa-external-link-alt"></i>
-                                Live Demo
-                            </a>
-                            {% endif %}
+                    </div>
+                    
+                    <div>
+                        <h4 class="section-heading">Technologies</h4>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Claude API</span>
+                            <span class="tech-tag">ChromaDB</span>
+                            <span class="tech-tag">RAG Architecture</span>
+                            <span class="tech-tag">SQLite</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-actions">
+                        <button class="action-btn action-btn-secondary" disabled>
+                            <i class="fas fa-lock"></i>
+                            Confidential
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project 2: Cryptocurrency Exchange -->
+        <div class="project-card" data-category="personal">
+            <div class="project-header">
+                <div class="project-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                
+                <div class="project-info">
+                    <h3 class="project-title">Cryptocurrency Exchange Platform</h3>
+                    <p class="project-summary">
+                        Built a custom order matching engine with price-time priority algorithm handling 1000+ orders per second.
+                    </p>
+                </div>
+                
+                <div class="project-meta">
+                    <span class="project-badge badge-personal">Personal</span>
+                    <span class="project-year">2025</span>
+                </div>
+                
+                <div class="expand-btn">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            
+            <div class="project-body">
+                <div class="project-body-inner">
+                    <p class="project-description">
+                        Built a cryptocurrency exchange from scratch focused on stablecoin trading. The core is a custom 
+                        order matching engine using price-time priority that handles over 1000 orders per second. Real-time 
+                        WebSocket connections keep prices live and the database schema carefully manages relationships between 
+                        orders, trades and wallets.
+                    </p>
+                    
+                    <div>
+                        <h4 class="section-heading">Technologies</h4>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">WebSockets</span>
+                            <span class="tech-tag">REST API</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-actions">
+                        <a href="https://github.com/JemAndrew/crypto-exchange" target="_blank" class="action-btn action-btn-primary">
+                            <i class="fab fa-github"></i>
+                            View Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project 3: Medical AI Diagnostic System -->
+        <div class="project-card" data-category="academic">
+            <div class="project-header">
+                <div class="project-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                
+                <div class="project-info">
+                    <h3 class="project-title">Medical AI Diagnostic System</h3>
+                    <p class="project-summary">
+                        MSc dissertation using CNN architectures for skin cancer detection achieving 15% improvement over baselines.
+                    </p>
+                </div>
+                
+                <div class="project-meta">
+                    <span class="project-badge badge-academic">Academic</span>
+                    <span class="project-year">2025</span>
+                </div>
+                
+                <div class="expand-btn">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            
+            <div class="project-body">
+                <div class="project-body-inner">
+                    <p class="project-description">
+                        My MSc dissertation project where I developed CNNs for automated skin cancer detection. 
+                        I compared multiple architectures including ResNet, DenseNet and custom designs. Through 
+                        advanced data augmentation and ensemble methods I achieved 15% better accuracy than baseline models.
+                    </p>
+                    
+                    <div>
+                        <h4 class="section-heading">Technologies</h4>
+                        <div class="tech-stack">
+                            <span class="tech-tag">PyTorch</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">CNN</span>
+                            <span class="tech-tag">Medical AI</span>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-            
         </div>
         
-        <!-- Empty state -->
-        <div id="emptyState" style="display: none; text-align: center; padding: 4rem 0;">
-            <i class="fas fa-folder-open" style="font-size: 4rem; color: var(--border); margin-bottom: 1rem;"></i>
-            <p style="color: var(--text-muted); font-size: 1.1rem;">
-                No projects found in this category.
-            </p>
-        </div>
     </div>
 </section>
+
+<script>
+// Project card expand/collapse
+document.querySelectorAll('.project-header').forEach(header => {
+    header.addEventListener('click', function(e) {
+        if (e.target.closest('button')) return;
+        
+        const card = this.closest('.project-card');
+        const isExpanded = card.classList.contains('expanded');
+        
+        // Collapse all cards
+        document.querySelectorAll('.project-card').forEach(c => {
+            c.classList.remove('expanded');
+        });
+        
+        // Expand clicked card if it wasn't expanded
+        if (!isExpanded) {
+            card.classList.add('expanded');
+        }
+    });
+});
+
+// Filter functionality
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const filter = this.dataset.filter;
+        
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Filter cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

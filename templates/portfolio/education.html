@@ -3,345 +3,243 @@
 {% block title %}Education - Jem Andrew{% endblock %}
 
 {% block content %}
-<!-- Page Header with Download CV Button -->
-<section style="padding: 8rem 0 4rem 0;">
-    <div class="container">
-        <p style="color: var(--primary-light); font-family: var(--font-mono); font-size: 0.95rem; margin-bottom: 1rem;">
-            My Academic Journey
+<!-- Education Hero -->
+<section class="education-hero">
+    <div class="floating-shapes">
+        <div class="gradient-square square-1"></div>
+        <div class="gradient-square square-2"></div>
+        <div class="gradient-square square-3"></div>
+    </div>
+    
+    <div class="education-header">
+        <span class="section-label">// Academic Journey</span>
+        <h1 class="education-title">
+            <span class="gradient-text">Education</span> & Research
+        </h1>
+        <p class="education-subtitle">
+            From biology to computer science – a journey that combined scientific rigour with computational thinking.
         </p>
-        <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 2rem; margin-bottom: 1.5rem;">
-            <div>
-                <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem;">
-                    Education
-                </h1>
-                <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; line-height: 1.8;">
-                    From biology to computer science – a journey that combined scientific rigour with computational thinking.
-                </p>
-            </div>
-            
-            <!-- NEW: Download CV Button -->
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <a href="{% url 'portfolio:download_msc' %}" class="btn btn-primary" style="white-space: nowrap;">
-                    <i class="fas fa-download"></i>
-                    Download Full CV
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Degrees Timeline -->
-<section style="padding: 0 0;">
-    <div class="container">
-        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
-            Degrees
-        </h2>
         
-        <div style="position: relative;">
-            <!-- Timeline line -->
-            <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border);"></div>
-            
-            {% for education in education_list %}
-            <div class="card" style="margin-bottom: 3rem; margin-left: 3rem; position: relative;">
-                <!-- Timeline dot -->
-                <div style="position: absolute; left: -3.5rem; top: 2rem; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; border: 3px solid var(--bg-dark);"></div>
-                
-                <!-- Degree header -->
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                    <div>
-                        <h3 class="card-title" style="margin-bottom: 0.5rem;">
-                            {{ education.degree_type }} {{ education.subject }}
-                        </h3>
-                        <div class="card-subtitle">
-                            {{ education.institution }}
-                        </div>
-                        <div class="card-meta">
-                            {{ education.start_date|date:"Y" }} - {{ education.end_date|date:"Y" }}
-                            {% if education.is_current %}(Current){% endif %}
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: right;">
-                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-light);">
-                            {{ education.grade }}
-                        </div>
-                        {% if education.duration_years %}
-                        <div style="color: var(--text-muted); font-size: 0.9rem;">
-                            {{ education.duration_years }} years
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                
-                <!-- Description -->
-                <p class="card-description" style="margin-bottom: 1.5rem;">
-                    {{ education.description }}
-                </p>
-                
-                <!-- NEW: Top 3 Modules + Expandable -->
-                {% if education.modules %}
-                <div style="margin: 2rem 0;">
-                    <div style="display: flex; justify-content: space-between; align-items: centre; margin-bottom: 1rem;">
-                        <h4 style="color: var(--text-secondary); font-size: 1rem; font-weight: 500;">
-                            Key Modules
-                        </h4>
-                        <button class="toggle-modules-btn" data-education="{{ education.degree_type }}" style="background: transparent; border: 1px solid var(--border); padding: 0.4rem 1rem; border-radius: 6px; color: var(--primary-light); cursor: pointer; font-size: 0.85rem; transition: all 0.2s;">
-                            <i class="fas fa-plus"></i>
-                            <span>View All</span>
-                        </button>
-                    </div>
-                    
-                    <!-- Top 3 modules (always visible) -->
-                    <div class="modules-grid-top3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
-                        {% for module in education.modules|slice:":3" %}
-                        <div class="module-item" style="display: flex; justify-content: space-between; align-items: centre; padding: 0.75rem 1rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 6px; transition: all 0.2s;">
-                            <span style="color: var(--text-secondary); font-size: 0.9rem;">
-                                {{ module.name }}
-                            </span>
-                            <span style="color: var(--primary-light); font-weight: 600; font-size: 0.95rem;">
-                                {{ module.grade }}%
-                            </span>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    
-                    <!-- Remaining modules (hidden by default) -->
-                    <div class="modules-grid-rest" data-education="{{ education.degree_type }}" style="display: none; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem; margin-top: 0.75rem;">
-                        {% for module in education.modules|slice:"3:" %}
-                        <div class="module-item" style="display: flex; justify-content: space-between; align-items: centre; padding: 0.75rem 1rem; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 6px; transition: all 0.2s;">
-                            <span style="color: var(--text-secondary); font-size: 0.9rem;">
-                                {{ module.name }}
-                            </span>
-                            <span style="color: var(--primary-light); font-weight: 600; font-size: 0.95rem;">
-                                {{ module.grade }}%
-                            </span>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-                
-                <!-- Technologies/Skills -->
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;">
-                    {% for tech in education.technologies_list %}
-                    <span class="tag">{{ tech }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+        <a href="{% url 'portfolio:download_msc' %}" class="cv-download">
+            <i class="fas fa-download"></i>
+            Download Full CV
+        </a>
     </div>
 </section>
 
-<!-- Dissertations Section - ENHANCED HOVER EFFECTS -->
-<section style="padding: 4rem 0;">
-    <div class="container">
-        <h2 style="font-size: 2rem; margin-bottom: 3rem; color: var(--text-primary);">
-            <span style="color: var(--primary-light); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">03.</span>
-            Research & Dissertations
-        </h2>
+<!-- Degrees Section -->
+<section class="degrees-section">
+    <h2 style="font-size: 2.5rem; margin-bottom: 3rem; text-align: center;">
+        <span class="section-label">// 01</span><br>
+        Degrees
+    </h2>
+    
+    <div class="degrees-grid">
+        <!-- MSc Computer Science -->
+        <div class="degree-card">
+            <div class="degree-icon">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            
+            <div class="degree-header">
+                <h3 class="degree-type">MSc</h3>
+                <div class="degree-subject">Computer Science</div>
+                <div class="degree-institution">Newcastle University</div>
+                <div class="degree-dates">2024 - 2025</div>
+            </div>
+            
+            <div class="degree-grade">Merit</div>
+            
+            <p class="degree-description">
+                Comparison of Novel vs Standard CNN Architectures for Automated Skin Cancer Detection. 
+                Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning 
+                architectures for automated dermatological diagnosis.
+            </p>
+            
+            <div class="modules-section">
+                <div class="modules-header">
+                    <h4 class="modules-title">Key Modules</h4>
+                    <button class="toggle-modules" data-degree="msc">
+                        <i class="fas fa-plus"></i>
+                        <span>View All</span>
+                    </button>
+                </div>
+                
+                <!-- Top 3 modules -->
+                <div class="modules-grid">
+                    <div class="module-item">
+                        <span class="module-name">Advanced Programming</span>
+                        <span class="module-grade">84%</span>
+                    </div>
+                    <div class="module-item">
+                        <span class="module-name">Software Engineering</span>
+                        <span class="module-grade">84%</span>
+                    </div>
+                    <div class="module-item">
+                        <span class="module-name">Database Systems</span>
+                        <span class="module-grade">83%</span>
+                    </div>
+                </div>
+                
+                <!-- Hidden modules -->
+                <div class="modules-grid modules-hidden" data-modules="msc" style="margin-top: 1rem;">
+                    <div class="module-item">
+                        <span class="module-name">Computer Networks</span>
+                        <span class="module-grade">82%</span>
+                    </div>
+                    <div class="module-item">
+                        <span class="module-name">Cybersecurity</span>
+                        <span class="module-grade">77%</span>
+                    </div>
+                    <div class="module-item">
+                        <span class="module-name">Data Structures</span>
+                        <span class="module-grade">76%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tech-section">
+                <div class="tech-grid">
+                    <span class="tech-item">PyTorch</span>
+                    <span class="tech-item">Python</span>
+                    <span class="tech-item">Machine Learning</span>
+                    <span class="tech-item">CNN</span>
+                    <span class="tech-item">Medical AI</span>
+                </div>
+            </div>
+        </div>
         
-        <div class="grid grid-2">
-            <!-- MSc Dissertation - ENHANCED -->
-            <div class="card dissertation-card enhanced" style="position: relative; overflow: visible; cursor: pointer;">
-                <!-- Glow effect on hover -->
-                <div class="card-glow"></div>
-                
-                <!-- Icon -->
-                <div style="width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; display: flex; align-items: centre; justify-content: centre; margin-bottom: 1.5rem; transition: all 0.3s;">
-                    <i class="fas fa-brain" style="font-size: 2rem; color: var(--primary-light);"></i>
-                </div>
-                
-                <!-- Title -->
-                <h3 class="card-title" style="margin-bottom: 1rem;">
-                    MSc Dissertation
-                </h3>
-                
-                <!-- Subtitle -->
-                <div class="card-subtitle" style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;">
-                    CNN Architectures for Automated Skin Cancer Detection
-                </div>
-                
-                <!-- Meta info -->
-                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
-                        <i class="fas fa-graduation-cap"></i>
-                        Newcastle University
-                    </span>
-                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
-                        <i class="fas fa-file-pdf"></i>
-                        PDF Document
-                    </span>
-                </div>
-                
-                <!-- Description -->
-                <p class="card-description" style="margin-bottom: 1.5rem;">
-                    Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning architectures for automated dermatological diagnosis.
-                </p>
-                
-                <!-- Tags -->
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
-                    <span class="tag">PyTorch</span>
-                    <span class="tag">CNN</span>
-                    <span class="tag">Medical AI</span>
-                </div>
-                
-                <!-- Download button -->
-                <a href="{% url 'portfolio:download_msc' %}" class="btn btn-primary dissertation-download-btn" style="width: 100%;">
-                    <i class="fas fa-download"></i>
-                    Download MSc Dissertation
-                </a>
+        <!-- BSc Biology -->
+        <div class="degree-card">
+            <div class="degree-icon">
+                <i class="fas fa-dna"></i>
             </div>
             
-            <!-- BSc Dissertation - ENHANCED -->
-            <div class="card dissertation-card enhanced" style="position: relative; overflow: visible; cursor: pointer;">
-                <!-- Glow effect on hover -->
-                <div class="card-glow"></div>
-                
-                <!-- Icon -->
-                <div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; display: flex; align-items: centre; justify-content: centre; margin-bottom: 1.5rem; transition: all 0.3s;">
-                    <i class="fas fa-dna" style="font-size: 2rem; color: var(--accent);"></i>
+            <div class="degree-header">
+                <h3 class="degree-type">BSc (Hons)</h3>
+                <div class="degree-subject">Biology</div>
+                <div class="degree-institution">Newcastle University</div>
+                <div class="degree-dates">2021 - 2024</div>
+            </div>
+            
+            <div class="degree-grade">2:1</div>
+            
+            <p class="degree-description">
+                A Systematic Review of CRISPR Gene Editing in Enhancing Fusarium Head Blight Resistance 
+                in Wheat and Barley (83%). Focused on comparative analysis of CRISPR techniques and 
+                systematic literature review methodology.
+            </p>
+            
+            <div class="tech-section">
+                <div class="tech-grid">
+                    <span class="tech-item">R</span>
+                    <span class="tech-item">Statistical Analysis</span>
+                    <span class="tech-item">Bioinformatics</span>
+                    <span class="tech-item">AlphaFold</span>
+                    <span class="tech-item">BLAST</span>
                 </div>
-                
-                <!-- Title -->
-                <h3 class="card-title" style="margin-bottom: 1rem;">
-                    BSc Dissertation
-                </h3>
-                
-                <!-- Subtitle -->
-                <div class="card-subtitle" style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;">
-                    CRISPR Gene Editing for Disease Resistance in Crops
-                </div>
-                
-                <!-- Meta info -->
-                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
-                        <i class="fas fa-graduation-cap"></i>
-                        Newcastle University
-                    </span>
-                    <span style="display: flex; align-items: centre; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
-                        <i class="fas fa-file-pdf"></i>
-                        PDF Document
-                    </span>
-                </div>
-                
-                <!-- Description -->
-                <p class="card-description" style="margin-bottom: 1.5rem;">
-                    A systematic review of CRISPR gene editing techniques in enhancing Fusarium Head Blight resistance in wheat and barley.
-                </p>
-                
-                <!-- Tags -->
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
-                    <span class="tag" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--accent);">R</span>
-                    <span class="tag" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--accent);">Bioinformatics</span>
-                    <span class="tag" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--accent);">CRISPR</span>
-                </div>
-                
-                <!-- Download button -->
-                <a href="{% url 'portfolio:download_bsc' %}" class="btn dissertation-download-btn" style="width: 100%; border-color: var(--accent); color: var(--accent);">
-                    <i class="fas fa-download"></i>
-                    Download BSc Dissertation
-                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- NEW: Enhanced hover effects CSS -->
-<style>
-/* Highlight cards with better styling */
-.highlight-card {
-    position: relative;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%);
-    transition: all 0.4s ease;
-}
+<!-- Dissertations Section -->
+<section class="dissertations-section">
+    <h2 style="font-size: 2.5rem; margin-bottom: 3rem; text-align: center;">
+        <span class="section-label">// 02</span><br>
+        Research & Dissertations
+    </h2>
+    
+    <div class="dissertations-grid">
+        <!-- MSc Dissertation -->
+        <div class="dissertation-card">
+            <div class="dissertation-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            
+            <h3 class="dissertation-title">MSc Dissertation</h3>
+            <p class="dissertation-subtitle">
+                CNN Architectures for Automated Skin Cancer Detection
+            </p>
+            
+            <div class="dissertation-meta">
+                <div class="meta-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    Newcastle University
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-file-pdf"></i>
+                    PDF Document
+                </div>
+            </div>
+            
+            <p class="dissertation-description">
+                Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning 
+                architectures for automated dermatological diagnosis.
+            </p>
+            
+            <a href="{% url 'portfolio:download_msc' %}" class="download-btn">
+                <i class="fas fa-download"></i>
+                Download MSc Dissertation
+            </a>
+        </div>
+        
+        <!-- BSc Dissertation -->
+        <div class="dissertation-card">
+            <div class="dissertation-icon">
+                <i class="fas fa-dna"></i>
+            </div>
+            
+            <h3 class="dissertation-title">BSc Dissertation</h3>
+            <p class="dissertation-subtitle">
+                CRISPR Gene Editing for Disease Resistance in Crops
+            </p>
+            
+            <div class="dissertation-meta">
+                <div class="meta-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    Newcastle University
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-file-pdf"></i>
+                    PDF Document
+                </div>
+            </div>
+            
+            <p class="dissertation-description">
+                A systematic review of CRISPR gene editing techniques in enhancing Fusarium Head Blight 
+                resistance in wheat and barley.
+            </p>
+            
+            <a href="{% url 'portfolio:download_bsc' %}" class="download-btn">
+                <i class="fas fa-download"></i>
+                Download BSc Dissertation
+            </a>
+        </div>
+    </div>
+</section>
 
-.highlight-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 12px;
-    padding: 1px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.highlight-card:hover::before {
-    opacity: 1;
-}
-
-.highlight-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.25);
-}
-
-/* Module toggle button hover */
-.toggle-modules-btn:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: var(--primary);
-}
-
-/* Module items hover */
-.module-item:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: var(--primary);
-    transform: translateX(4px);
-}
-
-/* Enhanced dissertation cards */
-.dissertation-card.enhanced {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dissertation-card.enhanced .card-glow {
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-radius: 14px;
-    opacity: 0;
-    filter: blur(20px);
-    transition: opacity 0.4s ease;
-    z-index: -1;
-}
-
-.dissertation-card.enhanced:hover {
-    transform: translateY(-12px) scale(1.02);
-    border-color: var(--primary);
-    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
-}
-
-.dissertation-card.enhanced:hover .card-glow {
-    opacity: 0.6;
-}
-
-.dissertation-card.enhanced:hover .dissertation-download-btn {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-}
-
-/* Smooth icon rotation on hover */
-.dissertation-card.enhanced:hover .fa-brain,
-.dissertation-card.enhanced:hover .fa-dna {
-    animation: iconFloat 2s ease-in-out infinite;
-}
-
-@keyframes iconFloat {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-6px);
-    }
-}
-
-/* Counter animation will be handled by JS */
-.counter {
-    transition: all 0.3s ease;
-}
-</style>
+<script>
+// Toggle modules
+document.querySelectorAll('.toggle-modules').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const degree = this.dataset.degree;
+        const modulesContainer = document.querySelector(`[data-modules="${degree}"]`);
+        const icon = this.querySelector('i');
+        const text = this.querySelector('span');
+        
+        if (modulesContainer.classList.contains('modules-hidden')) {
+            modulesContainer.classList.remove('modules-hidden');
+            icon.classList.remove('fa-plus');
+            icon.classList.add('fa-minus');
+            text.textContent = 'View Less';
+        } else {
+            modulesContainer.classList.add('modules-hidden');
+            icon.classList.remove('fa-minus');
+            icon.classList.add('fa-plus');
+            text.textContent = 'View All';
+        }
+    });
+});
+</script>
 {% endblock %}

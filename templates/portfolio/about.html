@@ -5,217 +5,135 @@
 
 {% block content %}
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="hero-grid">
-            <!-- Left - About Content -->
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="badge-dot"></span>
-                    Available for opportunities
-                </div>
-                
-                <h1 class="hero-title">
-                    Jem Andrew
-                </h1>
-                
-                <h2 style="font-size: clamp(1.3rem, 2vw, 1.7rem); color: var(--primary); font-weight: 600; margin-bottom: 1.5rem;">
-                    Software Engineer | MSc Computer Science
-                </h2>
-                
-                <p class="hero-subtitle">
-                    I'm a software engineer passionate about crafting well-structured, logical backend code. 
-                    Currently working with <strong>Django at BuildChorus</strong> whilst consulting on 
-                    <strong>AI-powered legal tech</strong>.
-                </p>
-                
-                <p class="hero-subtitle">
-                    I'm fascinated by machine learning and large language models, particularly model training. 
-                    I'm well-versed in cybersecurity and working with databases of any scale, and I love 
-                    putting these skills to the test through my work and personal projects.
-                </p>
-                
-                <!-- CV Button -->
-                <div class="cv-button-container">
-                    <div class="cv-button-bg"></div>
-                    <a href="{% url 'portfolio:download_msc' %}" class="cv-button">
-                        <span class="cv-button-text">Download CV</span>
-                        <i class="fas fa-download cv-button-icon"></i>
-                    </a>
-                </div>
-                
-                <!-- Social Links -->
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" class="social-link">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="https://github.com/JemAndrew" target="_blank" class="social-link">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </a>
-                    <a href="mailto:andrewjem8@gmail.com" class="social-link">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email</span>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Right - Experience Cards -->
-            <div class="experience-cards">
-                <div class="floating-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Freelance AI Consultant</h3>
-                        <p class="card-subtitle">Law Firm Client | Oct 2025 - Present</p>
-                    </div>
-                    
-                    <ul class="card-achievements">
-                        <li>Engineering production-grade legal AI system processing 18,000+ documents</li>
-                        <li>Implementing 4-pass iterative architecture with confidence tracking</li>
-                        <li>Achieved 30% cost reduction and 40% speed improvement</li>
-                    </ul>
-                    
-                    <div class="card-skills">
-                        <span class="tag">Python</span>
-                        <span class="tag">Claude API</span>
-                        <span class="tag">RAG Architecture</span>
-                        <span class="tag">ChromaDB</span>
-                        <span class="tag">Legal Tech</span>
-                    </div>
-                </div>
-                
-                <div class="floating-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Software Engineer</h3>
-                        <p class="card-subtitle">BuildChorus | Sept 2025 - Present</p>
-                    </div>
-                    
-                    <ul class="card-achievements">
-                        <li>Building user configurability features for material procurement strategies</li>
-                        <li>Deploying containerised applications on Google Cloud Platform</li>
-                        <li>Optimising PostgreSQL databases for complex construction data</li>
-                    </ul>
-                    
-                    <div class="card-skills">
-                        <span class="tag">Django</span>
-                        <span class="tag">PostgreSQL</span>
-                        <span class="tag">GCP</span>
-                        <span class="tag">Docker</span>
-                        <span class="tag">Auth0</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Hero Section with Floating Elements -->
+<section class="about-hero">
+    <!-- Background shapes -->
+    <div class="floating-shapes">
+        <div class="gradient-square square-1"></div>
+        <div class="gradient-square square-2"></div>
+        <div class="gradient-square square-3"></div>
     </div>
-</section>
-
-<!-- My Journey Section -->
-<section class="section" style="background: var(--bg-card); padding: var(--spacing-xl) 0;">
-    <div class="container">
-        <h2 style="font-size: 2.5rem; margin-bottom: var(--spacing-lg); text-align: center;">
-            <span style="color: var(--primary); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">01.</span>
-            My Journey
-        </h2>
-        
-        <div style="max-width: 800px; margin: 0 auto;">
-            <p style="font-size: 1.1rem; line-height: 1.9; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+    
+    <div class="circle-blur circle-1"></div>
+    <div class="circle-blur circle-2"></div>
+    
+    <div class="about-container">
+        <!-- Left: Content -->
+        <div class="about-content">
+            <span class="section-label">// About Me</span>
+            
+            <h1 class="about-title">
+                Building <span class="gradient-text">intelligent systems</span> through clean code
+            </h1>
+            
+            <p class="about-text">
                 I started learning to code during my free time before university, exploring free published 
-                lectures from leading institutions such as MIT and completing as many Codecademy courses as I could do.
+                lectures from leading institutions such as MIT and completing as many Codecademy courses as I could.
             </p>
             
-            <p style="font-size: 1.1rem; line-height: 1.9; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+            <p class="about-text">
                 Then came my <strong>BSc in Biology</strong>, which unexpectedly sparked my love for coding through R. 
-                I loved the creativeness of it, which led to this passion to pursue a <strong>Master's in Computer Science</strong>, 
+                I loved the creativity of it, which led to pursuing a <strong>Master's in Computer Science</strong>, 
                 where I fully immersed myself in a much broader skill set – from Java and SQL to cybersecurity and ethical hacking.
             </p>
             
-            <p style="font-size: 1.1rem; line-height: 1.9; color: var(--text-secondary);">
-                Now, I'm combining my diverse background to build innovative solutions in <strong>AI</strong> and <strong>backend engineering</strong>, 
-                always focused on writing clean, logical, and efficient code.
+            <p class="about-text">
+                Now, I'm combining my diverse background to build innovative solutions in <strong>AI</strong> and 
+                <strong>backend engineering</strong>, always focused on writing clean, logical, and efficient code.
             </p>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">3+</div>
+                    <div class="stat-label">Years Coding</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">18K+</div>
+                    <div class="stat-label">Documents Processed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Degrees Earned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6+</div>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right: Floating skill cards -->
+        <div class="skills-visual">
+            <div class="skill-card">
+                <i class="fab fa-python"></i>
+                Python & Django
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-brain"></i>
+                AI & Machine Learning
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-database"></i>
+                PostgreSQL
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-shield-alt"></i>
+                Cybersecurity
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-code"></i>
+                Full-Stack Development
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Skills Overview Section -->
-<section class="section" style="padding: var(--spacing-xl) 0;">
+<!-- Journey Timeline Section -->
+<section class="journey-section">
     <div class="container">
-        <h2 style="font-size: 2.5rem; margin-bottom: var(--spacing-lg); text-align: center;">
-            <span style="color: var(--primary); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 400;">02.</span>
-            Core Skills
-        </h2>
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <span class="section-label">// My Journey</span>
+            <h2 class="about-title" style="margin-top: 1rem;">
+                From Biology to <span class="gradient-text">Software Engineering</span>
+            </h2>
+        </div>
         
-        <div class="grid grid-2" style="max-width: 1000px; margin: 0 auto;">
-            <!-- Backend & Frameworks -->
-            <div class="card">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="width: 50px; height: 50px; background: rgba(94, 173, 173, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-server" style="font-size: 1.5rem; color: var(--primary);"></i>
-                    </div>
-                    <h3 style="font-size: 1.3rem; margin: 0;">Backend & Frameworks</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2025 - Present</div>
+                    <h3 class="timeline-title">Software Engineer at BuildChorus</h3>
+                    <p class="timeline-desc">
+                        Building full-stack features for construction management SaaS platform using Django and PostgreSQL.
+                    </p>
                 </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
-                    <span class="tag">Python</span>
-                    <span class="tag">Django</span>
-                    <span class="tag">Flask</span>
-                    <span class="tag">REST APIs</span>
-                    <span class="tag">PostgreSQL</span>
-                    <span class="tag">MongoDB</span>
+                <div class="timeline-dot"></div>
+                <div style="flex: 1;"></div>
+            </div>
+            
+            <div class="timeline-item">
+                <div style="flex: 1;"></div>
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">2024 - 2025</div>
+                    <h3 class="timeline-title">MSc Computer Science</h3>
+                    <p class="timeline-desc">
+                        Newcastle University - Merit. Dissertation on CNN architectures for medical AI achieving 15% improvement over baselines.
+                    </p>
                 </div>
             </div>
             
-            <!-- AI & Machine Learning -->
-            <div class="card">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="width: 50px; height: 50px; background: rgba(144, 180, 148, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-brain" style="font-size: 1.5rem; color: var(--accent);"></i>
-                    </div>
-                    <h3 style="font-size: 1.3rem; margin: 0;">AI & Machine Learning</h3>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2021 - 2024</div>
+                    <h3 class="timeline-title">BSc Biology (2:1)</h3>
+                    <p class="timeline-desc">
+                        Newcastle University - Discovered passion for coding through R programming and statistical analysis.
+                    </p>
                 </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
-                    <span class="tag">PyTorch</span>
-                    <span class="tag">Claude API</span>
-                    <span class="tag">RAG Architecture</span>
-                    <span class="tag">CNNs</span>
-                    <span class="tag">LLMs</span>
-                    <span class="tag">ChromaDB</span>
-                </div>
-            </div>
-            
-            <!-- Cloud & DevOps -->
-            <div class="card">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="width: 50px; height: 50px; background: rgba(94, 173, 173, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-cloud" style="font-size: 1.5rem; color: var(--primary);"></i>
-                    </div>
-                    <h3 style="font-size: 1.3rem; margin: 0;">Cloud & DevOps</h3>
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
-                    <span class="tag">Docker</span>
-                    <span class="tag">GCP</span>
-                    <span class="tag">Git</span>
-                    <span class="tag">GitLab</span>
-                    <span class="tag">CI/CD</span>
-                    <span class="tag">Auth0</span>
-                </div>
-            </div>
-            
-            <!-- Cybersecurity -->
-            <div class="card">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="width: 50px; height: 50px; background: rgba(144, 180, 148, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: var(--accent);"></i>
-                    </div>
-                    <h3 style="font-size: 1.3rem; margin: 0;">Cybersecurity</h3>
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
-                    <span class="tag">Wireshark</span>
-                    <span class="tag">nmap</span>
-                    <span class="tag">PCAP Analysis</span>
-                    <span class="tag">Network Security</span>
-                    <span class="tag">Ethical Hacking</span>
-                </div>
+                <div class="timeline-dot"></div>
+                <div style="flex: 1;"></div>
             </div>
         </div>
     </div>
