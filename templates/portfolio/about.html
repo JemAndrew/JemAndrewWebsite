@@ -10,45 +10,34 @@
     <!-- LEFT SIDEBAR (Sticky) -->
     <aside class="about-left">
         <!-- Avatar -->
-        <div class="about-left-avatar" id="aboutAvatar">
+        <div class="about-left-avatar" id="aboutLeftAvatar">
             <!-- Avatar loads via JS -->
         </div>
         
         <h1 class="about-left-name">Jem Andrew</h1>
         <p class="about-left-title">Software Engineer</p>
         
-        <!-- Current Roles Summary -->
-        <div class="about-current-roles">
-            <div class="about-role-label">Currently Working On</div>
-            {% for position in current_positions %}
-            <div class="about-role-item">
-                <span class="about-role-company">{{ position.company }}</span>
-                <span class="about-role-position">{{ position.position }}</span>
-            </div>
-            {% endfor %}
-        </div>
-        
-        <!-- Quick Links -->
-        <div class="about-quick-links">
-            <a href="#journey" class="about-quick-link">
+        <!-- Navigation Links -->
+        <div class="about-nav-links">
+            <a href="#journey" class="about-nav-link">
                 <i class="fas fa-user"></i>
-                My Journey
+                <span>My Journey</span>
             </a>
-            <a href="#career-path" class="about-quick-link">
+            <a href="#career-path" class="about-nav-link">
                 <i class="fas fa-briefcase"></i>
-                Career Path
+                <span>Career Path</span>
             </a>
-            <a href="#skills" class="about-quick-link">
+            <a href="#skills" class="about-nav-link">
                 <i class="fas fa-code"></i>
-                Skills
+                <span>Skills</span>
             </a>
-            <a href="https://github.com/JemAndrew" target="_blank" class="about-quick-link">
+            <a href="https://github.com/JemAndrew" target="_blank" class="about-nav-link">
                 <i class="fab fa-github"></i>
-                GitHub
+                <span>GitHub</span>
             </a>
-            <a href="mailto:andrewjem8@gmail.com" class="about-quick-link">
+            <a href="mailto:andrewjem8@gmail.com" class="about-nav-link">
                 <i class="fas fa-envelope"></i>
-                Email
+                <span>Email</span>
             </a>
         </div>
         
@@ -86,36 +75,33 @@
             </p>
         </section>
         
-        <!-- Career Timeline Section -->
+        <!-- Career Timeline Section - COMPACT SIDE TIMELINE -->
         <section class="about-work-spotlight" id="career-path">
             <span class="section-label">// Career Path</span>
             <h2>What I'm <span class="gradient-text">Building Now</span></h2>
             <p class="work-spotlight-subtitle">From backend engineering to AI-powered legal systems</p>
             
-            <!-- Timeline -->
-            <div class="career-timeline">
+            <!-- Compact Side Timeline -->
+            <div class="career-timeline-compact">
                 {% for position in current_positions %}
-                <div class="timeline-item {% if position.is_primary_focus %}timeline-current{% else %}timeline-past{% endif %}">
+                <div class="timeline-item-compact {% if position.is_primary_focus %}timeline-primary{% endif %}">
                     
-                    <!-- Timeline Date Label -->
-                    <div class="timeline-date">
+                    <!-- Left: Date Column -->
+                    <div class="timeline-date-column">
                         {% if position.is_primary_focus %}
-                            <span class="date-label">2025 → Now</span>
-                            <span class="current-badge">
-                                <i class="fas fa-circle"></i>
-                                Primary Focus
-                            </span>
+                            <div class="date-range">2025<br>→<br>Now</div>
+                            <div class="primary-badge">[P]</div>
                         {% else %}
-                            <span class="date-label">2025</span>
-                            <span class="duration-badge">{{ position.duration_display }}</span>
+                            <div class="date-range">2025</div>
+                            <div class="duration-text">{{ position.duration_display }}</div>
                         {% endif %}
                     </div>
                     
-                    <!-- Work Card -->
-                    <div class="timeline-card">
-                        <!-- Card Header -->
-                        <div class="timeline-card-header">
-                            <div class="work-card-icon">
+                    <!-- Right: Content Column -->
+                    <div class="timeline-content-column">
+                        <!-- Header with Icon -->
+                        <div class="timeline-compact-header">
+                            <div class="work-icon-small">
                                 {% if position.company == "BuildChorus.com" %}
                                     <img src="{% static 'images/BuildChorus.jpg' %}" alt="BuildChorus">
                                 {% elif "Law Firm" in position.company or "Freelance" in position.position %}
@@ -124,57 +110,20 @@
                                     <i class="fas fa-briefcase"></i>
                                 {% endif %}
                             </div>
-                            
                             <div>
-                                <h3 class="work-card-company">{{ position.position }}</h3>
-                                <p class="work-card-role">{{ position.company }}</p>
+                                <h3 class="work-title-compact">{{ position.position }}</h3>
+                                <p class="work-company-compact">{{ position.company }}</p>
                             </div>
                         </div>
                         
                         <!-- Description -->
-                        <p class="work-card-description">{{ position.description }}</p>
-                        
-                        <!-- Responsibilities -->
-                        {% if position.responsibilities %}
-                        <div class="timeline-section">
-                            <h4 class="timeline-section-title">
-                                <i class="fas fa-tasks"></i>
-                                Key Responsibilities
-                            </h4>
-                            <ul class="timeline-list">
-                                {% for responsibility in position.responsibilities %}
-                                <li>{{ responsibility }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}
-                        
-                        <!-- Achievements -->
-                        {% if position.achievements %}
-                        <div class="timeline-section">
-                            <h4 class="timeline-section-title">
-                                <i class="fas fa-trophy"></i>
-                                Achievements
-                            </h4>
-                            <div class="achievement-badges">
-                                {% for achievement in position.achievements %}
-                                <div class="achievement-badge">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>{{ achievement }}</span>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% endif %}
+                        <p class="work-description-compact">{{ position.description }}</p>
                         
                         <!-- Technologies -->
-                        <div class="timeline-section">
-                            <h4 class="work-card-tech-label">Technologies</h4>
-                            <div class="tech-pills">
-                                {% for skill in position.skills_list %}
-                                <span class="tech-pill">{{ skill }}</span>
-                                {% endfor %}
-                            </div>
+                        <div class="tech-pills-compact">
+                            {% for skill in position.skills_list %}
+                            <span class="tech-pill-small">{{ skill }}</span>
+                            {% endfor %}
                         </div>
                     </div>
                     
@@ -183,27 +132,19 @@
             </div>
         </section>
         
-        <!-- Skills Section -->
+        <!-- Skills Section - CLEAN TAG CLOUDS -->
         <section class="about-skills" id="skills">
             <span class="section-label">// Technical Skills</span>
             <h2>Core <span class="gradient-text">Technologies</span></h2>
             <p class="skills-subtitle">Languages, frameworks, and tools I work with</p>
             
-            <div class="skills-grid">
+            <div class="skills-tag-grid">
                 {% for category, skills in core_skills.items %}
-                <div class="skill-category-box">
+                <div class="skill-category-card">
                     <h3 class="skill-category-title">{{ category }}</h3>
-                    <div class="skills-list">
+                    <div class="skill-tags">
                         {% for skill in skills %}
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span class="skill-name">{{ skill.name }}</span>
-                                <span class="skill-experience">{{ skill.years_experience }} years</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-width="{{ skill.proficiency_percentage }}"></div>
-                            </div>
-                        </div>
+                        <span class="skill-tag">{{ skill.name }}</span>
                         {% endfor %}
                     </div>
                 </div>
@@ -220,7 +161,7 @@ async function loadAboutAvatar() {
     try {
         const response = await fetch('/static/images/avatar.svg');
         const svgText = await response.text();
-        const container = document.getElementById('aboutAvatar');
+        const container = document.getElementById('aboutLeftAvatar');
         if (container) {
             container.innerHTML = svgText;
         }
