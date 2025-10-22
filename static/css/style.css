@@ -1036,7 +1036,7 @@ body {
 
 /* Journey Section */
 .about-journey {
-    margin-bottom: 4rem;
+    margin-bottom: 8rem;
     animation: fadeInUp 0.6s ease;
 }
 
@@ -1065,7 +1065,7 @@ body {
 
 /* Career Section */
 .about-work-spotlight {
-    margin-bottom: 4rem;
+    margin-bottom: 8rem;
     animation: fadeInUp 0.6s ease 0.2s backwards;
 }
 
@@ -1084,57 +1084,23 @@ body {
 /* ============================================
    COMPACT TIMELINE
    ============================================ */
+/* ============================================
+   COMPACT TIMELINE - DATES INSIDE BOXES
+   ============================================ */
 .career-timeline-compact {
     max-width: 900px;
     margin-top: 2rem;
+    margin-bottom:0;
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
 .timeline-item-compact {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 2rem;
     position: relative;
 }
 
-/* Date Column */
-.timeline-date-column {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding-top: 0.5rem;
-}
-
-.date-range {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--accent-primary);
-    font-family: 'Courier New', monospace;
-    line-height: 1.4;
-}
-
-.primary-badge {
-    padding: 0.3rem 0.6rem;
-    background: rgba(52, 211, 153, 0.1);
-    border: 1px solid rgba(52, 211, 153, 0.3);
-    border-radius: 12px;
-    color: #34D399;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-}
-
-.duration-text {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-/* Content Column */
+/* Content Column - now full width */
 .timeline-content-column {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -1153,10 +1119,44 @@ body {
     box-shadow: 0 8px 25px var(--shadow);
 }
 
-/* Header */
+/* Date Header - at top of box */
+.timeline-date-header {
+    display: flex;
+    align-items: centre;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.date-range-inline {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    font-family: 'Courier New', monospace;
+}
+
+.primary-badge {
+    padding: 0.3rem 0.6rem;
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 12px;
+    color: #34D399;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.duration-text-inline {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Rest of the styles remain the same */
 .timeline-compact-header {
     display: flex;
-    align-items: center;
+    align-items: centre;
     gap: 1rem;
     margin-bottom: 1rem;
 }
@@ -1167,8 +1167,8 @@ body {
     background: var(--accent-light);
     border-radius: 10px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: centre;
+    justify-content: centre;
     flex-shrink: 0;
     overflow: hidden;
 }
@@ -1231,10 +1231,49 @@ body {
 }
 
 /* ============================================
+   RESPONSIVE - SIMPLIFIED
+   ============================================ */
+@media (max-width: 768px) {
+    .timeline-content-column {
+        padding: 1.2rem;
+    }
+    
+    .work-icon-small {
+        width: 38px;
+        height: 38px;
+    }
+    
+    .work-title-compact {
+        font-size: 1.05rem;
+    }
+    
+    .work-description-compact {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeline-date-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .tech-pills-compact {
+        gap: 0.4rem;
+    }
+    
+    .tech-pill-small {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.7rem;
+    }
+}
+
+/* ============================================
    SKILLS SECTION
    ============================================ */
 .about-skills {
-    margin-bottom: 4rem;
+    margin-top: 8rem;
+    margin-bottom: 8rem;
     animation: fadeInUp 0.6s ease 0.4s backwards;
 }
 

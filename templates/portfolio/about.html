@@ -20,24 +20,13 @@
         <!-- Navigation Links -->
         <div class="about-nav-links">
             <a href="#journey" class="about-nav-link">
-                <i class="fas fa-user"></i>
                 <span>My Journey</span>
             </a>
             <a href="#career-path" class="about-nav-link">
-                <i class="fas fa-briefcase"></i>
                 <span>Career Path</span>
             </a>
             <a href="#skills" class="about-nav-link">
-                <i class="fas fa-code"></i>
                 <span>Skills</span>
-            </a>
-            <a href="https://github.com/JemAndrew" target="_blank" class="about-nav-link">
-                <i class="fab fa-github"></i>
-                <span>GitHub</span>
-            </a>
-            <a href="mailto:andrewjem8@gmail.com" class="about-nav-link">
-                <i class="fas fa-envelope"></i>
-                <span>Email</span>
             </a>
         </div>
         
@@ -105,24 +94,25 @@
             <h2>Professional <span class="gradient-text">Experience</span></h2>
 
             
-            <!-- Compact Side Timeline -->
+            
+            <!-- Compact Timeline -->
             <div class="career-timeline-compact">
                 {% for position in current_positions %}
                 <div class="timeline-item-compact {% if position.is_primary_focus %}timeline-primary{% endif %}">
                     
-                    <!-- Left: Date Column -->
-                    <div class="timeline-date-column">
-                        {% if position.is_primary_focus %}
-                            <div class="date-range">2025<br>→<br>Now</div>
-                            <div class="primary-badge">[P]</div>
-                        {% else %}
-                            <div class="date-range">2025</div>
-                            <div class="duration-text">{{ position.duration_display }}</div>
-                        {% endif %}
-                    </div>
-                    
-                    <!-- Right: Content Column -->
+                    <!-- Content Column (now contains everything) -->
                     <div class="timeline-content-column">
+                        <!-- Date header inside box -->
+                        <div class="timeline-date-header">
+                            {% if position.is_primary_focus %}
+                                <span class="date-range-inline">2025 → Now</span>
+                                <span class="primary-badge">[P]</span>
+                            {% else %}
+                                <span class="date-range-inline">2025</span>
+                                <span class="duration-text-inline">{{ position.duration_display }}</span>
+                            {% endif %}
+                        </div>
+                        
                         <!-- Header with Icon -->
                         <div class="timeline-compact-header">
                             <div class="work-icon-small">
@@ -154,7 +144,6 @@
                 </div>
                 {% endfor %}
             </div>
-        </section>
         
         <!-- Skills Section - CLEAN TAG CLOUDS -->
         <section class="about-skills" id="skills">
