@@ -10,12 +10,25 @@
     <div class="hero-centered-content">
         <!-- Large Avatar + Name Section -->
         <div class="hero-avatar-name">
-            <!-- CRITICAL: Use avatarContainer ID for eye tracking to work -->
-            <div class="hero-large-avatar">
-                <div class="avatar-container" id="avatarContainer">
-                    <!-- SVG loads here automatically -->
-                    <div class="avatar-loading">Loading...</div>
-                </div>
+            <!-- INTERACTIVE AVATAR - Click to download CV -->
+            <div class="hero-large-avatar interactive-avatar">
+                <a href="{% url 'portfolio:download_msc' %}" class="avatar-download-link" aria-label="Download CV">
+                    <div class="avatar-container" id="avatarContainer">
+                        <!-- SVG loads here automatically -->
+                        <div class="avatar-loading">Loading...</div>
+                    </div>
+                    
+                    <!-- Hover Tooltip -->
+                    <div class="avatar-tooltip">
+                        <span class="tooltip-text">Want to see my CV?</span>
+                        <div class="tooltip-subtitle">Click to download</div>
+                    </div>
+                    
+                    <!-- Click Indicator (subtle pulse) -->
+                    <div class="click-indicator">
+                        <i class="fas fa-download"></i>
+                    </div>
+                </a>
             </div>
             
             <div class="hero-text-block">
@@ -28,17 +41,16 @@
         
         <!-- Subtitle -->
         <p class="hero-centered-subtitle">
-            Software Engineer | Machine Learning Engineer | Data Analyst
+            Software Engineer | AI Enthusiast | Problem Solver
         </p>
         
         <!-- Description -->
         <p class="hero-centered-description">
-            I'm passionate about crafting well-structured backend code. 
-            Currently working with <strong>Django at BuildChorus</strong> whilst 
-            consulting on <strong>AI-powered legal tech</strong>.
+            I craft <strong>clean backend systems</strong> that solve real problems. 
+            Currently engineering <strong>AI solutions for legal tech </strong>. Passionate about clean code, machine learning, video game engineering and cybersecurity.
         </p>
         
-        <!-- CTA Buttons -->
+        <!-- CTA Buttons (removed circular CV button) -->
         <div class="hero-centered-ctas">
             <a href="{% url 'portfolio:projects' %}" class="btn-hero btn-hero-primary">
                 View Projects

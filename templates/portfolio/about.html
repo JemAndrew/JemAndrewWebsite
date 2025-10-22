@@ -5,305 +5,231 @@
 
 {% block content %}
 
-<!-- Split-Screen Container -->
 <div class="about-split-container">
     
-    <!-- LEFT COLUMN (STICKY) -->
+    <!-- LEFT SIDEBAR (Sticky) -->
     <aside class="about-left">
         <!-- Avatar -->
-        <div class="about-left-avatar" id="aboutLeftAvatar">
-            <div class="avatar-loading">Loading...</div>
+        <div class="about-left-avatar" id="aboutAvatar">
+            <!-- Avatar loads via JS -->
         </div>
         
-        <!-- Name & Title -->
         <h1 class="about-left-name">Jem Andrew</h1>
         <p class="about-left-title">Software Engineer</p>
         
-        <!-- Current Roles -->
+        <!-- Current Roles Summary -->
         <div class="about-current-roles">
-            <div class="about-role-label">Currently Building</div>
-            
+            <div class="about-role-label">Currently Working On</div>
+            {% for position in current_positions %}
             <div class="about-role-item">
-                <span class="about-role-company">BuildChorus</span>
-                <span class="about-role-position">Software Engineer</span>
+                <span class="about-role-company">{{ position.company }}</span>
+                <span class="about-role-position">{{ position.position }}</span>
             </div>
-            
-            <div class="about-role-item">
-                <span class="about-role-company">Legal AI Platform</span>
-                <span class="about-role-position">Freelance Consultant</span>
-            </div>
+            {% endfor %}
         </div>
         
         <!-- Quick Links -->
-        <nav class="about-quick-links">
-            <a href="{% url 'portfolio:projects' %}" class="about-quick-link">
-                <i class="fas fa-code"></i>
-                <span>View Projects</span>
+        <div class="about-quick-links">
+            <a href="#journey" class="about-quick-link">
+                <i class="fas fa-user"></i>
+                My Journey
             </a>
-            <a href="{% url 'portfolio:education' %}" class="about-quick-link">
-                <i class="fas fa-graduation-cap"></i>
-                <span>Education</span>
+            <a href="#career-path" class="about-quick-link">
+                <i class="fas fa-briefcase"></i>
+                Career Path
+            </a>
+            <a href="#skills" class="about-quick-link">
+                <i class="fas fa-code"></i>
+                Skills
+            </a>
+            <a href="https://github.com/JemAndrew" target="_blank" class="about-quick-link">
+                <i class="fab fa-github"></i>
+                GitHub
             </a>
             <a href="mailto:andrewjem8@gmail.com" class="about-quick-link">
                 <i class="fas fa-envelope"></i>
-                <span>Get in Touch</span>
+                Email
             </a>
-        </nav>
+        </div>
         
-        <!-- Status -->
+        <!-- Status Indicator -->
         <div class="about-status">
             <span class="status-dot"></span>
-            <span>Always learning</span>
+            <span>Always building</span>
         </div>
     </aside>
     
-    <!-- RIGHT COLUMN (SCROLLING) -->
+    <!-- RIGHT CONTENT (Scrolling) -->
     <main class="about-right">
         
         <!-- Journey Section -->
-        <section class="about-journey">
+        <section class="about-journey" id="journey">
             <div class="about-journey-header">
-                <span class="section-label">// My Journey</span>
-                <h2>Building intelligent systems through clean code</h2>
+                <span class="section-label">// About Me</span>
+                <h2>Building <span class="gradient-text">intelligent systems</span> through clean code</h2>
             </div>
             
             <p class="journey-paragraph">
-                My coding journey started gaining momentum at university where I first fell in love with 
-                <strong>R and RStudio</strong> during my biology degree. Building my own creations of statistical 
-                graphs from data and simple lines of code got me invigorated. I then started learning from spaces 
-                such as Codecademy, and started off with simple projects and then tried to expand.
-            </p>
-            
-            <div class="journey-quote">
-                <p>
-                    My first ever project which really required some thought was my Holiday Cluedo – 
-                    where friends and family could play real-life Cluedo for a laugh on holiday.
-                </p>
-            </div>
-            
-            <p class="journey-paragraph">
-                This inspired me to pursue <strong>computer science for a Master's</strong> and hone in on my skills 
-                so I could learn from lecturers and experts rather than just trial and error and hours on Stack Overflow.
+                I started learning to code during my free time before university, exploring free published 
+                lectures from leading institutions such as MIT and completing as many Codecademy courses as I could.
             </p>
             
             <p class="journey-paragraph">
-                After a full year of hard work and some personal projects, I have fallen in love with coding and 
-                bred new interests such as my passion for <strong>machine learning engineering</strong> and the logic 
-                behind neural networks, <strong>data analytics</strong> and taking on huge challenging datasets, and 
-                <strong>video game design and engineering</strong>. I am still new but learning more every day, 
-                constantly trying to put my skills to the test.
+                Then came my <strong>BSc in Biology</strong>, which unexpectedly sparked my love for coding through R. 
+                I loved the creativity of it, which led to pursuing a <strong>Master's in Computer Science</strong>, 
+                where I fully immersed myself in a much broader skill set – from Java and SQL to cybersecurity and ethical hacking.
+            </p>
+            
+            <p class="journey-paragraph">
+                Now, I'm combining my diverse background to build innovative solutions in <strong>AI</strong> and 
+                <strong>backend engineering</strong>, always focused on writing clean, logical, and efficient code.
             </p>
         </section>
         
-        <!-- Work Spotlight Section -->
-        <section class="about-work-spotlight">
-            <span class="section-label">// What I'm Building</span>
-            <h2>Currently Working On</h2>
-            <p class="work-spotlight-subtitle">
-                Combining backend engineering with AI innovation across two exciting projects.
-            </p>
+        <!-- Career Timeline Section -->
+        <section class="about-work-spotlight" id="career-path">
+            <span class="section-label">// Career Path</span>
+            <h2>What I'm <span class="gradient-text">Building Now</span></h2>
+            <p class="work-spotlight-subtitle">From backend engineering to AI-powered legal systems</p>
             
-            <div class="work-spotlight-grid">
-                <!-- BuildChorus Card -->
-                <div class="work-card">
-                    <div class="work-card-icon">🏗️</div>
-                    <h3 class="work-card-company">BuildChorus</h3>
-                    <p class="work-card-role">Software Engineer</p>
-                    <p class="work-card-description">
-                        Building full-stack features for construction management SaaS platform. 
-                        Developing user configurability for material procurement strategies and 
-                        optimising PostgreSQL databases for complex construction data.
-                    </p>
-                    <div class="work-card-tech-label">Technologies</div>
-                    <div class="tech-pills">
-                        <span class="tech-pill">Django</span>
-                        <span class="tech-pill">PostgreSQL</span>
-                        <span class="tech-pill">Docker</span>
-                        <span class="tech-pill">GCP</span>
-                        <span class="tech-pill">GitLab</span>
-                        <span class="tech-pill">Auth0</span>
+            <!-- Timeline -->
+            <div class="career-timeline">
+                {% for position in current_positions %}
+                <div class="timeline-item {% if position.is_primary_focus %}timeline-current{% else %}timeline-past{% endif %}">
+                    
+                    <!-- Timeline Date Label -->
+                    <div class="timeline-date">
+                        {% if position.is_primary_focus %}
+                            <span class="date-label">2025 → Now</span>
+                            <span class="current-badge">
+                                <i class="fas fa-circle"></i>
+                                Primary Focus
+                            </span>
+                        {% else %}
+                            <span class="date-label">2025</span>
+                            <span class="duration-badge">{{ position.duration_display }}</span>
+                        {% endif %}
                     </div>
-                </div>
-                
-                <!-- Legal AI Card -->
-                <div class="work-card">
-                    <div class="work-card-icon">⚖️</div>
-                    <h3 class="work-card-company">Legal AI Platform</h3>
-                    <p class="work-card-role">Freelance AI Consultant</p>
-                    <p class="work-card-description">
-                        Developing AI-powered legal document analysis system processing 18,000+ documents. 
-                        Implementing 4-pass iterative architecture with confidence tracking, achieving 
-                        95% certainty in extracted legal intelligence.
-                    </p>
-                    <div class="work-card-tech-label">Technologies</div>
-                    <div class="tech-pills">
-                        <span class="tech-pill">Python</span>
-                        <span class="tech-pill">Claude API</span>
-                        <span class="tech-pill">ChromaDB</span>
-                        <span class="tech-pill">RAG</span>
-                        <span class="tech-pill">PyTorch</span>
-                        <span class="tech-pill">BM25</span>
+                    
+                    <!-- Work Card -->
+                    <div class="timeline-card">
+                        <!-- Card Header -->
+                        <div class="timeline-card-header">
+                            <div class="work-card-icon">
+                                {% if position.company == "BuildChorus.com" %}
+                                    <img src="{% static 'images/BuildChorus.jpg' %}" alt="BuildChorus">
+                                {% elif "Law Firm" in position.company or "Freelance" in position.position %}
+                                    <img src="{% static 'images/Velitor.jpg' %}" alt="Velitor">
+                                {% else %}
+                                    <i class="fas fa-briefcase"></i>
+                                {% endif %}
+                            </div>
+                            
+                            <div>
+                                <h3 class="work-card-company">{{ position.position }}</h3>
+                                <p class="work-card-role">{{ position.company }}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <p class="work-card-description">{{ position.description }}</p>
+                        
+                        <!-- Responsibilities -->
+                        {% if position.responsibilities %}
+                        <div class="timeline-section">
+                            <h4 class="timeline-section-title">
+                                <i class="fas fa-tasks"></i>
+                                Key Responsibilities
+                            </h4>
+                            <ul class="timeline-list">
+                                {% for responsibility in position.responsibilities %}
+                                <li>{{ responsibility }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Achievements -->
+                        {% if position.achievements %}
+                        <div class="timeline-section">
+                            <h4 class="timeline-section-title">
+                                <i class="fas fa-trophy"></i>
+                                Achievements
+                            </h4>
+                            <div class="achievement-badges">
+                                {% for achievement in position.achievements %}
+                                <div class="achievement-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>{{ achievement }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Technologies -->
+                        <div class="timeline-section">
+                            <h4 class="work-card-tech-label">Technologies</h4>
+                            <div class="tech-pills">
+                                {% for skill in position.skills_list %}
+                                <span class="tech-pill">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
+                    
                 </div>
+                {% endfor %}
             </div>
         </section>
         
         <!-- Skills Section -->
-        <section class="about-skills">
-            <span class="section-label">// Technical Toolkit</span>
-            <h2>Complete Arsenal</h2>
-            <p class="skills-subtitle">
-                Technologies and tools I've worked with across professional, academic, and personal projects.
-            </p>
+        <section class="about-skills" id="skills">
+            <span class="section-label">// Technical Skills</span>
+            <h2>Core <span class="gradient-text">Technologies</span></h2>
+            <p class="skills-subtitle">Languages, frameworks, and tools I work with</p>
             
-            <!-- ML/AI Category -->
-            <div class="skills-category">
-                <div class="skills-category-header">
-                    <div class="skills-category-icon">
-                        <i class="fas fa-brain"></i>
+            <div class="skills-grid">
+                {% for category, skills in core_skills.items %}
+                <div class="skill-category-box">
+                    <h3 class="skill-category-title">{{ category }}</h3>
+                    <div class="skills-list">
+                        {% for skill in skills %}
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name">{{ skill.name }}</span>
+                                <span class="skill-experience">{{ skill.years_experience }} years</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="{{ skill.proficiency_percentage }}"></div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    <h3 class="skills-category-name">AI & Machine Learning</h3>
                 </div>
-                <div class="skills-category-pills">
-                    <span class="tech-pill">RAG Architecture</span>
-                    <span class="tech-pill">Prompt Engineering</span>
-                    <span class="tech-pill">ChromaDB</span>
-                    <span class="tech-pill">Claude API</span>
-                    <span class="tech-pill">Legal-BERT</span>
-                    <span class="tech-pill">BM25</span>
-                    <span class="tech-pill">PyTorch</span>
-                    <span class="tech-pill">TensorFlow</span>
-                </div>
+                {% endfor %}
             </div>
-            
-            <!-- Languages Category -->
-            <div class="skills-category">
-                <div class="skills-category-header">
-                    <div class="skills-category-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3 class="skills-category-name">Programming Languages</h3>
-                </div>
-                <div class="skills-category-pills">
-                    <span class="tech-pill">Python</span>
-                    <span class="tech-pill">Java</span>
-                    <span class="tech-pill">JavaScript</span>
-                    <span class="tech-pill">SQL</span>
-                    <span class="tech-pill">R</span>
-                    <span class="tech-pill">HTML</span>
-                    <span class="tech-pill">CSS</span>
-                </div>
-            </div>
-            
-            <!-- Backend Category -->
-            <div class="skills-category">
-                <div class="skills-category-header">
-                    <div class="skills-category-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3 class="skills-category-name">Backend Development</h3>
-                </div>
-                <div class="skills-category-pills">
-                    <span class="tech-pill">Django</span>
-                    <span class="tech-pill">Flask</span>
-                    <span class="tech-pill">Node.js</span>
-                    <span class="tech-pill">REST APIs</span>
-                    <span class="tech-pill">Flask-CORS</span>
-                </div>
-            </div>
-            
-            <!-- Frontend Category -->
-            <div class="skills-category">
-                <div class="skills-category-header">
-                    <div class="skills-category-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3 class="skills-category-name">Frontend Development</h3>
-                </div>
-                <div class="skills-category-pills">
-                    <span class="tech-pill">React</span>
-                    <span class="tech-pill">HTML5</span>
-                    <span class="tech-pill">CSS3</span>
-                    <span class="tech-pill">JavaScript ES6+</span>
-                </div>
-            </div>
-            
-            <!-- Databases Category -->
-            <div class="skills-category">
-                <div class="skills-category-header">
-                    <div class="skills-category-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3 class="skills-category-name">Databases</h3>
-                </div>
-                <div class="skills-category-pills">
-                    <span class="tech-pill">PostgreSQL</span>
-                    <span class="tech-pill">MySQL</span>
-                    <span class="tech-pill">MongoDB</span>
-                    <span class="tech-pill">SQLite</span>
-                    <span class="tech-pill">Redis</span>
-                </div>
-            </div>
-            
-            <!-- Cloud & DevOps Category -->
-            <div class="skills-category">
-                <div class="skills-category-header">
-                    <div class="skills-category-icon">
-                        <i class="fas fa-cloud"></i>
-                    </div>
-                    <h3 class="skills-category-name">Cloud & DevOps</h3>
-                </div>
-                <div class="skills-category-pills">
-                    <span class="tech-pill">Google Cloud Platform</span>
-                    <span class="tech-pill">Docker</span>
-                    <span class="tech-pill">Git</span>
-                    <span class="tech-pill">GitHub</span>
-                    <span class="tech-pill">GitLab</span>
-                    <span class="tech-pill">CI/CD</span>
-                    <span class="tech-pill">Jira</span>
-                </div>
-            </div>
-            
-            <!-- Data Science Category -->
-            <div class="skills-category">
-                <div class="skills-category-header">
-                    <div class="skills-category-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="skills-category-name">Data Science & Analytics</h3>
-                </div>
-                <div class="skills-category-pills">
-                    <span class="tech-pill">pandas</span>
-                    <span class="tech-pill">numpy</span>
-                    <span class="tech-pill">R Studio</span>
-                    <span class="tech-pill">Data Visualisation</span>
-                    <span class="tech-pill">Statistical Analysis</span>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Personal Touch Section -->
-        <section class="about-personal">
-            <span class="section-label">// Beyond the Screen</span>
-            <h2>What Drives Me</h2>
-            <p>
-                Outside of code, I'm fascinated by <strong>video game design</strong> and the engineering challenges 
-                of building immersive experiences. I love dissecting how games achieve their technical feats – from 
-                rendering engines to AI pathfinding algorithms.
-            </p>
-            <p>
-                I'm constantly learning, currently diving deeper into <strong>neural network architectures</strong> 
-                and exploring game engine development. Every project is an opportunity to push my boundaries and 
-                write cleaner, more efficient code.
-            </p>
-            <a href="mailto:andrewjem8@gmail.com" class="about-personal-cta">
-                <span>Let's Work Together</span>
-                <i class="fas fa-arrow-right"></i>
-            </a>
         </section>
         
     </main>
-    
 </div>
+
+<script>
+// Load sidebar avatar
+async function loadAboutAvatar() {
+    try {
+        const response = await fetch('/static/images/avatar.svg');
+        const svgText = await response.text();
+        const container = document.getElementById('aboutAvatar');
+        if (container) {
+            container.innerHTML = svgText;
+        }
+    } catch (error) {
+        console.error('Avatar loading failed:', error);
+    }
+}
+
+loadAboutAvatar();
+</script>
 
 {% endblock %}

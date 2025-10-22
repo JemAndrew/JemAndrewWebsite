@@ -38,6 +38,7 @@ EXPERIENCE = [
         'start_date': date(2025, 10, 1),
         'end_date': None,
         'is_current': True,
+        'is_primary_focus': True,
         'description': """Developing and maintaining an AI-powered legal document analysis system for ongoing commercial litigation. 
                          Providing continuous analysis and improvements as new case materials emerge.""",
         'responsibilities': [
@@ -61,6 +62,7 @@ EXPERIENCE = [
         'start_date': date(2025, 9, 1),
         'end_date': None,
         'is_current': True,
+        'is_primary_focus': False,
         'description': """Working at BuildChorus where I develop full-stack features for our construction management SaaS platform.""",
         'responsibilities': [
             'Building user configurability features for material procurement strategies',

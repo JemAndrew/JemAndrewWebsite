@@ -565,3 +565,57 @@ if (document.readyState === 'loading') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ModernPortfolio;
 }
+
+/// ============================================
+// SKILL BARS ANIMATION
+// Add this to the END of your main.js file
+// ============================================
+
+function initAboutPageSkills() {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    if (skillBars.length === 0) return;
+
+    console.log('✅ Initialising skill bars...');
+
+    // Set initial width to 0
+    skillBars.forEach(bar => {
+        bar.style.width = '0%';
+    });
+
+    // Animate when scrolled into view
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const bar = entry.target;
+                const targetWidth = bar.dataset.width;
+                
+                // Animate to target width with slight delay
+                setTimeout(() => {
+                    bar.style.width = `${targetWidth}%`;
+                }, 100);
+                
+                // Stop observing once animated
+                observer.unobserve(bar);
+                
+                console.log(`✨ Animated skill bar to ${targetWidth}%`);
+            }
+        });
+    }, {
+        threshold: 0.5, // Trigger when 50% visible
+        rootMargin: '0px 0px -100px 0px'
+    });
+
+    // Observe all skill bars
+    skillBars.forEach(bar => {
+        observer.observe(bar);
+    });
+    
+    console.log(`✅ Watching ${skillBars.length} skill bars`);
+}
+
+// Run on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAboutPageSkills);
+} else {
+    initAboutPageSkills();
+}
