@@ -864,9 +864,13 @@ body {
 }
 
 /* ============================================
-   9. ABOUT PAGE
+   ABOUT PAGE - SIMPLIFIED & OPTIMIZED
+   Removed all redundant styles, keeping only what's needed
    ============================================ */
-/* Main Split Container */
+
+/* ============================================
+   SPLIT LAYOUT CONTAINER
+   ============================================ */
 .about-split-container {
     display: grid;
     grid-template-columns: 380px 1fr;
@@ -878,9 +882,8 @@ body {
 }
 
 /* ============================================
-   LEFT COLUMN (STICKY)
+   LEFT SIDEBAR (STICKY)
    ============================================ */
-/* Left Sidebar Base */
 .about-left {
     position: sticky;
     top: 6rem;
@@ -923,16 +926,12 @@ body {
     margin-bottom: 2.5rem;
 }
 
-/* ============================================
-   SIMPLIFIED NAVIGATION LINKS
-   ============================================ */
-
+/* Navigation Links */
 .about-nav-links {
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto 0;
 }
 
 .about-nav-link {
@@ -984,16 +983,7 @@ body {
     transform: scale(1.1);
 }
 
-.about-nav-link span {
-    flex: 1;
-}
-
-/* Active state for internal links */
-.about-nav-link:active {
-    transform: translateX(8px);
-}
-
-/* External link indicator (subtle) */
+/* External link indicator */
 .about-nav-link[target="_blank"]::after {
     content: '↗';
     font-size: 0.75rem;
@@ -1005,10 +995,7 @@ body {
     opacity: 0.6;
 }
 
-/* ============================================
-   STATUS INDICATOR
-   ============================================ */
-
+/* Status Indicator */
 .about-status {
     display: flex;
     align-items: center;
@@ -1040,80 +1027,7 @@ body {
 }
 
 /* ============================================
-   RESPONSIVE ADJUSTMENTS
-   ============================================ */
-
-@media (max-width: 1200px) {
-    .about-split-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .about-left {
-        position: relative;
-        top: 0;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 2rem;
-    }
-    
-    .about-left-avatar {
-        margin: 0 auto 1.5rem;
-    }
-    
-    .about-left-name,
-    .about-left-title {
-        text-align: center;
-    }
-    
-    .about-nav-links {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
-        margin: 2rem 0;
-    }
-    
-    .about-nav-link {
-        padding: 0.8rem 1.5rem;
-    }
-    
-    .about-nav-link:hover {
-        transform: translateY(-2px);
-    }
-    
-    .about-status {
-        justify-content: center;
-        padding-top: 1.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .about-left {
-        padding: 1.5rem;
-    }
-    
-    .about-left-avatar {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .about-left-name {
-        font-size: 1.5rem;
-    }
-    
-    .about-nav-links {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .about-nav-link {
-        justify-content: flex-start;
-    }
-}
-
-/* ============================================
-   RIGHT COLUMN (SCROLLING)
+   RIGHT CONTENT (SCROLLING)
    ============================================ */
 .about-right {
     padding: 3rem 4rem 4rem 4rem;
@@ -1149,24 +1063,7 @@ body {
     font-weight: 600;
 }
 
-/* Pull Quote */
-.journey-quote {
-    position: relative;
-    padding: 1.5rem 2rem;
-    margin: 2rem 0;
-    background: var(--accent-light);
-    border-left: 4px solid var(--accent-primary);
-    border-radius: 0 10px 10px 0;
-}
-
-.journey-quote p {
-    font-size: 1.15rem;
-    color: var(--text-primary);
-    font-style: italic;
-    margin: 0;
-}
-
-/* Work Spotlight Section */
+/* Career Section */
 .about-work-spotlight {
     margin-bottom: 4rem;
     animation: fadeInUp 0.6s ease 0.2s backwards;
@@ -1184,439 +1081,9 @@ body {
     margin-bottom: 2.5rem;
 }
 
-.work-spotlight-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-/* Work Card */
-.work-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.work-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--accent-primary);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.work-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-border);
-    box-shadow: 0 10px 30px var(--shadow);
-}
-
-.work-card:hover::before {
-    transform: scaleX(1);
-}
-
-.work-card-icon {
-    width: 50px;
-    height: 50px;
-    background: var(--accent-light);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 1.2rem;
-}
-
-.work-card-company {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 0.4rem;
-    color: var(--text-primary);
-}
-
-.work-card-role {
-    font-size: 0.95rem;
-    color: var(--accent-primary);
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.work-card-description {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    margin-bottom: 1.2rem;
-}
-
-.work-card-tech-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    margin-bottom: 0.8rem;
-    font-weight: 600;
-}
-
-/* Pill Badges */
-.tech-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.tech-pill {
-    padding: 0.4rem 0.9rem;
-    background: var(--accent-light);
-    border: 1px solid var(--accent-border);
-    border-radius: 50px;
-    color: var(--accent-primary);
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.tech-pill:hover {
-    background: var(--accent-primary);
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Skills Section */
-.about-skills {
-    margin-bottom: 4rem;
-    animation: fadeInUp 0.6s ease 0.4s backwards;
-}
-
-.about-skills h2 {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 0.5rem;
-}
-
-.skills-subtitle {
-    font-size: 1rem;
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
-}
-
-/* Skills Category */
-.skills-category {
-    margin-bottom: 2rem;
-}
-
-.skills-category-header {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
-}
-
-.skills-category-icon {
-    width: 35px;
-    height: 35px;
-    background: var(--accent-light);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-primary);
-    font-size: 1rem;
-}
-
-.skills-category-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.skills-category-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-
-/* Personal Touch Section */
-.about-personal {
-    animation: fadeInUp 0.6s ease 0.6s backwards;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2.5rem;
-}
-
-.about-personal h2 {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-}
-
-.about-personal p {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-}
-
-.about-personal-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.9rem 2rem;
-    background: var(--accent-primary);
-    color: white;
-    border-radius: 50px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-
-.about-personal-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(94, 173, 173, 0.3);
-}
-
 /* ============================================
-   RESPONSIVE
+   COMPACT TIMELINE
    ============================================ */
-@media (max-width: 1200px) {
-    .about-split-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .about-left {
-        position: relative;
-        top: 0;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 2rem;
-        text-align: center;
-    }
-    
-    .about-left-avatar {
-        margin: 0 auto 1.5rem;
-    }
-    
-    .about-current-roles {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-    }
-    
-    .about-role-item {
-        border: 1px solid var(--border);
-        padding: 1rem;
-        border-radius: 10px;
-    }
-    
-    .about-quick-links {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-    
-    .about-quick-link:hover {
-        transform: translateY(-2px);
-    }
-    
-    .about-right {
-        padding: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .about-right {
-        padding: 1.5rem;
-    }
-    
-    .work-spotlight-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .journey-paragraph {
-        font-size: 1rem;
-    }
-    
-    .journey-quote p {
-        font-size: 1.05rem;
-    }
-}
-/* ============================================
-   TIMELINE ADDITIONS
-   Add this to your existing About Page section in style.css
-   ============================================ */
-
-
-
-
-/* Timeline Date Label Section */
-.timeline-date {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.date-label {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--accent-primary);
-    font-family: 'Courier New', monospace;
-}
-
-.current-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 1rem;
-    background: rgba(52, 211, 153, 0.1);
-    border: 1px solid rgba(52, 211, 153, 0.3);
-    border-radius: 20px;
-    color: #34D399;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.current-badge i {
-    animation: pulse-icon 2s ease-in-out infinite;
-}
-
-@keyframes pulse-icon {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.duration-badge {
-    padding: 0.4rem 1rem;
-    background: var(--bg-primary);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-/* Timeline Card */
-.timeline-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-}
-
-.timeline-current .timeline-card {
-    border: 2px solid var(--accent-primary);
-    box-shadow: 0 4px 20px rgba(94, 173, 173, 0.15);
-}
-
-.timeline-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px var(--shadow);
-}
-
-/* Timeline Card Header */
-.timeline-card-header {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    margin-bottom: 1.5rem;
-}
-
-.work-card-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-/* Timeline Sections */
-.timeline-section {
-    margin-top: 1.5rem;
-}
-
-.timeline-section-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--accent-primary);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.timeline-section-title i {
-    font-size: 0.9rem;
-}
-
-/* Timeline List */
-.timeline-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.timeline-list li {
-    padding-left: 1.5rem;
-    margin-bottom: 0.7rem;
-    position: relative;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-}
-
-.timeline-list li::before {
-    content: '▹';
-    position: absolute;
-    left: 0;
-    color: var(--accent-primary);
-    font-weight: bold;
-}
-
-
-
-.achievement-badge {
-    display: flex;
-    align-items: start;
-    gap: 0.7rem;
-    padding: 0.8rem 1rem;
-    background: var(--bg-primary);
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
-}
-
-.achievement-badge:hover {
-    border-color: var(--accent-border);
-    transform: translateX(5px);
-}
-
-.achievement-badge i {
-    color: var(--accent-primary);
-    font-size: 1.1rem;
-    margin-top: 0.2rem;
-    flex-shrink: 0;
-}
-
-.achievement-badge span {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
-
-/* ============================================
-   SKILLS SECTION ENHANCEMENTS
-   ============================================ */
-
 .career-timeline-compact {
     max-width: 900px;
     margin-top: 2rem;
@@ -1632,7 +1099,7 @@ body {
     position: relative;
 }
 
-/* Left Column - Date */
+/* Date Column */
 .timeline-date-column {
     text-align: center;
     display: flex;
@@ -1667,7 +1134,7 @@ body {
     font-weight: 500;
 }
 
-/* Right Column - Content */
+/* Content Column */
 .timeline-content-column {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -1686,7 +1153,7 @@ body {
     box-shadow: 0 8px 25px var(--shadow);
 }
 
-/* Compact Header */
+/* Header */
 .timeline-compact-header {
     display: flex;
     align-items: center;
@@ -1732,7 +1199,6 @@ body {
     margin: 0;
 }
 
-/* Description */
 .work-description-compact {
     font-size: 0.95rem;
     line-height: 1.6;
@@ -1740,7 +1206,7 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Compact Tech Pills */
+/* Tech Pills */
 .tech-pills-compact {
     display: flex;
     flex-wrap: wrap;
@@ -1765,14 +1231,29 @@ body {
 }
 
 /* ============================================
-   CLEAN TAG CLOUDS (Option A)
+   SKILLS SECTION
    ============================================ */
+.about-skills {
+    margin-bottom: 4rem;
+    animation: fadeInUp 0.6s ease 0.4s backwards;
+}
+
+.about-skills h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+.skills-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
 
 .skills-tag-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-    margin-top: 2rem;
 }
 
 .skill-category-card {
@@ -1830,16 +1311,94 @@ body {
 }
 
 /* ============================================
-   RESPONSIVE ADJUSTMENTS
+   RESPONSIVE DESIGN
    ============================================ */
 
+/* Tablet */
+@media (max-width: 1200px) {
+    .about-split-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-left {
+        position: relative;
+        top: 0;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 2rem;
+    }
+    
+    .about-left-avatar {
+        margin: 0 auto 1.5rem;
+    }
+    
+    .about-left-name,
+    .about-left-title {
+        text-align: center;
+    }
+    
+    .about-nav-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 2rem 0;
+    }
+    
+    .about-nav-link {
+        padding: 0.8rem 1.5rem;
+    }
+    
+    .about-nav-link:hover {
+        transform: translateY(-2px);
+    }
+    
+    .about-status {
+        justify-content: center;
+        padding-top: 1.5rem;
+    }
+    
+    .about-right {
+        padding: 2rem;
+    }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
+    .about-left {
+        padding: 1.5rem;
+    }
+    
+    .about-left-avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .about-left-name {
+        font-size: 1.5rem;
+    }
+    
+    .about-nav-links {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .about-nav-link {
+        justify-content: flex-start;
+    }
+    
+    .about-right {
+        padding: 1.5rem;
+    }
+    
+    /* Timeline adjustments */
     .timeline-item-compact {
         grid-template-columns: 70px 1fr;
         gap: 1rem;
     }
     
-    .timeline-date-column {
+    .date-range {
         font-size: 0.85rem;
     }
     
@@ -1865,6 +1424,7 @@ body {
     }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
     .timeline-item-compact {
         grid-template-columns: 1fr;
