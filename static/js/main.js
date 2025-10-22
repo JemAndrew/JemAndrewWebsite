@@ -1,6 +1,6 @@
 // ============================================
-// MODERN PORTFOLIO - FLEXIBLE VERSION
-// Works with avatarContainer OR heroAvatarContainer
+// MODERN PORTFOLIO - FIXED VERSION
+// No duplicate event listeners!
 // ============================================
 
 class ModernPortfolio {
@@ -21,7 +21,12 @@ class ModernPortfolio {
         this.setupAnimations();
         
         // Page-specific features
-        if (document.querySelector('.project-card')) {
+        // FIXED: Only call setupExpandableProjects once per page!
+        if (document.querySelector('.projects-split-container')) {
+            // Projects page - setup all project features
+            this.setupProjectsPage();
+        } else if (document.querySelector('.project-card')) {
+            // Other pages that have project cards
             this.setupExpandableProjects();
         }
         
@@ -29,24 +34,22 @@ class ModernPortfolio {
             this.setupModulesToggle();
         }
         
-        if (document.querySelector('.projects-split-container')) {
-            this.setupProjectsPage();
-        }
-        
         console.log('✅ All systems ready');
     }
+    
     setupProjectsPage() {
-    console.log('✅ Setting up projects page');
-    
-    // Category filtering
-    this.setupProjectFiltering();
-    
-    // Quick navigation
-    this.setupProjectNavigation();
-    
-    // Expandable cards 
-    this.setupExpandableProjects();
+        console.log('✅ Setting up projects page');
+        
+        // Category filtering
+        this.setupProjectFiltering();
+        
+        // Quick navigation
+        this.setupProjectNavigation();
+        
+        // Expandable cards - ONLY called here for projects page
+        this.setupExpandableProjects();
     }
+    
     // ============================================
     // LOAD AVATARS - FLEXIBLE
     // ============================================
@@ -76,12 +79,12 @@ class ModernPortfolio {
                 menuAvatarContainer.innerHTML = svgText;
                 console.log('✅ Menu avatar loaded');
             }
+            
             const aboutLeftAvatar = document.getElementById('aboutLeftAvatar');
             if (aboutLeftAvatar) {
                 aboutLeftAvatar.innerHTML = svgText;
                 console.log('✅ About page left avatar loaded');
                 
-                // Optional: Add subtle hover effect for about avatar
                 aboutLeftAvatar.style.transition = 'transform 0.3s ease';
                 aboutLeftAvatar.addEventListener('mouseenter', () => {
                     aboutLeftAvatar.style.transform = 'scale(1.05)';
@@ -90,9 +93,6 @@ class ModernPortfolio {
                     aboutLeftAvatar.style.transform = 'scale(1)';
                 });
             }
-
-            // Add this to your existing loadAvatars() function in main.js
-            // Find the loadAvatars() method and ADD this section after the about avatar code:
 
             // Load into PROJECTS PAGE header avatar
             const projectsLeftAvatar = document.getElementById('projectsLeftAvatar');
@@ -108,6 +108,7 @@ class ModernPortfolio {
                     projectsLeftAvatar.style.transform = 'scale(1)';
                 });
             }
+            
             // Load into HERO avatar - try BOTH possible IDs
             let heroContainer = document.getElementById('avatarContainer');
             if (!heroContainer) {
@@ -180,10 +181,8 @@ class ModernPortfolio {
         if (eyesGroup) {
             console.log('✅ Found eyes:', eyesGroup.id || 'unnamed');
             
-            // Smooth transition
             eyesGroup.style.transition = 'transform 0.1s ease-out';
             
-            // Track mouse
             document.addEventListener('mousemove', (e) => {
                 requestAnimationFrame(() => {
                     const rect = container.getBoundingClientRect();
@@ -214,6 +213,7 @@ class ModernPortfolio {
             console.warn('⚠️ No eyes found in SVG');
         }
     }
+    
     setupProjectFiltering() {
         const filterButtons = document.querySelectorAll('.sidebar-filter');
         const projectCards = document.querySelectorAll('.project-card');
@@ -263,6 +263,7 @@ class ModernPortfolio {
             });
         });
     }
+    
     // ============================================
     // FULLSCREEN MENU
     // ============================================
@@ -278,14 +279,12 @@ class ModernPortfolio {
         
         console.log('✅ Setting up fullscreen menu');
         
-        // Open menu
         menuToggle.addEventListener('click', () => {
             console.log('📱 Opening menu');
             fullscreenMenu.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
         
-        // Close menu
         if (menuClose) {
             menuClose.addEventListener('click', () => {
                 console.log('📱 Closing menu');
@@ -294,7 +293,6 @@ class ModernPortfolio {
             });
         }
         
-        // Close on link click
         const menuLinks = fullscreenMenu.querySelectorAll('.menu-link');
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -303,7 +301,6 @@ class ModernPortfolio {
             });
         });
         
-        // Close on Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && fullscreenMenu.classList.contains('active')) {
                 fullscreenMenu.classList.remove('active');
@@ -329,22 +326,16 @@ class ModernPortfolio {
                 const targetCard = document.getElementById(targetId);
                 
                 if (targetCard) {
-                    // Smooth scroll to project
+                    // Smooth scroll to project (but DON'T auto-expand)
                     targetCard.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
-                    
-                    // Optional: Expand the card after scrolling
-                    setTimeout(() => {
-                        if (!targetCard.classList.contains('expanded')) {
-                            this.expandProjectCard(targetCard);
-                        }
-                    }, 600);
                 }
             });
         });
     }
+    
     // ============================================
     // THEME TOGGLE
     // ============================================
@@ -432,16 +423,22 @@ class ModernPortfolio {
     }
 
     // ============================================
-    // EXPANDABLE PROJECT CARDS
+    // EXPANDABLE PROJECT CARDS - FIXED
+    // Only the + button expands/collapses
+    // Called ONCE per page load
     // ============================================
     setupExpandableProjects() {
         const filterButtons = document.querySelectorAll('.filter-btn');
         const projectCards = document.querySelectorAll('.project-card');
         
-        if (!projectCards.length) return;
+        if (!projectCards.length) {
+            console.log('ℹ️ No project cards found');
+            return;
+        }
         
-        console.log('✅ Projects initialised');
+        console.log(`✅ Projects initialised - found ${projectCards.length} cards`);
         
+        // Legacy filter buttons (if any)
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const filter = button.dataset.filter;
@@ -462,30 +459,48 @@ class ModernPortfolio {
             });
         });
         
-        projectCards.forEach(card => {
-            const header = card.querySelector('.project-header');
+        // CRITICAL FIX: Only attach ONE click event to expand button
+        projectCards.forEach((card, index) => {
+            const expandBtn = card.querySelector('.expand-btn');
             
-            if (header) {
-                header.addEventListener('click', (e) => {
-                    if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-                        return;
-                    }
-                    
-                    const isExpanded = card.classList.contains('expanded');
-                    
-                    if (isExpanded) {
-                        this.collapseProjectCard(card);
-                    } else {
-                        projectCards.forEach(otherCard => {
-                            if (otherCard !== card) {
-                                this.collapseProjectCard(otherCard);
-                            }
-                        });
-                        this.expandProjectCard(card);
-                    }
-                });
+            if (!expandBtn) {
+                console.warn(`⚠️ No expand button found for card ${index}`);
+                return;
             }
+            
+            // Remove any existing listeners by cloning the button
+            const newExpandBtn = expandBtn.cloneNode(true);
+            expandBtn.parentNode.replaceChild(newExpandBtn, expandBtn);
+            
+            // Now attach the single event listener
+            newExpandBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                console.log(`🔘 Expand button clicked for card ${index}`);
+                
+                const isExpanded = card.classList.contains('expanded');
+                
+                if (isExpanded) {
+                    console.log(`➖ Collapsing card ${index}`);
+                    this.collapseProjectCard(card);
+                } else {
+                    console.log(`➕ Expanding card ${index}`);
+                    // Collapse all other cards first
+                    projectCards.forEach((otherCard, otherIndex) => {
+                        if (otherCard !== card && otherCard.classList.contains('expanded')) {
+                            console.log(`  └─ Collapsing card ${otherIndex}`);
+                            this.collapseProjectCard(otherCard);
+                        }
+                    });
+                    this.expandProjectCard(card);
+                }
+            });
+            
+            console.log(`  ✓ Expand button attached to card ${index}`);
         });
+        
+        console.log('✅ All expand buttons configured');
     }
 
     expandProjectCard(card) {
@@ -566,46 +581,39 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = ModernPortfolio;
 }
 
-/// ============================================
-// SKILL BARS ANIMATION
-// Add this to the END of your main.js file
 // ============================================
-
+// SKILL BARS ANIMATION
+// ============================================
 function initAboutPageSkills() {
     const skillBars = document.querySelectorAll('.skill-progress');
     if (skillBars.length === 0) return;
 
     console.log('✅ Initialising skill bars...');
 
-    // Set initial width to 0
     skillBars.forEach(bar => {
         bar.style.width = '0%';
     });
 
-    // Animate when scrolled into view
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const bar = entry.target;
                 const targetWidth = bar.dataset.width;
                 
-                // Animate to target width with slight delay
                 setTimeout(() => {
                     bar.style.width = `${targetWidth}%`;
                 }, 100);
                 
-                // Stop observing once animated
                 observer.unobserve(bar);
                 
                 console.log(`✨ Animated skill bar to ${targetWidth}%`);
             }
         });
     }, {
-        threshold: 0.5, // Trigger when 50% visible
+        threshold: 0.5,
         rootMargin: '0px 0px -100px 0px'
     });
 
-    // Observe all skill bars
     skillBars.forEach(bar => {
         observer.observe(bar);
     });
@@ -613,7 +621,6 @@ function initAboutPageSkills() {
     console.log(`✅ Watching ${skillBars.length} skill bars`);
 }
 
-// Run on page load
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAboutPageSkills);
 } else {

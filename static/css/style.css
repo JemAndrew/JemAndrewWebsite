@@ -1808,8 +1808,6 @@ body {
     align-items: start;
     gap: 1.5rem;
     padding: 2rem;
-    cursor: pointer;
-    user-select: none;
 }
 
 .project-icon {
@@ -1898,7 +1896,7 @@ body {
     align-items: center;
     justify-content: center;
     color: var(--accent-primary);
-    cursor: pointer;
+    cursor: pointer; /* Keep this! */
     transition: all 0.3s ease;
     flex-shrink: 0;
     font-size: 1.1rem;
@@ -2125,11 +2123,19 @@ body {
     }
     
     .expand-btn {
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
+        background: var(--accent-light);
+        border: 1px solid var(--accent-border);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-primary);
+        cursor: pointer; /* Keep this! */
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        font-size: 1.1rem;
     }
     
     .project-body-inner {
