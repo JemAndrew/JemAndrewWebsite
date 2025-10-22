@@ -1,6 +1,6 @@
 // ============================================
-// MODERN PORTFOLIO - FIXED VERSION
-// No duplicate event listeners!
+// MODERN PORTFOLIO - WITH LOADING SCREEN
+// Updated to include minimal loading animation
 // ============================================
 
 class ModernPortfolio {
@@ -11,22 +11,23 @@ class ModernPortfolio {
     async init() {
         console.log('🚀 Portfolio initialising...');
         
-        // Load avatars FIRST
+        // STEP 1: Handle loading screen first
+        await this.handleLoadingScreen();
+        
+        // STEP 2: Load avatars
         await this.loadAvatars();
         
-        // Then setup everything else
+        // STEP 3: Setup everything else
         this.setupThemeToggle();
         this.setupFullscreenMenu();
         this.setupSmoothScroll();
         this.setupAnimations();
+        this.setupScrollReveal(); // NEW: Smooth scroll-in animations
         
         // Page-specific features
-        // FIXED: Only call setupExpandableProjects once per page!
         if (document.querySelector('.projects-split-container')) {
-            // Projects page - setup all project features
             this.setupProjectsPage();
         } else if (document.querySelector('.project-card')) {
-            // Other pages that have project cards
             this.setupExpandableProjects();
         }
         
@@ -37,21 +38,99 @@ class ModernPortfolio {
         console.log('✅ All systems ready');
     }
     
-    setupProjectsPage() {
-        console.log('✅ Setting up projects page');
+    // ============================================
+    // LOADING SCREEN HANDLER
+    // ============================================
+    async handleLoadingScreen() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        const loadingAvatar = document.getElementById('loadingAvatar');
         
-        // Category filtering
-        this.setupProjectFiltering();
+        if (!loadingScreen) {
+            console.log('ℹ️ No loading screen found');
+            return;
+        }
         
-        // Quick navigation
-        this.setupProjectNavigation();
+        console.log('🎬 Loading screen active');
         
-        // Expandable cards - ONLY called here for projects page
-        this.setupExpandableProjects();
+        // Load avatar into loading screen
+        if (loadingAvatar) {
+            try {
+                const response = await fetch('/static/images/avatar.svg');
+                if (response.ok) {
+                    const svgText = await response.text();
+                    loadingAvatar.innerHTML = svgText;
+                    console.log('✅ Loading avatar displayed');
+                }
+            } catch (error) {
+                console.log('⚠️ Avatar load failed, using fallback');
+                loadingAvatar.innerHTML = `
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; 
+                                justify-content: center; font-weight: 900; font-size: 4rem; 
+                                color: var(--accent-primary);">
+                        JA
+                    </div>
+                `;
+            }
+        }
+        
+        // Wait for minimum display time (looks better than instant)
+        await this.wait(800);
+        
+        // Wait for page to fully load
+        await this.waitForPageLoad();
+        
+        // Hide loading screen
+        loadingScreen.classList.add('hidden');
+        console.log('✅ Loading complete');
+        
+        // Remove from DOM after transition
+        setTimeout(() => {
+            if (loadingScreen && loadingScreen.parentNode) {
+                loadingScreen.remove();
+            }
+        }, 800);
+    }
+    
+    waitForPageLoad() {
+        return new Promise(resolve => {
+            if (document.readyState === 'complete') {
+                resolve();
+            } else {
+                window.addEventListener('load', resolve);
+            }
+        });
+    }
+    
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
     
     // ============================================
-    // LOAD AVATARS - FLEXIBLE
+    // SCROLL REVEAL ANIMATIONS (NEW)
+    // ============================================
+    setupScrollReveal() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        // Observe all sections and cards
+        document.querySelectorAll('.fade-in-section, .project-card, .degree-card, .skill-category-card').forEach(el => {
+            el.classList.add('fade-in-section');
+            observer.observe(el);
+        });
+        
+        console.log('✅ Scroll reveal animations ready');
+    }
+    
+    // ============================================
+    // LOAD AVATARS
     // ============================================
     async loadAvatars() {
         try {
@@ -80,10 +159,11 @@ class ModernPortfolio {
                 console.log('✅ Menu avatar loaded');
             }
             
+            // Load into ABOUT page avatar
             const aboutLeftAvatar = document.getElementById('aboutLeftAvatar');
             if (aboutLeftAvatar) {
                 aboutLeftAvatar.innerHTML = svgText;
-                console.log('✅ About page left avatar loaded');
+                console.log('✅ About page avatar loaded');
                 
                 aboutLeftAvatar.style.transition = 'transform 0.3s ease';
                 aboutLeftAvatar.addEventListener('mouseenter', () => {
@@ -94,11 +174,11 @@ class ModernPortfolio {
                 });
             }
 
-            // Load into PROJECTS PAGE header avatar
+            // Load into PROJECTS page avatar
             const projectsLeftAvatar = document.getElementById('projectsLeftAvatar');
             if (projectsLeftAvatar) {
                 projectsLeftAvatar.innerHTML = svgText;
-                console.log('✅ Projects left avatar loaded');
+                console.log('✅ Projects avatar loaded');
                 
                 projectsLeftAvatar.style.transition = 'transform 0.3s ease';
                 projectsLeftAvatar.addEventListener('mouseenter', () => {
@@ -109,7 +189,7 @@ class ModernPortfolio {
                 });
             }
             
-            // Load into HERO avatar - try BOTH possible IDs
+            // Load into HERO avatar
             let heroContainer = document.getElementById('avatarContainer');
             if (!heroContainer) {
                 heroContainer = document.getElementById('heroAvatarContainer');
@@ -117,14 +197,12 @@ class ModernPortfolio {
             
             if (heroContainer) {
                 heroContainer.innerHTML = svgText;
-                console.log('✅ Hero avatar loaded into:', heroContainer.id);
+                console.log('✅ Hero avatar loaded');
                 
                 // Setup eye tracking after short delay
                 setTimeout(() => {
                     this.setupEyeTracking(heroContainer);
                 }, 200);
-            } else {
-                console.log('ℹ️ No hero avatar container found (not on home page)');
             }
             
         } catch (error) {
@@ -156,7 +234,7 @@ class ModernPortfolio {
     }
     
     // ============================================
-    // EYE TRACKING - WORKS WITH ANY CONTAINER
+    // EYE TRACKING
     // ============================================
     setupEyeTracking(container) {
         const svg = container.querySelector('svg');
@@ -165,9 +243,8 @@ class ModernPortfolio {
             return;
         }
         
-        console.log('👁️ Setting up eye tracking for container:', container.id);
+        console.log('👁️ Setting up eye tracking');
         
-        // Find eyes - try multiple selectors
         let eyesGroup = svg.querySelector('[id*="notion-avatar-eyes"]');
         
         if (!eyesGroup) {
@@ -179,7 +256,7 @@ class ModernPortfolio {
         }
         
         if (eyesGroup) {
-            console.log('✅ Found eyes:', eyesGroup.id || 'unnamed');
+            console.log('✅ Found eyes');
             
             eyesGroup.style.transition = 'transform 0.1s ease-out';
             
@@ -208,10 +285,15 @@ class ModernPortfolio {
                 });
             });
             
-            console.log('✅ Eye tracking activated!');
-        } else {
-            console.warn('⚠️ No eyes found in SVG');
+            console.log('✅ Eye tracking activated');
         }
+    }
+    
+    setupProjectsPage() {
+        console.log('✅ Setting up projects page');
+        this.setupProjectFiltering();
+        this.setupProjectNavigation();
+        this.setupExpandableProjects();
     }
     
     setupProjectFiltering() {
@@ -227,7 +309,6 @@ class ModernPortfolio {
             button.addEventListener('click', () => {
                 const filter = button.dataset.filter;
                 
-                // Update active state
                 filterButtons.forEach(btn => {
                     btn.classList.remove('active');
                     const bullet = btn.querySelector('.filter-bullet');
@@ -238,7 +319,6 @@ class ModernPortfolio {
                 const activeBullet = button.querySelector('.filter-bullet');
                 if (activeBullet) activeBullet.textContent = '●';
                 
-                // Filter projects
                 let visibleCount = 0;
                 projectCards.forEach(card => {
                     const category = card.dataset.category;
@@ -246,15 +326,12 @@ class ModernPortfolio {
                     if (filter === 'all' || category === filter) {
                         card.style.display = 'block';
                         visibleCount++;
-                        
-                        // Collapse expanded cards when filtering
                         this.collapseProjectCard(card);
                     } else {
                         card.style.display = 'none';
                     }
                 });
                 
-                // Update count
                 if (projectCount) {
                     const label = filter === 'all' ? 'Projects' : 
                                 filter.charAt(0).toUpperCase() + filter.slice(1) + ' Projects';
@@ -280,14 +357,12 @@ class ModernPortfolio {
         console.log('✅ Setting up fullscreen menu');
         
         menuToggle.addEventListener('click', () => {
-            console.log('📱 Opening menu');
             fullscreenMenu.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
         
         if (menuClose) {
             menuClose.addEventListener('click', () => {
-                console.log('📱 Closing menu');
                 fullscreenMenu.classList.remove('active');
                 document.body.style.overflow = '';
             });
@@ -326,7 +401,6 @@ class ModernPortfolio {
                 const targetCard = document.getElementById(targetId);
                 
                 if (targetCard) {
-                    // Smooth scroll to project (but DON'T auto-expand)
                     targetCard.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
@@ -377,9 +451,6 @@ class ModernPortfolio {
         }
     }
 
-    // ============================================
-    // SMOOTH SCROLL
-    // ============================================
     setupSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', (e) => {
@@ -396,9 +467,6 @@ class ModernPortfolio {
         });
     }
 
-    // ============================================
-    // SCROLL ANIMATIONS
-    // ============================================
     setupAnimations() {
         const observerOptions = {
             threshold: 0.1,
@@ -422,13 +490,7 @@ class ModernPortfolio {
         });
     }
 
-    // ============================================
-    // EXPANDABLE PROJECT CARDS - FIXED
-    // Only the + button expands/collapses
-    // Called ONCE per page load
-    // ============================================
     setupExpandableProjects() {
-        const filterButtons = document.querySelectorAll('.filter-btn');
         const projectCards = document.querySelectorAll('.project-card');
         
         if (!projectCards.length) {
@@ -438,66 +500,31 @@ class ModernPortfolio {
         
         console.log(`✅ Projects initialised - found ${projectCards.length} cards`);
         
-        // Legacy filter buttons (if any)
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filter = button.dataset.filter;
-                
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                projectCards.forEach(card => {
-                    const category = card.dataset.category;
-                    this.collapseProjectCard(card);
-                    
-                    if (filter === 'all' || category === filter) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-        
-        // CRITICAL FIX: Only attach ONE click event to expand button
         projectCards.forEach((card, index) => {
             const expandBtn = card.querySelector('.expand-btn');
             
-            if (!expandBtn) {
-                console.warn(`⚠️ No expand button found for card ${index}`);
-                return;
-            }
+            if (!expandBtn) return;
             
-            // Remove any existing listeners by cloning the button
             const newExpandBtn = expandBtn.cloneNode(true);
             expandBtn.parentNode.replaceChild(newExpandBtn, expandBtn);
             
-            // Now attach the single event listener
             newExpandBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 e.preventDefault();
                 
-                console.log(`🔘 Expand button clicked for card ${index}`);
-                
                 const isExpanded = card.classList.contains('expanded');
                 
                 if (isExpanded) {
-                    console.log(`➖ Collapsing card ${index}`);
                     this.collapseProjectCard(card);
                 } else {
-                    console.log(`➕ Expanding card ${index}`);
-                    // Collapse all other cards first
-                    projectCards.forEach((otherCard, otherIndex) => {
+                    projectCards.forEach((otherCard) => {
                         if (otherCard !== card && otherCard.classList.contains('expanded')) {
-                            console.log(`  └─ Collapsing card ${otherIndex}`);
                             this.collapseProjectCard(otherCard);
                         }
                     });
                     this.expandProjectCard(card);
                 }
             });
-            
-            console.log(`  ✓ Expand button attached to card ${index}`);
         });
         
         console.log('✅ All expand buttons configured');
@@ -533,9 +560,6 @@ class ModernPortfolio {
         }
     }
 
-    // ============================================
-    // MODULES TOGGLE
-    // ============================================
     setupModulesToggle() {
         const toggleButtons = document.querySelectorAll('.toggle-modules');
         
@@ -582,7 +606,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 // ============================================
-// SKILL BARS ANIMATION
+// SKILL BARS ANIMATION (for about page)
 // ============================================
 function initAboutPageSkills() {
     const skillBars = document.querySelectorAll('.skill-progress');
@@ -605,8 +629,6 @@ function initAboutPageSkills() {
                 }, 100);
                 
                 observer.unobserve(bar);
-                
-                console.log(`✨ Animated skill bar to ${targetWidth}%`);
             }
         });
     }, {
