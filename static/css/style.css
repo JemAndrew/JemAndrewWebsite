@@ -1811,24 +1811,50 @@ body {
 }
 
 .project-icon {
-    width: 60px;
-    height: 60px;
-    background: var(--accent-light);
-    border-radius: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
     flex-shrink: 0;
-    background-color: transparent;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
 }
 
-.shape-inner {
+/* Collapsed state - hollow circle with border */
+.project-icon::before {
+    content: '';
     width: 100%;
     height: 100%;
-    background: var(--accent-primary);
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border-radius: 50%;
+    border: 3px solid;
+    position: absolute;
+    transition: all 0.4s ease;
+}
+
+/* Expanded state - filled circle */
+.project-card.expanded .project-icon::before {
+    background: currentColor;
+    border-width: 0;
+}
+
+/* Color variants by category */
+.project-icon.icon-professional {
+    color: #fb923c;  /* Orange */
+}
+
+.project-icon.icon-personal {
+    color: #34D399;  /* Green */
+}
+
+.project-icon.icon-academic {
+    color: #5EADAD;  /* Teal */
+}
+
+/* Hover effect */
+.project-card:hover .project-icon::before {
+    transform: scale(1.1);
 }
 
 
