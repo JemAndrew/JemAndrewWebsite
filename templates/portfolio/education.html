@@ -1,245 +1,320 @@
 {% extends 'portfolio/base.html' %}
+{% load static %}
 
 {% block title %}Education - Jem Andrew{% endblock %}
 
 {% block content %}
-<!-- Education Hero -->
-<section class="education-hero">
-    <div class="floating-shapes">
-        <div class="gradient-square square-1"></div>
-        <div class="gradient-square square-2"></div>
-        <div class="gradient-square square-3"></div>
-    </div>
-    
-    <div class="education-header">
-        <span class="section-label">// Academic Journey</span>
-        <h1 class="education-title">
-            <span class="gradient-text">Education</span> & Research
-        </h1>
-        <p class="education-subtitle">
-            From biology to computer science – a journey that combined scientific rigour with computational thinking.
-        </p>
-        
-        <a href="{% url 'portfolio:download_msc' %}" class="cv-download">
-            <i class="fas fa-download"></i>
-            Download Full CV
-        </a>
-    </div>
-</section>
 
-<!-- Degrees Section -->
-<section class="degrees-section">
-    <h2 style="font-size: 2.5rem; margin-bottom: 3rem; text-align: center;">
-        <span class="section-label">// 01</span><br>
-        Degrees
-    </h2>
+<!-- Split-Screen Container -->
+<div class="education-split-container">
     
-    <div class="degrees-grid">
-        <!-- MSc Computer Science -->
-        <div class="degree-card">
-            <div class="degree-icon">
-                <i class="fas fa-laptop-code"></i>
-            </div>
-            
-            <div class="degree-header">
-                <h3 class="degree-type">MSc</h3>
-                <div class="degree-subject">Computer Science</div>
-                <div class="degree-institution">Newcastle University</div>
-                <div class="degree-dates">2024 - 2025</div>
-            </div>
-            
-            <div class="degree-grade"><Strong>Predicted </Strong> Distinction</div>
-            
-            <p class="degree-description">
-                Comparison of Novel vs Standard CNN Architectures for Automated Skin Cancer Detection. 
-                Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning 
-                architectures for automated dermatological diagnosis.
-            </p>
-            
-            <div class="modules-section">
-                <div class="modules-header">
-                    <h4 class="modules-title">Key Modules</h4>
-                    <button class="toggle-modules" data-degree="msc">
-                        <i class="fas fa-plus"></i>
-                        <span>View All</span>
-                    </button>
-                </div>
-                
-                <!-- Top 3 modules -->
-                <div class="modules-grid">
-                    <div class="module-item">
-                        <span class="module-name">Advanced Programming</span>
-                        <span class="module-grade">84%</span>
-                    </div>
-                    <div class="module-item">
-                        <span class="module-name">Software Engineering</span>
-                        <span class="module-grade">84%</span>
-                    </div>
-                    <div class="module-item">
-                        <span class="module-name">Database Systems</span>
-                        <span class="module-grade">83%</span>
-                    </div>
-                </div>
-                
-                <!-- Hidden modules -->
-                <div class="modules-grid modules-hidden" data-modules="msc" style="margin-top: 1rem;">
-                    <div class="module-item">
-                        <span class="module-name">Computer Networks</span>
-                        <span class="module-grade">82%</span>
-                    </div>
-                    <div class="module-item">
-                        <span class="module-name">Cybersecurity</span>
-                        <span class="module-grade">77%</span>
-                    </div>
-                    <div class="module-item">
-                        <span class="module-name">Data Structures</span>
-                        <span class="module-grade">76%</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tech-section">
-                <div class="tech-grid">
-                    <span class="tech-item">PyTorch</span>
-                    <span class="tech-item">Python</span>
-                    <span class="tech-item">Machine Learning</span>
-                    <span class="tech-item">CNN</span>
-                    <span class="tech-item">Medical AI</span>
-                </div>
-            </div>
+    <!-- LEFT SIDEBAR (STICKY) -->
+    <aside class="education-left">
+        <!-- Avatar -->
+        <div class="education-left-avatar" id="educationLeftAvatar">
+            <div class="avatar-loading">Loading...</div>
         </div>
         
-        <!-- BSc Biology -->
-        <div class="degree-card">
-            <div class="degree-icon">
-                <i class="fas fa-dna"></i>
-            </div>
-            
-            <div class="degree-header">
-                <h3 class="degree-type">BSc (Hons)</h3>
-                <div class="degree-subject">Biology</div>
-                <div class="degree-institution">Newcastle University</div>
-                <div class="degree-dates">2021 - 2024</div>
-            </div>
-            
-            <div class="degree-grade">2:1</div>
-            
-            <p class="degree-description">
-                A Systematic Review of CRISPR Gene Editing in Enhancing Fusarium Head Blight Resistance 
-                in Wheat and Barley (83%). Focused on comparative analysis of CRISPR techniques and 
-                systematic literature review methodology.
-            </p>
-            
-            <div class="tech-section">
-                <div class="tech-grid">
-                    <span class="tech-item">R</span>
-                    <span class="tech-item">Statistical Analysis</span>
-                    <span class="tech-item">Bioinformatics</span>
-                    <span class="tech-item">AlphaFold</span>
-                    <span class="tech-item">BLAST</span>
-                </div>
-            </div>
+        <!-- Name & Title -->
+        <h1 class="education-left-name">Jem Andrew</h1>
+        <p class="education-left-title">Software Engineer</p>
+        
+        <!-- Quick Nav Badge -->
+        <div class="education-badge">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Academic Journey</span>
         </div>
-    </div>
-</section>
-
-<!-- Dissertations Section -->
-<section class="dissertations-section">
-    <h2 style="font-size: 2.5rem; margin-bottom: 3rem; text-align: center;">
-        <span class="section-label">// 02</span><br>
-        Research & Dissertations
-    </h2>
-    
-    <div class="dissertations-grid">
-        <!-- MSc Dissertation -->
-        <div class="dissertation-card">
-            <div class="dissertation-icon">
-                <i class="fas fa-brain"></i>
-            </div>
+        
+        <div class="sidebar-divider"></div>
+        
+        <!-- Navigation Links -->
+        <div class="education-nav-links">
+            <div class="filter-label">Jump To</div>
             
-            <h3 class="dissertation-title">MSc Dissertation</h3>
-            <p class="dissertation-subtitle">
-                CNN Architectures for Automated Skin Cancer Detection
-            </p>
+            <a href="#degrees" class="education-nav-link">
+                <span class="nav-bullet">→</span>
+                <span>Degrees</span>
+            </a>
             
-            <div class="dissertation-meta">
-                <div class="meta-item">
-                    <i class="fas fa-graduation-cap"></i>
-                    Newcastle University
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-file-pdf"></i>
-                    PDF Document
-                </div>
-            </div>
-            
-            <p class="dissertation-description">
-                Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning 
-                architectures for automated dermatological diagnosis.
-            </p>
-            
-            <a href="{% url 'portfolio:download_msc' %}" class="download-btn">
-                <i class="fas fa-download"></i>
-                Download MSc Dissertation
+            <a href="#dissertations" class="education-nav-link">
+                <span class="nav-bullet">→</span>
+                <span>Dissertations</span>
             </a>
         </div>
         
-        <!-- BSc Dissertation -->
-        <div class="dissertation-card">
-            <div class="dissertation-icon">
-                <i class="fas fa-dna"></i>
-            </div>
-            
-            <h3 class="dissertation-title">BSc Dissertation</h3>
-            <p class="dissertation-subtitle">
-                CRISPR Gene Editing for Disease Resistance in Crops
+    </aside>
+    
+    <!-- RIGHT CONTENT (SCROLLING) -->
+    <main class="education-right">
+        
+        <!-- Header -->
+        <div class="education-right-header">
+            <span class="section-label">// Academic Journey</span>
+            <h2 class="education-right-title">
+                <span class="gradient-text">Education</span> & Research
+            </h2>
+            <p class="education-right-subtitle">
+                From biology to computer science – a journey combining scientific rigour with computational thinking.
             </p>
-            
-            <div class="dissertation-meta">
-                <div class="meta-item">
-                    <i class="fas fa-graduation-cap"></i>
-                    Newcastle University
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-file-pdf"></i>
-                    PDF Document
-                </div>
-            </div>
-            
-            <p class="dissertation-description">
-                A systematic review of CRISPR gene editing techniques in enhancing Fusarium Head Blight 
-                resistance in wheat and barley.
-            </p>
-            
-            <a href="{% url 'portfolio:download_bsc' %}" class="download-btn">
-                <i class="fas fa-download"></i>
-                Download BSc Dissertation
-            </a>
         </div>
-    </div>
-</section>
+        
+        <!-- Degrees Section -->
+        <section class="degrees-section" id="degrees">
+            <h3 class="section-heading-large">
+                <span class="section-label">// 01</span><br>
+                Degrees
+            </h3>
+            
+            <div class="degrees-list">
+                
+                <!-- MSc Computer Science -->
+                <div class="degree-card-modern">
+                    <div class="degree-card-header">
+                        <div class="degree-icon-modern">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        
+                        <div class="degree-info">
+                            <h4 class="degree-title-modern">
+                                MSc Computer Science
+                            </h4>
+                            <div class="degree-meta">
+                                <span class="degree-institution-modern">Newcastle University</span>
+                                <span class="degree-dates-modern">2024 - 2025</span>
+                                <span class="degree-grade-badge">Predicted Distinction</span>
+                            </div>
+                            <p class="degree-summary">
+                                Comparison of Novel vs Standard CNN Architectures for Automated Skin Cancer Detection.
+                            </p>
+                        </div>
+                        
+                        <button class="expand-degree-btn" aria-label="Expand degree">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="degree-body">
+                        <div class="degree-body-inner">
+                            <p class="degree-full-description">
+                                Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning 
+                                architectures for automated dermatological diagnosis. Focused on transfer learning, 
+                                ensemble methods, and clinical validation protocols.
+                            </p>
+                            
+                            <div class="modules-section-modern">
+                                <h5 class="subsection-heading">Top Modules</h5>
+                                <div class="modules-grid-modern">
+                                    <div class="module-pill">
+                                        <span>Advanced Programming</span>
+                                        <strong>84%</strong>
+                                    </div>
+                                    <div class="module-pill">
+                                        <span>Software Engineering</span>
+                                        <strong>84%</strong>
+                                    </div>
+                                    <div class="module-pill">
+                                        <span>Database Systems</span>
+                                        <strong>83%</strong>
+                                    </div>
+                                    <div class="module-pill">
+                                        <span>Computer Networks</span>
+                                        <strong>82%</strong>
+                                    </div>
+                                    <div class="module-pill">
+                                        <span>Cybersecurity</span>
+                                        <strong>77%</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tech-section-modern">
+                                <h5 class="subsection-heading">Technologies</h5>
+                                <div class="tech-tags-modern">
+                                    <span class="tech-tag">PyTorch</span>
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Machine Learning</span>
+                                    <span class="tech-tag">CNN</span>
+                                    <span class="tech-tag">Medical AI</span>
+                                    <span class="tech-tag">TensorFlow</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- BSc Biology -->
+                <div class="degree-card-modern">
+                    <div class="degree-card-header">
+                        <div class="degree-icon-modern">
+                            <i class="fas fa-dna"></i>
+                        </div>
+                        
+                        <div class="degree-info">
+                            <h4 class="degree-title-modern">
+                                BSc (Hons) Biology
+                            </h4>
+                            <div class="degree-meta">
+                                <span class="degree-institution-modern">Newcastle University</span>
+                                <span class="degree-dates-modern">2021 - 2024</span>
+                                <span class="degree-grade-badge">2:1</span>
+                            </div>
+                            <p class="degree-summary">
+                                A Systematic Review of CRISPR Gene Editing in Enhancing Disease Resistance in Crops.
+                            </p>
+                        </div>
+                        
+                        <button class="expand-degree-btn" aria-label="Expand degree">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="degree-body">
+                        <div class="degree-body-inner">
+                            <p class="degree-full-description">
+                                A systematic review of CRISPR gene editing techniques in enhancing Fusarium Head Blight 
+                                resistance in wheat and barley (83%). Focused on comparative analysis of CRISPR techniques 
+                                and systematic literature review methodology.
+                            </p>
+                            
+                            <div class="tech-section-modern">
+                                <h5 class="subsection-heading">Technologies</h5>
+                                <div class="tech-tags-modern">
+                                    <span class="tech-tag">R</span>
+                                    <span class="tech-tag">Statistical Analysis</span>
+                                    <span class="tech-tag">Bioinformatics</span>
+                                    <span class="tech-tag">AlphaFold</span>
+                                    <span class="tech-tag">BLAST</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Dissertations Section -->
+        <section class="dissertations-section-modern" id="dissertations">
+            <h3 class="section-heading-large">
+                <span class="section-label">// 02</span><br>
+                Research & Dissertations
+            </h3>
+            
+            <div class="books-grid">
+                
+                <!-- MSc Dissertation Book -->
+                <a href="{% url 'portfolio:download_msc' %}" class="dissertation-book">
+                    <div class="book-spine"></div>
+                    <div class="book-cover">
+                        <div class="book-degree-label">MSc</div>
+                        <div class="book-content">
+                            <h4 class="book-title">
+                                CNN Architectures for<br>
+                                Automated Skin<br>
+                                Cancer Detection
+                            </h4>
+                            <div class="book-author">Jem Andrew · 2025</div>
+                        </div>
+                        <div class="book-bookmark">
+                            <i class="fas fa-download"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- BSc Dissertation Book -->
+                <a href="{% url 'portfolio:download_bsc' %}" class="dissertation-book">
+                    <div class="book-spine"></div>
+                    <div class="book-cover">
+                        <div class="book-degree-label">BSc</div>
+                        <div class="book-content">
+                            <h4 class="book-title">
+                                CRISPR Gene Editing<br>
+                                for Disease Resistance<br>
+                                in Crops
+                            </h4>
+                            <div class="book-author">Jem Andrew · 2024</div>
+                        </div>
+                        <div class="book-bookmark">
+                            <i class="fas fa-download"></i>
+                        </div>
+                    </div>
+                </a>
+                
+            </div>
+            
+            <p class="dissertations-note">
+                <i class="fas fa-info-circle"></i>
+                Click on any book to download the dissertation PDF
+            </p>
+        </section>
+        
+    </main>
+    
+</div>
 
 <script>
-// Toggle modules
-document.querySelectorAll('.toggle-modules').forEach(btn => {
+// Load left sidebar avatar
+async function loadEducationAvatar() {
+    try {
+        const response = await fetch('/static/images/avatar.svg');
+        const svgText = await response.text();
+        const container = document.getElementById('educationLeftAvatar');
+        if (container) {
+            container.innerHTML = svgText;
+        }
+    } catch (error) {
+        console.error('Avatar loading failed:', error);
+    }
+}
+
+loadEducationAvatar();
+
+// Expandable degree cards
+document.querySelectorAll('.expand-degree-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-        const degree = this.dataset.degree;
-        const modulesContainer = document.querySelector(`[data-modules="${degree}"]`);
+        const card = this.closest('.degree-card-modern');
+        const body = card.querySelector('.degree-body');
         const icon = this.querySelector('i');
-        const text = this.querySelector('span');
         
-        if (modulesContainer.classList.contains('modules-hidden')) {
-            modulesContainer.classList.remove('modules-hidden');
-            icon.classList.remove('fa-plus');
-            icon.classList.add('fa-minus');
-            text.textContent = 'View Less';
-        } else {
-            modulesContainer.classList.add('modules-hidden');
-            icon.classList.remove('fa-minus');
+        const isExpanded = card.classList.contains('expanded');
+        
+        if (isExpanded) {
+            card.classList.remove('expanded');
+            body.style.maxHeight = '0';
+            icon.classList.remove('fa-times');
             icon.classList.add('fa-plus');
-            text.textContent = 'View All';
+        } else {
+            // Collapse other cards
+            document.querySelectorAll('.degree-card-modern.expanded').forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('expanded');
+                    otherCard.querySelector('.degree-body').style.maxHeight = '0';
+                    otherCard.querySelector('.expand-degree-btn i').classList.remove('fa-times');
+                    otherCard.querySelector('.expand-degree-btn i').classList.add('fa-plus');
+                }
+            });
+            
+            card.classList.add('expanded');
+            body.style.maxHeight = body.scrollHeight + 'px';
+            icon.classList.remove('fa-plus');
+            icon.classList.add('fa-times');
+        }
+    });
+});
+
+// Smooth scroll for navigation
+document.querySelectorAll('.education-nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
     });
 });
 </script>
+
 {% endblock %}
