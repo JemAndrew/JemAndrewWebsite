@@ -1,20 +1,19 @@
-# portfolio/views.py - Fixed for projects display
-from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponse, Http404, FileResponse
+# portfolio/views.py - Cleaned up version without GitHub integration
+
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse, FileResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages
 import json
 import logging
 import os
-from datetime import date
 from django.conf import settings
-
+from django.core.mail import send_mail
 from . import data
 from .forms import ContactForm
-from .services.github_service import GitHubService
 
 logger = logging.getLogger(__name__)
+
 
 def get_site_context():
     """Helper function to get common site context"""
@@ -23,17 +22,11 @@ def get_site_context():
         'site_settings': data.get_site_settings(),
     }
 
-def get_github_data():
-    """Helper function to get GitHub data"""
-    github_service = GitHubService()
-    return {
-        'github_user': github_service.get_user_info(),
-        'github_repos': github_service.get_repositories(),
-        'github_languages': github_service.get_language_stats(),
-        'github_commits': github_service.get_commit_activity(),
-    }
 
-# PAGE 1: Professional Overview
+# ============================================
+# PAGE VIEWS
+# ============================================
+
 def home_view(request):
     """
     Home/Hero page - clean single screen view
@@ -42,116 +35,91 @@ def home_view(request):
     
     # Get data for home page
     current_positions = data.get_all_current_experience()
-    github_data = get_github_data()
     
     context.update({
         'current_positions': current_positions,
         'page_title': 'Home - Jem Andrew',
-        'page_class': 'home-page',  # This prevents scrolling on home page
-        'meta_description': 'Jem Andrew - Software Engineer at BuildChorus specialising in Django, AI, and backend development.',
-        **github_data
+        'page_class': 'home-page',
+        'meta_description': 'Jem Andrew - Machine Learning Engineer specialising in software development, ML, and data analysis.',
     })
     
     return render(request, 'portfolio/home.html', context)
 
 
+def about_view(request):
+    """
+    About Me page - detailed background and skills
+    """
+    context = get_site_context()
+    
+    # Get data for about page
+    current_positions = data.get_all_current_experience()
+    core_skills = data.get_skills_by_category()
+    
+    context.update({
+        'current_positions': current_positions,
+        'core_skills': core_skills,
+        'page_title': 'About Me - Jem Andrew',
+        'meta_description': 'Learn more about Jem Andrew - software engineer passionate about backend development, AI, and clean code.',
+    })
+    
+    return render(request, 'portfolio/about.html', context)
 
-# PAGE 2: Education
+
+def projects_view(request):
+    """
+    Projects page - showcase all projects
+    """
+    context = get_site_context()
+    
+    # Get all projects
+    all_projects = data.get_all_projects()
+    
+    context.update({
+        'projects': all_projects,
+        'page_title': 'Projects - Jem Andrew',
+        'meta_description': 'Portfolio of projects by Jem Andrew - software development, machine learning, and data analysis.',
+    })
+    
+    return render(request, 'portfolio/projects.html', context)
+
+
 def education_view(request):
     """
-    Education page with dissertations
-    Focus: Academic background, research, dissertations
+    Education page - academic background
     """
     context = get_site_context()
     
     # Get education data
     education_list = data.get_all_education()
     
-    # Academic skills - focus on research and academic tools
-    all_skills = data.get_skills_by_category()
-    academic_skills = {}
-    
-    # Filter for academic/research relevant skills
-    for category, skills in all_skills.items():
-        if category in ['Programming Languages', 'Frameworks & Libraries']:
-            # Focus on research/academic tools
-            academic_tools = [s for s in skills if s.name in [
-                'Python', 'PyTorch', 'Machine Learning', 'Data Analysis', 
-                'Statistical Analysis', 'Research Methods'
-            ]]
-            if academic_tools:
-                academic_skills[category] = academic_tools
-    
     context.update({
         'education_list': education_list,
-        'academic_skills': academic_skills,
-        'page_title': 'Education - Academic Background',
-        'meta_description': 'James Andrew - MSc Computer Science graduate with research in medical AI and CNN architectures.',
-        'show_dissertation_downloads': True,
+        'page_title': 'Education - Jem Andrew',
+        'meta_description': 'Educational background of Jem Andrew - Computer Science, AI, and Software Engineering.',
     })
     
     return render(request, 'portfolio/education.html', context)
 
-# PAGE 3: Personal Projects  
-def projects_view(request):
-    """
-    Personal projects showcase
-    Focus: GitHub integration, project details, technical demos
-    """
-    context = get_site_context()
-    
-    # Get all projects
-    all_projects = data.get_all_projects()
-    github_data = get_github_data()
-    
-    # Categorize projects
-    personal_projects = [p for p in all_projects if p.get_category_display() == 'Personal']
-    academic_projects = [p for p in all_projects if p.get_category_display() == 'Academic']
-    
-    # Get project-relevant skills
-    all_skills = data.get_skills_by_category()
-    project_skills = {}
-    
-    # Focus on development tools and frameworks
-    for category, skills in all_skills.items():
-        if category in ['Programming Languages', 'Frameworks & Libraries', 'Databases & Tools']:
-            project_skills[category] = skills
-    
-    context.update({
-        'projects': all_projects,  # THIS IS THE KEY LINE - pass all projects
-        'personal_projects': personal_projects,
-        'academic_projects': academic_projects,
-        'project_skills': project_skills,
-        'page_title': 'Projects - Portfolio Showcase',
-        'meta_description': 'James Andrew - Personal and academic projects showcasing full-stack development and research skills.',
-        **github_data
-    })
-    
-    return render(request, 'portfolio/projects.html', context)
 
-# FIXED DISSERTATION DOWNLOAD HANDLERS
+# ============================================
+# FILE DOWNLOADS
+# ============================================
+
 def download_msc_dissertation(request):
-    """Download MSc dissertation - handles both PDF and DOCX"""
+    """Download MSc dissertation PDF"""
     try:
-        # Try PDF first, then DOCX
-        pdf_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'MSc_Dissertation_James_Andrew.pdf')
-        docx_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'MSc_Dissertation_James_Andrew.docx')
+        file_path = os.path.join(settings.MEDIA_ROOT, 'cv', 'msc_dissertation.pdf')
         
-        if os.path.exists(pdf_path):
-            return FileResponse(
-                open(pdf_path, 'rb'),
-                content_type='application/pdf',
-                filename='MSc_Dissertation_James_Andrew.pdf'
+        if os.path.exists(file_path):
+            response = FileResponse(
+                open(file_path, 'rb'),
+                content_type='application/pdf'
             )
-        elif os.path.exists(docx_path):
-            return FileResponse(
-                open(docx_path, 'rb'),
-                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                filename='MSc_Dissertation_James_Andrew.docx'
-            )
+            response['Content-Disposition'] = 'attachment; filename="Jem_Andrew_MSc_Dissertation.pdf"'
+            return response
         else:
-            # File not found - redirect without messages to avoid middleware error
-            logger.error("MSc dissertation file not found")
+            logger.warning(f"MSc dissertation file not found: {file_path}")
             return HttpResponse(
                 "<h1>File Not Found</h1><p>The dissertation file is not available.</p>", 
                 status=404
@@ -164,28 +132,21 @@ def download_msc_dissertation(request):
             status=500
         )
 
+
 def download_bsc_dissertation(request):
-    """Download BSc dissertation - handles both PDF and DOCX"""
+    """Download BSc dissertation PDF"""
     try:
-        # Try PDF first, then DOCX
-        pdf_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'BSc_Dissertation_James_Andrew.pdf')
-        docx_path = os.path.join(settings.BASE_DIR, 'static', 'documents', 'BSc_Dissertation_James_Andrew.docx')
+        file_path = os.path.join(settings.MEDIA_ROOT, 'cv', 'bsc_dissertation.pdf')
         
-        if os.path.exists(pdf_path):
-            return FileResponse(
-                open(pdf_path, 'rb'),
-                content_type='application/pdf',
-                filename='BSc_Dissertation_James_Andrew.pdf'
+        if os.path.exists(file_path):
+            response = FileResponse(
+                open(file_path, 'rb'),
+                content_type='application/pdf'
             )
-        elif os.path.exists(docx_path):
-            return FileResponse(
-                open(docx_path, 'rb'),
-                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                filename='BSc_Dissertation_James_Andrew.docx'
-            )
+            response['Content-Disposition'] = 'attachment; filename="Jem_Andrew_BSc_Dissertation.pdf"'
+            return response
         else:
-            # File not found - redirect without messages to avoid middleware error
-            logger.error("BSc dissertation file not found")
+            logger.warning(f"BSc dissertation file not found: {file_path}")
             return HttpResponse(
                 "<h1>File Not Found</h1><p>The dissertation file is not available.</p>", 
                 status=404
@@ -198,48 +159,130 @@ def download_bsc_dissertation(request):
             status=500
         )
 
-# GitHub API endpoint
-def github_api_view(request):
-    """API endpoint for GitHub data"""
-    github_data = get_github_data()
-    return JsonResponse(github_data)
 
-# Existing AJAX and API views remain the same
+# ============================================
+# AJAX ENDPOINTS
+# ============================================
+
 @csrf_exempt
 @require_http_methods(["POST"])
 def ajax_contact_view(request):
-    """AJAX endpoint for contact form submission"""
+    """
+    AJAX endpoint for contact form submission.
+    Validates and logs contact form data.
+    """
     try:
+        # Parse JSON data from request body
         data_received = json.loads(request.body)
-        form = ContactForm(data_received)
         
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            subject = form.cleaned_data['subject']
-            message = form.cleaned_data['message']
-            
-            logger.info(f"AJAX Contact form submission: {name} ({email}) - {subject}")
-            
-            return JsonResponse({
-                'success': True,
-                'message': "Thank you for your message! I'll get back to you soon."
-            })
-        else:
+        # Extract form fields
+        name = data_received.get('name', '').strip()
+        email = data_received.get('email', '').strip()
+        subject = data_received.get('subject', '').strip()
+        message = data_received.get('message', '').strip()
+        honeypot = data_received.get('honeypot', '').strip()
+        
+        # Validation errors dictionary
+        errors = {}
+        
+        # Honeypot check (spam protection)
+        if honeypot:
+            logger.warning(f"Spam attempt detected from: {email}")
             return JsonResponse({
                 'success': False,
-                'errors': form.errors
+                'message': 'Spam detected.'
             })
-    
-    except Exception as e:
-        logger.error(f"AJAX contact form error: {e}")
+        
+        # Validate name
+        if not name:
+            errors['name'] = ['Name is required.']
+        elif len(name) < 2:
+            errors['name'] = ['Name must be at least 2 characters.']
+        elif len(name) > 100:
+            errors['name'] = ['Name must not exceed 100 characters.']
+        
+        # Validate email
+        if not email:
+            errors['email'] = ['Email is required.']
+        elif '@' not in email or '.' not in email:
+            errors['email'] = ['Please enter a valid email address.']
+        elif len(email) > 254:
+            errors['email'] = ['Email must not exceed 254 characters.']
+        
+        # Validate subject
+        if not subject:
+            errors['subject'] = ['Subject is required.']
+        elif len(subject) < 3:
+            errors['subject'] = ['Subject must be at least 3 characters.']
+        elif len(subject) > 200:
+            errors['subject'] = ['Subject must not exceed 200 characters.']
+        
+        # Validate message
+        if not message:
+            errors['message'] = ['Message is required.']
+        elif len(message) < 10:
+            errors['message'] = ['Message must be at least 10 characters.']
+        elif len(message) > 2000:
+            errors['message'] = ['Message must not exceed 2000 characters.']
+        
+        # If there are validation errors, return them
+        if errors:
+            return JsonResponse({
+                'success': False,
+                'errors': errors
+            })
+        
+        # Log the contact form submission
+        # Log the contact form submission
+        logger.info(
+            f"Contact form submission - "
+            f"Name: {name}, "
+            f"Email: {email}, "
+            f"Subject: {subject}, "
+            f"Message: {message[:50]}..."
+        )
+
+        # Send email notification
+        try:
+            send_mail(
+                subject=f"Portfolio Contact: {subject}",
+                message=f"From: {name} ({email})\n\n{message}",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=['andrewjem8@gmail.com'],
+                fail_silently=False,
+            )
+            logger.info("Email sent successfully to andrewjem8@gmail.com")
+        except Exception as email_error:
+            logger.error(f"Failed to send email: {email_error}")
+            # Still return success to user - they don't need to know about email issues
+                
+        # Return success response
+        return JsonResponse({
+            'success': True,
+            'message': "Thank you for your message! I'll get back to you soon."
+        })
+        
+    except json.JSONDecodeError:
+        logger.error("Invalid JSON in contact form submission")
         return JsonResponse({
             'success': False,
-            'message': 'An error occurred. Please try again.'
-        })
+            'message': 'Invalid request format.'
+        }, status=400)
+    
+    except Exception as e:
+        logger.error(f"Contact form error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': 'An error occurred. Please try again later.'
+        }, status=500)
+
+
+# ============================================
+# API ENDPOINTS (Optional - for future use)
+# ============================================
 
 def api_skills_view(request):
-    """API endpoint for skills data"""
+    """API endpoint for skills data (for charts/visualisations)"""
     skills_by_category = data.get_skills_by_category()
     
     skills_data = []
@@ -250,30 +293,6 @@ def api_skills_view(request):
                 'category': category_name,
                 'proficiency': skill.proficiency_percentage,
                 'experience': skill.years_experience,
-                'color': '#dc2626',
             })
     
     return JsonResponse({'skills': skills_data})
-
-# portfolio/views.py - Add this function to your existing views.py
-
-def about_view(request):
-    """
-    About Me page - detailed background and skills
-    """
-    context = get_site_context()
-    
-    # Get data for about page
-    current_positions = data.get_all_current_experience()
-    core_skills = data.get_skills_by_category()
-    github_data = get_github_data()
-    
-    context.update({
-        'current_positions': current_positions,
-        'core_skills': core_skills,
-        'page_title': 'About Me - Jem Andrew',
-        'meta_description': 'Learn more about Jem Andrew - software engineer passionate about backend development, AI, and clean code.',
-        **github_data
-    })
-    
-    return render(request, 'portfolio/about.html', context)

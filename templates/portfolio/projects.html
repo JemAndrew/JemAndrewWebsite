@@ -5,54 +5,32 @@
 
 {% block content %}
 
-<!-- Split-Screen Container -->
+    <!-- Split-Screen Container -->
 <div class="projects-split-container">
-    
-    <!-- LEFT SIDEBAR (STICKY) -->
-    <aside class="projects-left">
-        <!-- Avatar -->
-        <div class="projects-left-avatar" id="projectsLeftAvatar">
-            <div class="avatar-loading">Loading...</div>
-        </div>
         
-        <!-- Name & Title -->
-        <h1 class="projects-left-name">Jem Andrew</h1>
-        <p class="projects-left-title">Software Engineer</p>
-        
-        <!-- Project Count -->
-        <div class="projects-count">
-            <i class="fas fa-folder"></i>
-            <span id="projectCount">6 Projects</span>
-        </div>
-        
-        <div class="sidebar-divider"></div>
-        
-        <!-- Category Filters -->
-        <div class="projects-filters">
-            <div class="filter-label">Filter Projects</div>
+        <!-- LEFT SIDEBAR (STICKY) -->
+        <aside class="projects-left">
+            <!-- Avatar -->
+            <div class="projects-left-avatar" id="projectsLeftAvatar">
+                <div class="avatar-loading">Loading...</div>
+            </div>
             
-            <button class="sidebar-filter active" data-filter="all">
-                <span class="filter-bullet">●</span>
-                <span class="filter-text">All Projects</span>
-                <span class="filter-count">(6)</span>
+            <!-- Name & Title -->
+            <h1 class="projects-left-name">Jem Andrew</h1>
+            <p class="projects-left-title">Software Engineer</p>
+            
+        <div class="projects-nav-links">
+            <button class="projects-nav-link active" data-filter="all">
+                <span>All Projects</span>
             </button>
-            
-            <button class="sidebar-filter" data-filter="professional">
-                <span class="filter-bullet">○</span>
-                <span class="filter-text">Professional</span>
-                <span class="filter-count">(1)</span>
+            <button class="projects-nav-link" data-filter="professional">
+                <span>Professional</span>
             </button>
-            
-            <button class="sidebar-filter" data-filter="personal">
-                <span class="filter-bullet">○</span>
-                <span class="filter-text">Personal</span>
-                <span class="filter-count">(3)</span>
+            <button class="projects-nav-link" data-filter="personal">
+                <span>Personal</span>
             </button>
-            
-            <button class="sidebar-filter" data-filter="academic">
-                <span class="filter-bullet">○</span>
-                <span class="filter-text">Academic</span>
-                <span class="filter-count">(2)</span>
+            <button class="projects-nav-link" data-filter="academic">
+                <span>Academic</span>
             </button>
         </div>
         

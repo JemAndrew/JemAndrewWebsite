@@ -12,4 +12,12 @@ urlpatterns = [
     path('education/', views.education_view, name='education'),
     path('download/msc-dissertation/', views.download_msc_dissertation, name='download_msc'),
     path('download/bsc-dissertation/', views.download_bsc_dissertation, name='download_bsc'),
+    path('ajax/contact/', views.ajax_contact_view, name='ajax_contact'),
 ]
+
+
+
+
+
+
+

@@ -39,29 +39,313 @@
             </div>
         </div>
         
-        <!-- Subtitle -->
+        <!-- Updated Subtitle -->
         <p class="hero-centered-subtitle">
-            Software Engineer | AI Enthusiast | Problem Solver
+            Machine Learning Engineer | Full-Stack Developer | Data Analyst
         </p>
         
-        <!-- Description -->
+        <!-- Updated Description -->
         <p class="hero-centered-description">
-            I craft <strong>clean backend systems</strong> that solve real problems. 
-            Currently engineering <strong>AI solutions for legal tech </strong>. Passionate about clean code, machine learning, video game engineering and cybersecurity.
+            Welcome to my website! A little about me is that I specialise in software development 
+            and machine learning, with a keen interest in video game engineering and data analysis. I hope you enjoy your stay and please feel free to swing me an email if you like what you see and want to connect.
         </p>
         
-        <!-- CTA Buttons (removed circular CV button) -->
+        <!-- CTA Buttons -->
         <div class="hero-centered-ctas">
             <a href="{% url 'portfolio:projects' %}" class="btn-hero btn-hero-primary">
                 View Projects
                 <i class="fas fa-arrow-right"></i>
             </a>
-            <a href="mailto:andrewjem8@gmail.com" class="btn-hero btn-hero-secondary">
+            <button id="openContactModal" class="btn-hero btn-hero-secondary">
                 Get in Touch
                 <i class="fas fa-envelope"></i>
-            </a>
+            </button>
         </div>
     </div>
 </section>
 
+<!-- Contact Modal -->
+<div id="contactModal" class="contact-modal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">Get in Touch</h2>
+            <button class="modal-close" id="closeContactModal" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <p class="modal-description">
+                Thank you for the message, I will get back to you as soon as possible!
+            </p>
+            
+            <!-- Success Message (hidden by default) -->
+            <div id="contactSuccess" class="contact-message contact-success" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <span>Thank you for your message! I'll get back to you soon.</span>
+            </div>
+            
+            <!-- Error Message (hidden by default) -->
+            <div id="contactError" class="contact-message contact-error" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorMessage">Something went wrong. Please try again.</span>
+            </div>
+            
+            <form id="contactForm" class="contact-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="contactName" class="form-label">Name</label>
+                    <input 
+                        type="text" 
+                        id="contactName" 
+                        name="name" 
+                        class="form-input" 
+                        required 
+                        placeholder="Your name"
+                    >
+                    <span class="form-error" id="nameError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactEmail" class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        id="contactEmail" 
+                        name="email" 
+                        class="form-input" 
+                        required 
+                        placeholder="your.email@example.com"
+                    >
+                    <span class="form-error" id="emailError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactSubject" class="form-label">Subject</label>
+                    <input 
+                        type="text" 
+                        id="contactSubject" 
+                        name="subject" 
+                        class="form-input" 
+                        required 
+                        placeholder="What's this about?"
+                    >
+                    <span class="form-error" id="subjectError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactMessage" class="form-label">Message</label>
+                    <textarea 
+                        id="contactMessage" 
+                        name="message" 
+                        class="form-textarea" 
+                        rows="5" 
+                        required 
+                        placeholder="Your message here..."
+                    ></textarea>
+                    <span class="form-error" id="messageError"></span>
+                </div>
+                
+                <!-- Honeypot field for spam protection (hidden) -->
+                <input 
+                    type="text" 
+                    name="honeypot" 
+                    id="contactHoneypot" 
+                    style="display: none;" 
+                    tabindex="-1" 
+                    autocomplete="off"
+                >
+                
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span class="btn-text">Send Message</span>
+                    <span class="btn-loader" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Modal Contact Form Handler
+(function() {
+    const modal = document.getElementById('contactModal');
+    const openBtn = document.getElementById('openContactModal');
+    const closeBtn = document.getElementById('closeContactModal');
+    const overlay = document.getElementById('modalOverlay');
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoader = submitBtn.querySelector('.btn-loader');
+    
+    // Success and error message elements
+    const successMsg = document.getElementById('contactSuccess');
+    const errorMsg = document.getElementById('contactError');
+    const errorMsgText = document.getElementById('errorMessage');
+    
+    // Form inputs
+    const nameInput = document.getElementById('contactName');
+    const emailInput = document.getElementById('contactEmail');
+    const subjectInput = document.getElementById('contactSubject');
+    const messageInput = document.getElementById('contactMessage');
+    
+    // Open modal
+    function openModal() {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        // Animate in
+        setTimeout(() => {
+            modal.classList.add('modal-active');
+        }, 10);
+    }
+    
+    // Close modal
+    function closeModal() {
+        modal.classList.remove('modal-active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            resetForm();
+        }, 300);
+    }
+    
+    // Reset form
+    function resetForm() {
+        form.reset();
+        hideMessages();
+        clearErrors();
+    }
+    
+    // Hide all messages
+    function hideMessages() {
+        successMsg.style.display = 'none';
+        errorMsg.style.display = 'none';
+    }
+    
+    // Clear all error messages
+    function clearErrors() {
+        document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
+        document.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+            el.classList.remove('input-error');
+        });
+    }
+    
+    // Show success message
+    function showSuccess() {
+        hideMessages();
+        successMsg.style.display = 'flex';
+        form.style.display = 'none';
+    }
+    
+    // Show error message
+    function showError(message) {
+        hideMessages();
+        errorMsgText.textContent = message;
+        errorMsg.style.display = 'flex';
+    }
+    
+    // Display field-specific errors
+    function displayFieldErrors(errors) {
+        clearErrors();
+        for (const [field, messages] of Object.entries(errors)) {
+            const errorEl = document.getElementById(`${field}Error`);
+            const inputEl = document.getElementById(`contact${field.charAt(0).toUpperCase() + field.slice(1)}`);
+            
+            if (errorEl && inputEl) {
+                errorEl.textContent = messages.join(', ');
+                inputEl.classList.add('input-error');
+            }
+        }
+    }
+    
+    // Event listeners
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('modal-active')) {
+            closeModal();
+        }
+    });
+    
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Clear previous messages and errors
+        hideMessages();
+        clearErrors();
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline-block';
+        
+        // Get form data
+        const formData = {
+            name: nameInput.value.trim(),
+            email: emailInput.value.trim(),
+            subject: subjectInput.value.trim(),
+            message: messageInput.value.trim(),
+            honeypot: document.getElementById('contactHoneypot').value
+        };
+        
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        try {
+            const response = await fetch('/ajax/contact/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showSuccess();
+                // Close modal after 3 seconds
+                setTimeout(() => {
+                    closeModal();
+                }, 3000);
+            } else {
+                if (data.errors) {
+                    displayFieldErrors(data.errors);
+                } else {
+                    showError(data.message || 'Please check your inputs and try again.');
+                }
+            }
+        } catch (error) {
+            console.error('Contact form error:', error);
+            showError('Unable to send message. Please try again later.');
+        } finally {
+            // Reset button state
+            submitBtn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+        }
+    });
+    
+    // Real-time validation (optional but nice)
+    [nameInput, emailInput, subjectInput, messageInput].forEach(input => {
+        input.addEventListener('blur', () => {
+            if (input.value.trim()) {
+                input.classList.remove('input-error');
+                const errorEl = document.getElementById(`${input.name}Error`);
+                if (errorEl) errorEl.textContent = '';
+            }
+        });
+    });
+})();
+</script>
 {% endblock %}

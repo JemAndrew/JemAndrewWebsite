@@ -1,6 +1,11 @@
 import os
 from decouple import config
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -71,7 +76,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-GITHUB_TOKEN = config('GITHUB_TOKEN', default='')
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
+GITHUB_USERNAME = os.getenv('GITHUB_USERNAME', 'JemAndrew')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # For Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'andrewjem8@gmail.com'  # Your email
+EMAIL_HOST_PASSWORD = 'rtwb jxyx ezmc lusm'  # Gmail App Password (not regular password!)
+DEFAULT_FROM_EMAIL = 'andrewjem8@gmail.com'
 
 # Caching for GitHub API (add to CACHES)
 CACHES = {
