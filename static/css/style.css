@@ -8,8 +8,8 @@
    ============================================ */
 :root {
     /* Light Theme */
-    --bg-primary: #FAFAFA;
-    --bg-secondary: #FFFFFF;
+    --bg-primary: #F5F5F5;      
+    --bg-secondary: #FCFCFC;    
     --text-primary: #0A0A0A;
     --text-secondary: #525252;
     --text-muted: #737373;
@@ -66,7 +66,7 @@ body {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(250, 250, 250, 0.85);
+    background: rgba(245, 245, 245, 0.85);  
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
 }
@@ -2990,6 +2990,10 @@ body {
     transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
+[data-theme="light"] .loading-screen {
+    background: #F5F5F5;  /* Matches new softer light theme */
+}
+
 /* Hide loading screen */
 .loading-screen.hidden {
     opacity: 0;
@@ -3011,7 +3015,7 @@ body {
     width: 100%;
     height: 100%;
     animation: avatarSpin 2s linear infinite;
-    filter: drop-shadow(0 10px 40px rgba(94, 173, 173, 0.4));
+    filter: drop-shadow(0 10px 40px rgba(94, 173, 173, 0.6));  /* Stronger by default */
 }
 
 @keyframes avatarSpin {
@@ -3049,6 +3053,10 @@ body {
 .fade-in-section.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+[data-theme="light"] .loading-avatar svg {
+    filter: drop-shadow(0 10px 40px rgba(94, 173, 173, 0.3));
 }
 
 /* Dark mode adjustments */

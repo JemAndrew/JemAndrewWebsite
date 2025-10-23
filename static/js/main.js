@@ -2,6 +2,10 @@
 // MODERN PORTFOLIO - WITH LOADING SCREEN
 // Updated to include minimal loading animation
 // ============================================
+(function() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+})();
 
 class ModernPortfolio {
     constructor() {
