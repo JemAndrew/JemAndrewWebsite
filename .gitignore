@@ -1,36 +1,36 @@
-# Django
-db.sqlite3 
-*.pyc
+# Python
 __pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+
+# Django
+*.log
+db.sqlite3
 staticfiles/
 media/
 
-# Environment
-cv_website_env/
-venv/
+# Environment variables
 .env
-.env.local
-.env.*.local
+.env.*
 *.env
+
+# Virtual environments
+venv/
+cv_website_env/
+ENV/
 
 # IDE
 .vscode/
 .idea/
 *.swp
-*.swo
 
 # OS
 .DS_Store
-Thumbs.db
 
-# Cloudinary/Secrets
-*secret*
-*SECRET*
-.env.*
-config.py
-secrets.py
+# Logs
+logs/
 
-build.sh
-.sh
+# Keep build.sh
 *.sh
-*build.sh
+!build.sh
