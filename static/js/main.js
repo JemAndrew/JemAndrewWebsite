@@ -1,6 +1,5 @@
 // ============================================
-// MODERN PORTFOLIO - WITH LOADING SCREEN
-// Updated to include minimal loading animation
+// MODERN PORTFOLIO - COMPLETE WITH PROJECT FILTERING
 // ============================================
 (function() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -26,7 +25,7 @@ class ModernPortfolio {
         this.setupFullscreenMenu();
         this.setupSmoothScroll();
         this.setupAnimations();
-        this.setupScrollReveal(); // NEW: Smooth scroll-in animations
+        this.setupScrollReveal();
         
         // Page-specific features
         if (document.querySelector('.projects-split-container')) {
@@ -77,7 +76,7 @@ class ModernPortfolio {
             }
         }
         
-        // Wait for minimum display time (looks better than instant)
+        // Wait for minimum display time
         await this.wait(800);
         
         // Wait for page to fully load
@@ -110,7 +109,7 @@ class ModernPortfolio {
     }
     
     // ============================================
-    // SCROLL REVEAL ANIMATIONS (NEW)
+    // SCROLL REVEAL ANIMATIONS
     // ============================================
     setupScrollReveal() {
         const observer = new IntersectionObserver((entries) => {
@@ -223,17 +222,6 @@ class ModernPortfolio {
                     </div>
                 `;
             }
-            
-            const menuAvatarContainer = document.getElementById('menuAvatarContainer');
-            if (menuAvatarContainer) {
-                menuAvatarContainer.innerHTML = `
-                    <div style="width: 100%; height: 100%; display: flex; align-items: center; 
-                                justify-content: center; font-weight: 700; font-size: 1.5rem; 
-                                color: var(--accent-primary);">
-                        JA
-                    </div>
-                `;
-            }
         }
     }
     
@@ -241,58 +229,68 @@ class ModernPortfolio {
     // EYE TRACKING
     // ============================================
     setupEyeTracking(container) {
-        const svg = container.querySelector('svg');
-        if (!svg) {
-            console.warn('⚠️ No SVG found for eye tracking');
+        const svgElement = container.querySelector('svg');
+        if (!svgElement) {
+            console.log('⚠️ SVG not found for eye tracking');
             return;
         }
         
-        console.log('👁️ Setting up eye tracking');
-        
-        let eyesGroup = svg.querySelector('[id*="notion-avatar-eyes"]');
-        
+        const eyesGroup = svgElement.querySelector('#eyes');
         if (!eyesGroup) {
-            eyesGroup = svg.querySelector('[id*="eyes"], [id*="Eyes"]');
+            console.log('⚠️ Eyes group not found in SVG');
+            return;
         }
         
-        if (!eyesGroup) {
-            eyesGroup = svg.querySelector('[id*="eye"], [id*="Eye"]');
-        }
+        console.log('👀 Setting up eye tracking...');
         
-        if (eyesGroup) {
-            console.log('✅ Found eyes');
+        eyesGroup.style.transformOrigin = 'center';
+        eyesGroup.style.transition = 'transform 0.2s ease-out';
+        
+        let isTracking = true;
+        
+        container.addEventListener('mouseenter', () => {
+            isTracking = true;
+            eyesGroup.style.transition = 'transform 0.2s ease-out';
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            isTracking = false;
+            eyesGroup.style.transition = 'transform 0.5s ease-out';
+            eyesGroup.style.transform = 'translate(0px, 0px)';
+        });
+        
+        container.addEventListener('mousemove', (e) => {
+            if (!isTracking) return;
             
-            eyesGroup.style.transition = 'transform 0.1s ease-out';
+            const rect = svgElement.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
             
-            document.addEventListener('mousemove', (e) => {
-                requestAnimationFrame(() => {
-                    const rect = container.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-                    
-                    const angle = Math.atan2(
-                        e.clientY - centerY,
-                        e.clientX - centerX
-                    );
-                    
-                    const maxDistance = 8;
-                    const mouseDistance = Math.hypot(
-                        e.clientX - centerX,
-                        e.clientY - centerY
-                    );
-                    const distance = Math.min(mouseDistance / 40, maxDistance);
-                    
-                    const offsetX = Math.cos(angle) * distance;
-                    const offsetY = Math.sin(angle) * distance;
-                    
-                    eyesGroup.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-                });
-            });
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
             
-            console.log('✅ Eye tracking activated');
-        }
+            const deltaX = mouseX - centerX;
+            const deltaY = mouseY - centerY;
+            
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const maxDistance = Math.min(rect.width, rect.height) / 2;
+            
+            const normalised = Math.min(distance / maxDistance, 1);
+            const moveAmount = normalised * 4;
+            
+            const angle = Math.atan2(deltaY, deltaX);
+            const offsetX = Math.cos(angle) * moveAmount;
+            const offsetY = Math.sin(angle) * moveAmount;
+                
+            eyesGroup.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        });
+        
+        console.log('✅ Eye tracking activated');
     }
     
+    // ============================================
+    // PROJECTS PAGE SETUP - THIS WAS MISSING!
+    // ============================================
     setupProjectsPage() {
         console.log('✅ Setting up projects page');
         this.setupProjectFiltering();
@@ -300,29 +298,37 @@ class ModernPortfolio {
         this.setupExpandableProjects();
     }
     
+    // ============================================
+    // PROJECT FILTERING - THE CRITICAL MISSING METHOD!
+    // ============================================
     setupProjectFiltering() {
-        const filterButtons = document.querySelectorAll('.sidebar-filter');
+        // FIXED: Using correct selector for your HTML
+        const filterButtons = document.querySelectorAll('.projects-nav-link');
         const projectCards = document.querySelectorAll('.project-card');
         const projectCount = document.getElementById('projectCount');
         
-        if (!filterButtons.length) return;
+        if (!filterButtons.length) {
+            console.warn('⚠️ No filter buttons found');
+            return;
+        }
         
-        console.log('✅ Project filtering initialised');
+        console.log(`✅ Project filtering initialised with ${filterButtons.length} filters`);
+        console.log(`✅ Found ${projectCards.length} project cards`);
         
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const filter = button.dataset.filter;
+                console.log(`🔍 Filtering by: ${filter}`);
                 
+                // Remove active class from all buttons
                 filterButtons.forEach(btn => {
                     btn.classList.remove('active');
-                    const bullet = btn.querySelector('.filter-bullet');
-                    if (bullet) bullet.textContent = '○';
                 });
                 
+                // Add active class to clicked button
                 button.classList.add('active');
-                const activeBullet = button.querySelector('.filter-bullet');
-                if (activeBullet) activeBullet.textContent = '●';
                 
+                // Filter projects
                 let visibleCount = 0;
                 projectCards.forEach(card => {
                     const category = card.dataset.category;
@@ -330,16 +336,47 @@ class ModernPortfolio {
                     if (filter === 'all' || category === filter) {
                         card.style.display = 'block';
                         visibleCount++;
+                        // Collapse card when filter changes
                         this.collapseProjectCard(card);
                     } else {
                         card.style.display = 'none';
                     }
                 });
                 
+                // Update project count display if element exists
                 if (projectCount) {
                     const label = filter === 'all' ? 'Projects' : 
                                 filter.charAt(0).toUpperCase() + filter.slice(1) + ' Projects';
                     projectCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'Project' : label}`;
+                }
+                
+                console.log(`✅ Filtered: ${filter} - ${visibleCount} projects visible`);
+            });
+        });
+    }
+    
+    // ============================================
+    // PROJECT NAVIGATION
+    // ============================================
+    setupProjectNavigation() {
+        const navLinks = document.querySelectorAll('.nav-project-link');
+        
+        if (!navLinks.length) return;
+        
+        console.log('✅ Project navigation initialised');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
         });
@@ -390,46 +427,23 @@ class ModernPortfolio {
         console.log('✅ Menu ready');
     }
 
-    setupProjectNavigation() {
-        const navLinks = document.querySelectorAll('.nav-project-link');
-        
-        if (!navLinks.length) return;
-        
-        console.log('✅ Project navigation initialised');
-        
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                const targetId = link.getAttribute('href').substring(1);
-                const targetCard = document.getElementById(targetId);
-                
-                if (targetCard) {
-                    targetCard.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    }
-    
     // ============================================
     // THEME TOGGLE
     // ============================================
     setupThemeToggle() {
         const toggle = document.getElementById('themeToggle');
-        const icon = document.getElementById('themeIcon');
+        if (!toggle) {
+            console.warn('⚠️ Theme toggle not found');
+            return;
+        }
         
-        if (!toggle || !icon) return;
-        
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', currentTheme);
+        const icon = toggle.querySelector('i');
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         this.updateThemeIcon(icon, currentTheme);
         
         toggle.addEventListener('click', () => {
-            const theme = document.documentElement.getAttribute('data-theme');
-            const newTheme = theme === 'light' ? 'dark' : 'light';
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
