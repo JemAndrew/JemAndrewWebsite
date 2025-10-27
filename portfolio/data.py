@@ -1,7 +1,23 @@
+"""
+Portfolio Data
+All the content for the portfolio site - projects, experience, skills, etc.
+"""
+
 from datetime import date
 import json
 
-# Personal Information - Updated with your authentic voice
+
+
+
+class SimpleObject:
+    """Base class that just holds attributes"""
+    def __init__(self, data_dict):
+        for key, value in data_dict.items():
+            setattr(self, key, value)
+
+
+# Personal Info
+
 PERSONAL_INFO = {
     'name': 'Jem Andrew',
     'title': 'Software Engineer | MSc Computer Science',
@@ -28,9 +44,10 @@ PERSONAL_INFO = {
     ]
 }
 
-# Professional Experience - Updated with cleaner format
+
+# Work Experience
+
 EXPERIENCE = [
-    
     {
         'position': 'Freelance AI Consultant',
         'company': 'Law Firm Client',
@@ -80,7 +97,9 @@ EXPERIENCE = [
     },
 ]
 
-# Education - Updated with correct dates and actual grades
+
+# Education
+
 EDUCATION = [
     {
         'degree_type': 'MSc',
@@ -122,84 +141,59 @@ EDUCATION = [
     }
 ]
 
-# Projects - Updated with more authentic descriptions
+
+# Projects
+
 PROJECTS = [
-            {
-            'title': 'Litigation Intelligence Platform',
-            'short_description': 'AI-powered legal document analysis system processing 18,000+ documents in 48 hours, extracting structured evidence and generating tribunal-ready deliverables.',
-            'detailed_description': """Engineered a production-grade legal AI system that analyses large-scale commercial litigation 
-                                    documents using a 4-pass iterative architecture with Anthropic's Claude models. The system 
-                                    intelligently triages thousands of documents, extracts structured legal intelligence including 
-                                    breaches, contradictions and timeline events, conducts autonomous recursive investigations, and 
-                                    generates tribunal-ready work products. Achieved 30% cost reduction and 40% speed improvement over 
-                                    previous approaches through intelligent document selection, confidence-tracked analysis reaching 95% 
-                                    certainty, and a sophisticated multi-tier memory architecture combining vector databases with 
-                                    knowledge graphs.""",
-            'technologies': 'Python, Anthropic Claude API, ChromaDB, SQLite, RAG Architecture, Extended Thinking, BM25 Retrieval',
-            'category': 'professional',
-            'status': 'completed',
-            'featured': True,
-            'github_url': None,  # Confidential commercial work
-            'live_demo_url': None,  # Confidential commercial work
-            'created_date': date(2025, 10, 1),
-            'key_features': [
-                '4-pass iterative architecture processing 18,000+ documents in 30-48 hours',
-                'Autonomous recursive investigation engine with depth-controlled AI decision-making',
-                'Multi-tier memory system with vector database and knowledge graph integration',
-                'Structured legal extraction mapping directly to claim elements (breach, causation, damages)',
-                'Cost optimised at £0.014-0.021 per document with 95% confidence tracking'
-            ]
-        },
+    {
+        'title': 'Litigation Intelligence Platform',
+        'short_description': 'AI-powered legal document analysis system processing 18,000+ documents in 48 hours.',
+        'detailed_description': """Engineered a production-grade legal AI system that analyses large-scale commercial litigation 
+                                documents using a 4-pass iterative architecture with Anthropic's Claude models. The system 
+                                intelligently triages thousands of documents, extracts structured legal intelligence including 
+                                breaches, contradictions and timeline events, conducts autonomous recursive investigations, and 
+                                generates tribunal-ready work products.""",
+        'technologies': 'Python, Anthropic Claude API, ChromaDB, SQLite, RAG Architecture, Extended Thinking, BM25 Retrieval',
+        'category': 'professional',
+        'status': 'completed',
+        'featured': True,
+        'github_url': None,
+        'live_demo_url': None,
+        'created_date': date(2025, 10, 1),
+        'key_features': [
+            '4-pass iterative architecture processing 18,000+ documents in 30-48 hours',
+            'Autonomous recursive investigation engine',
+            'Multi-tier memory system with vector database',
+            'Cost optimised at £0.014-0.021 per document'
+        ]
+    },
     {
         'title': 'Cryptocurrency Exchange Platform',
-        'short_description': 'Built a custom order matching engine with price-time priority algorithm handling 1000+ orders per second.',
+        'short_description': 'Custom order matching engine with price-time priority algorithm.',
         'detailed_description': """Built a cryptocurrency exchange from scratch focused on stablecoin trading. 
-                                  The core is a custom order matching engine using price-time priority that handles 
-                                  over 1000 orders per second. Real-time WebSocket connections keep prices live and 
-                                  the database schema carefully manages relationships between orders trades and wallets. 
-                                  Edge cases like partial fills and identical price orders are all handled properly.""",
-        'technologies': 'Django, PostgreSQL, WebSockets, REST API, Financial Algorithms',
+                                  Implemented a custom order matching engine with price-time priority algorithm, designed 
+                                  RESTful API for account and trading, and created secure user authentication with bcrypt 
+                                  and JWT. The frontend uses React with real-time WebSocket updates for live order books.""",
+        'technologies': 'Python, FastAPI, PostgreSQL, Redis, React, WebSocket',
         'category': 'personal',
         'status': 'completed',
         'featured': True,
         'github_url': 'https://github.com/JemAndrew/crypto-exchange',
         'live_demo_url': None,
-        'created_date': date(2025, 1, 1),
+        'created_date': date(2024, 7, 1),
         'key_features': [
-            'Order matching engine with price-time priority',
-            'Real-time WebSocket price feeds',
-            'High-frequency transaction processing'
-        ]
-    },
-    {
-        'title': 'Medical AI Diagnostic System',
-        'short_description': 'MSc dissertation using CNN architectures for skin cancer detection achieving 15% improvement over baselines.',
-        'detailed_description': """My MSc dissertation project where I developed CNNs for automated skin cancer detection. 
-                                  I compared multiple architectures including ResNet DenseNet and custom designs. 
-                                  Through advanced data augmentation and ensemble methods I achieved 15% better accuracy 
-                                  than baseline models. The evaluation framework follows FDA compliance guidelines which 
-                                  was crucial for potential clinical application.""",
-        'technologies': 'PyTorch, Python, CNN, Medical AI, Transfer Learning',
-        'category': 'academic',
-        'status': 'completed',
-        'featured': True,
-        'github_url': None,
-        'live_demo_url': None,
-        'created_date': date(2025, 8, 1),
-        'key_features': [
-            '15% improvement in diagnostic accuracy',
-            'Multiple CNN architecture comparison',
-            'FDA-compliant evaluation framework'
+            'Custom order matching engine',
+            'Real-time WebSocket updates',
+            'Secure authentication'
         ]
     },
     {
         'title': 'Holiday Cluedo PWA',
-        'short_description': 'Browser-based multiplayer game supporting 20+ concurrent users with offline capability.',
+        'short_description': 'Progressive Web App version of Cluedo for offline holiday entertainment.',
         'detailed_description': """Built a Progressive Web App version of Cluedo optimised for holiday entertainment. 
                                   Written in vanilla JavaScript for maximum performance and supports 20+ concurrent users. 
                                   The Fisher-Yates shuffle algorithm ensures fair card distribution and collision detection 
-                                  handles game piece movement. Service workers enable offline play so the game works without 
-                                  internet connection.""",
+                                  handles game piece movement. Service workers enable offline play.""",
         'technologies': 'JavaScript, PWA, Service Workers, WebSockets, Local Storage',
         'category': 'personal',
         'status': 'completed',
@@ -210,16 +204,14 @@ PROJECTS = [
         'key_features': [
             '20+ concurrent user support',
             'Offline gameplay capability',
-            'Fisher-Yates shuffle algorithm for fair play'
+            'Fisher-Yates shuffle algorithm'
         ]
     },
     {
         'title': 'Bike Route Planning Application',
-        'short_description': 'Full-stack cycling route app built with Flask React and MongoDB in a 5-person team.',
+        'short_description': 'Full-stack cycling route app built with Flask, React and MongoDB.',
         'detailed_description': """Collaborated in a 5-person team to build a cycling route application that scored 85%. 
                                 I developed the REST API endpoints for user authentication and route management. 
-                                We had to migrate from Google Places to HERE Maps API when Google deprecated theirs. 
-                                The stack uses React frontend with Flask backend and MongoDB for data storage. 
                                 We followed agile methodology with proper sprint planning and Git version control.""",
         'technologies': 'Python, Flask, React, MongoDB, HERE Maps API',
         'category': 'academic',
@@ -229,8 +221,8 @@ PROJECTS = [
         'live_demo_url': None,
         'created_date': date(2024, 3, 1),
         'key_features': [
-            'REST API for authentication and routes',
-            'Integration with HERE Maps API',
+            'REST API for authentication',
+            'HERE Maps integration',
             'Agile team collaboration'
         ]
     },
@@ -238,9 +230,8 @@ PROJECTS = [
         'title': 'Portfolio Website',
         'short_description': 'Professional Django portfolio with responsive design and modern UI.',
         'detailed_description': """This portfolio website showcases my work through clean design and efficient code. 
-                                  Built with Django and modern web technologies it features responsive layouts that 
-                                  work across all devices. The focus is on performance with minimal dependencies and 
-                                  fast load times. Every element is crafted to present my projects and skills clearly.""",
+                                  Built with Django and modern web technologies, focused on performance with minimal 
+                                  dependencies and fast load times.""",
         'technologies': 'Django, CSS3, JavaScript, HTML5, WhiteNoise',
         'category': 'personal',
         'status': 'active',
@@ -256,12 +247,15 @@ PROJECTS = [
     }
 ]
 
+
 # Projects intro text
 PROJECTS_INTRO = """Projects ranging from academic to personal where I implement my own ideas or explore 
                     concepts from others. Each one is a chance to test myself and write reproducible clean 
                     code that's efficient and logical."""
 
-# Skills remain the same but we could update descriptions if needed
+
+# Skills
+
 SKILLS = {
     'Programming Languages': [
         {'name': 'Python', 'proficiency': 5, 'years_experience': 3, 'description': 'Backend development, data science, automation'},
@@ -292,7 +286,9 @@ SKILLS = {
     ]
 }
 
-# Site settings and metadata
+
+# Site Settings
+
 SITE_SETTINGS = {
     'site_title': 'Jem Andrew - Software Engineer',
     'meta_description': 'Software Engineer passionate about backend development, machine learning, and building efficient code.',
@@ -301,158 +297,133 @@ SITE_SETTINGS = {
     'contact_email': 'andrewjem8@gmail.com'
 }
 
-# Helper functions remain the same
+
+# Helper Functions 
+
 def get_personal_info():
-    """Get personal information"""
-    info = type('PersonalInfo', (), PERSONAL_INFO)()
+    """Get personal info as an object"""
+    info = SimpleObject(PERSONAL_INFO)
     info.typing_phrases = json.dumps(PERSONAL_INFO['typing_phrases'])
     return info
+
 
 def get_all_projects():
     """Get all projects sorted by date (newest first)"""
     projects = []
+    
     for i, project_data in enumerate(PROJECTS, 1):
-        class ProjectObj:
-            def __init__(self, data, project_id):
-                for key, value in data.items():
-                    setattr(self, key, value)
-                self.id = project_id
-                self.technology_list = data['technologies'].split(', ')
-            
-            def get_category_display(self):
-                return self.category.title()
-            
-            def get_status_display(self):
-                return self.status.title()
-        
-        proj_obj = ProjectObj(project_data, i)
-        projects.append(proj_obj)
+        # Create project object
+        proj = SimpleObject(project_data)
+        proj.id = i
+        proj.technology_list = project_data['technologies'].split(', ')
+        projects.append(proj)
     
-    # Sort by created_date descending (newest first)
+    # Sort by date - newest first
     projects.sort(key=lambda x: x.created_date, reverse=True)
-    
     return projects
 
+
 def get_featured_projects(limit=3):
-    """Get featured projects"""
+    """Get featured projects only"""
     all_projects = get_all_projects()
-    featured = [p for p in all_projects if getattr(p, 'featured', False)]
+    featured = [p for p in all_projects if p.featured]
     return featured[:limit]
 
+
 def get_current_experience():
-    """Get current position"""
-    current = next((exp for exp in EXPERIENCE if exp.get('is_current', False)), None)
-    if current:
-        exp_obj = type('Experience', (), current)()
-        exp_obj.skills_list = current['skills_gained'].split(', ')
-        if 'responsibilities' in current:
-            exp_obj.responsibilities = current['responsibilities']
-        if exp_obj.start_date:
-            if exp_obj.is_current:
-                duration_days = (date.today() - exp_obj.start_date).days
-            elif exp_obj.end_date:
-                duration_days = (exp_obj.end_date - exp_obj.start_date).days
-            else:
-                duration_days = 0
-            
-            years = duration_days // 365
-            months = (duration_days % 365) // 30
-            if years > 0:
-                exp_obj.duration_display = f"{years} year{'s' if years != 1 else ''}, {months} month{'s' if months != 1 else ''}"
-            else:
-                exp_obj.duration_display = f"{months} month{'s' if months != 1 else ''}"
-        return exp_obj
+    """Get the primary current position"""
+    for exp in EXPERIENCE:
+        if exp.get('is_current') and exp.get('is_primary_focus'):
+            return create_experience_object(exp)
     return None
+
 
 def get_all_current_experience():
     """Get all current positions"""
-    current_positions = [exp for exp in EXPERIENCE if exp.get('is_current', False)]
-    experiences = []
-    
-    for exp in current_positions:
-        exp_obj = type('Experience', (), exp)()
-        exp_obj.skills_list = exp['skills_gained'].split(', ')
-        if 'responsibilities' in exp:
-            exp_obj.responsibilities = exp['responsibilities']
-        if 'achievements' in exp:
-            exp_obj.achievements = exp['achievements']
-        if exp_obj.start_date:
-            if exp_obj.is_current:
-                duration_days = (date.today() - exp_obj.start_date).days
-            elif exp_obj.end_date:
-                duration_days = (exp_obj.end_date - exp_obj.start_date).days
-            else:
-                duration_days = 0
-            
-            years = duration_days // 365
-            months = (duration_days % 365) // 30
-            if years > 0:
-                exp_obj.duration_display = f"{years} year{'s' if years != 1 else ''}, {months} month{'s' if months != 1 else ''}"
-            else:
-                exp_obj.duration_display = f"{months} month{'s' if months != 1 else ''}"
-        experiences.append(exp_obj)
-    
-    return experiences
+    current = [exp for exp in EXPERIENCE if exp.get('is_current')]
+    return [create_experience_object(exp) for exp in current]
+
 
 def get_all_experience():
     """Get all experience"""
-    experiences = []
-    for exp in EXPERIENCE:
-        exp_obj = type('Experience', (), exp)()
-        exp_obj.skills_list = exp['skills_gained'].split(', ')
-        if 'responsibilities' in exp:
-            exp_obj.responsibilities = exp['responsibilities']
-        if exp_obj.start_date:
-            if exp_obj.is_current:
-                duration_days = (date.today() - exp_obj.start_date).days
-            elif exp_obj.end_date:
-                duration_days = (exp_obj.end_date - exp_obj.start_date).days
-            else:
-                duration_days = 0
-            
-            years = duration_days // 365
-            months = (duration_days % 365) // 30
-            if years > 0:
-                exp_obj.duration_display = f"{years} year{'s' if years != 1 else ''}, {months} month{'s' if months != 1 else ''}"
-            else:
-                exp_obj.duration_display = f"{months} month{'s' if months != 1 else ''}"
-        experiences.append(exp_obj)
-    return experiences
+    return [create_experience_object(exp) for exp in EXPERIENCE]
+
+
+def create_experience_object(exp_data):
+    """Helper to create experience object with calculated fields"""
+    exp = SimpleObject(exp_data)
+    exp.skills_list = exp_data['skills_gained'].split(', ')
+    
+    # Calculate duration if we have dates
+    if exp.start_date:
+        if exp.is_current:
+            days = (date.today() - exp.start_date).days
+        elif exp.end_date:
+            days = (exp.end_date - exp.start_date).days
+        else:
+            days = 0
+        
+        years = days // 365
+        months = (days % 365) // 30
+        
+        if years > 0:
+            exp.duration_display = f"{years} year{'s' if years != 1 else ''}, {months} month{'s' if months != 1 else ''}"
+        else:
+            exp.duration_display = f"{months} month{'s' if months != 1 else ''}"
+    
+    return exp
+
 
 def get_all_education():
     """Get all education"""
     educations = []
-    for edu in EDUCATION:
-        edu_obj = type('Education', (), edu)()
-        edu_obj.technologies_list = edu['technologies'].split(', ')
-        edu_obj.get_degree_type_display = lambda e=edu: e['degree_type']
-        if 'modules' in edu:
-            edu_obj.modules = edu['modules']
-        if edu_obj.start_date and edu_obj.end_date:
-            edu_obj.duration_years = round((edu_obj.end_date - edu_obj.start_date).days / 365.25, 1)
-        elif edu_obj.is_current and edu_obj.start_date:
-            edu_obj.duration_years = round((date.today() - edu_obj.start_date).days / 365.25, 1)
+    
+    for edu_data in EDUCATION:
+        edu = SimpleObject(edu_data)
+        edu.technologies_list = edu_data['technologies'].split(', ')
+        
+        # Calculate duration in years
+        if edu.start_date and edu.end_date:
+            edu.duration_years = round((edu.end_date - edu.start_date).days / 365.25, 1)
+        elif edu.is_current and edu.start_date:
+            edu.duration_years = round((date.today() - edu.start_date).days / 365.25, 1)
         else:
-            edu_obj.duration_years = 0
-        educations.append(edu_obj)
+            edu.duration_years = 0
+        
+        educations.append(edu)
+    
     return educations
+
 
 def get_skills_by_category():
     """Get skills organised by category"""
     skills_dict = {}
-    for category, skills in SKILLS.items():
+    
+    for category, skills_list in SKILLS.items():
         skill_objects = []
-        for skill in skills:
-            skill_obj = type('Skill', (), skill)()
-            skill_obj.proficiency_percentage = skill['proficiency'] * 20
-            skill_obj.get_proficiency_display = lambda s=skill: ['', 'Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert'][s['proficiency']]
-            skill_obj.category = category.lower().replace(' ', '_').replace('&', 'and')
-            skill_obj.color = '#dc2626'
-            skill_obj.icon_class = f"fas fa-code"
-            skill_objects.append(skill_obj)
+        
+        for skill_data in skills_list:
+            skill = SimpleObject(skill_data)
+            skill.proficiency_percentage = skill_data['proficiency'] * 20
+            skill.category = category.lower().replace(' ', '_').replace('&', 'and')
+            
+            # Proficiency level names
+            proficiency_levels = ['', 'Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert']
+            skill.proficiency_level = proficiency_levels[skill_data['proficiency']]
+            
+            skill_objects.append(skill)
+        
         skills_dict[category] = skill_objects
+    
     return skills_dict
+
 
 def get_site_settings():
     """Get site settings"""
-    return type('SiteSettings', (), SITE_SETTINGS)()
+    return SimpleObject(SITE_SETTINGS)
+
+
+
+
+
+
