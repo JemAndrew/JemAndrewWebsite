@@ -6,38 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Jem Andrew - Software Engineer{% endblock %}</title>
     
-    <!-- Preconnect -->
+    <!-- Preconnect to external resources for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
+    <!-- Font Awesome icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- CSS -->
+    <!-- Main stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- Loading screen shows while page loads -->
     <div class="loading-screen" id="loadingScreen">
-    <div class="loading-avatar" id="loadingAvatar">
-        <!-- Fallback initials while avatar loads -->
-        <div style="width: 100%; height: 100%; display: flex; align-items: center; 
-                    justify-content: center; font-weight: 900; font-size: 4rem; 
-                    color: var(--accent-primary);">
-            JA
+        <div class="loading-avatar" id="loadingAvatar">
+            <!-- Fallback initials if avatar fails to load -->
+            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 4rem; color: var(--accent-primary);">
+                JA
+            </div>
         </div>
     </div>
-</div>
-    <!-- Fullscreen Menu Overlay (on ALL pages) -->
+    
+    <!-- Fullscreen navigation menu overlay -->
     <div class="fullscreen-menu" id="fullscreenMenu">
-        <!-- ONLY NEW LINE: Avatar in menu -->
         <div class="menu-avatar" id="menuAvatarContainer"></div>
         
-        <button class="menu-close" id="menuClose">
+        <button class="menu-close" id="menuClose" aria-label="Close menu">
             <i class="fas fa-times"></i>
         </button>
         
@@ -58,43 +57,37 @@
                 <span class="link-number">03</span>
                 <span class="link-text">Education</span>
             </a>
-            <a href="mailto:andrewjem8@gmail.com" class="menu-link">
-                <span class="link-number">04</span>
-                <span class="link-text">Contact</span>
-            </a>
         </nav>
         
-        <!-- Social links at bottom -->
+        <!-- Social links at bottom of menu -->
         <div class="menu-social">
-            <a href="https://github.com/JemAndrew" target="_blank">
+            <a href="https://github.com/JemAndrew" target="_blank" aria-label="GitHub">
                 <i class="fab fa-github"></i>
             </a>
-            <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank">
+            <a href="https://www.linkedin.com/in/jem-andrew-439771333/" target="_blank" aria-label="LinkedIn">
                 <i class="fab fa-linkedin"></i>
             </a>
-            <a href="mailto:andrewjem8@gmail.com">
+            <a href="mailto:andrewjem8@gmail.com" aria-label="Email">
                 <i class="fas fa-envelope"></i>
             </a>
         </div>
     </div>
 
-    <!-- Nav Pill (on ALL pages) -->
+    <!-- Fixed navigation pill at top of page -->
     <div class="nav-pill" id="navPill">
-        <div class="pill-avatar" id="avatarPillContainer">
-            <!-- Small avatar loads here via JS -->
-        </div>
-        <button class="pill-menu" id="menuToggle">
+        <div class="pill-avatar" id="avatarPillContainer"></div>
+        
+        <button class="pill-menu" id="menuToggle" aria-label="Open menu">
             <span>Menu</span>
             <i class="fas fa-bars"></i>
         </button>
         
-        <!-- Theme toggle in pill -->
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <i class="fas fa-moon" id="themeIcon"></i>
         </button>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main page content -->
     <main class="page-container">
         {% block content %}{% endblock %}
     </main>
@@ -102,9 +95,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div style="text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem;">
-                <p>© {% now "Y" %} Jem Andrew. Built with Django & Notion Avatar.</p>
-            </div>
+            <p>© {% now "Y" %} Jem Andrew. Built with Django & Notion Avatar.</p>
         </div>
     </footer>
 

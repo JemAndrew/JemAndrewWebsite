@@ -1,52 +1,45 @@
 """
 Portfolio Data
-All the content for the portfolio site - projects, experience, skills, etc.
+All my content stored here so I can update it without touching the views or templates
 """
 
 from datetime import date
 import json
 
 
-
-
 class SimpleObject:
-    """Base class that just holds attributes"""
-    def __init__(self, data_dict):
-        for key, value in data_dict.items():
+    """Quick way to turn dictionaries into objects with dot notation"""
+    def __init__(self, d):
+        for key, value in d.items():
             setattr(self, key, value)
 
 
-# Personal Info
-
+# My personal info for the hero section and about page
 PERSONAL_INFO = {
     'name': 'Jem Andrew',
-    'title': 'Software Engineer | MSc Computer Science',
+    'title': 'Software Engineer',
     'email': 'andrewjem8@gmail.com',
-    'location': '',
-    'linkedin_url': 'https://www.linkedin.com/in/jem-andrew-439771333/',
-    'github_url': 'https://github.com/JemAndrew',
-    'bio': """I'm a software engineer passionate about crafting well-structured, logical backend code. 
-          Currently working with Django at BuildChorus whilst consulting on AI-powered legal tech. 
-          I'm fascinated by machine learning and large language models, particularly model training. 
-          I'm well-versed in cybersecurity and working with databases of any scale, and I love putting 
-          these skills to the test through my work and personal projects.""",
-    'bio_extended': """I started learning to code during my free time before university, exploring free published 
-                      lectures from leading institutions such as MIT and completing as many codeacademy courses as i could do.
-                      Then came my BSc in Biology, which unexpectedly sparked my love for coding through R. 
-                      I loved the creativeness of it, which led to this passion to pursue a Master's in Computer Science, where I fully 
-                      immersed myself in a much broader skill set – from Java and SQL to cybersecurity and ethical hacking.""",
+    'github': 'https://github.com/JemAndrew',
+    'linkedin': 'https://www.linkedin.com/in/jem-andrew/',
+    'location': 'Newcastle upon Tyne, UK',
+    
+    # These phrases cycle through in the typing animation on the home page
     'typing_phrases': [
-        "Software Engineer",
-        "Backend Developer", 
-        "Machine Learning Enthusiast",
-        "Problem Solver",
-        "MSc Computer Science"
-    ]
+        'Backend Developer',
+        'Problem Solver',
+        'Machine Learning Enthusiast',
+        'Clean Code Advocate'
+    ],
+    
+    # Main bio text for about page
+    'bio': """Software engineer with a background in computational biology and a Master's in Computer Science. 
+              I focus on backend development, machine learning applications, and writing clean, maintainable code. 
+              Each project is a chance to test myself and produce reproducible, efficient solutions that solve 
+              real problems."""
 }
 
 
-# Work Experience
-
+# Current work experience
 EXPERIENCE = [
     {
         'position': 'Freelance AI Consultant',
@@ -75,31 +68,24 @@ EXPERIENCE = [
     {
         'position': 'Software Engineer',
         'company': 'BuildChorus.com',
-        'location': '',
+        'location': 'Remote',
         'start_date': date(2025, 9, 1),
-        'end_date': None,
-        'is_current': True,
+        'end_date': date(2025, 10, 1),
+        'is_current': False,
         'is_primary_focus': False,
-        'description': """Working at BuildChorus where I develop full-stack features for our construction management SaaS platform.""",
+        'description': """Worked at BuildChorus developing full-stack features for their construction management SaaS platform.""",
         'responsibilities': [
-            'Building user configurability features for material procurement strategies',
-            'Deploying containerised applications on Google Cloud Platform using Docker',
-            'Optimising PostgreSQL databases for complex construction data',
-            'Collaborating through GitLab workflows and Jira sprint planning'
+            'Developed Django backend features',
+            'Built responsive frontend components',
+            'Collaborated on feature planning and code reviews'
         ],
-        'skills_gained': 'Django 5.0.6, PostgreSQL 17, Google OR-Tools, Auth0, GitLab, Jira, Multi-tenant Architecture, Enterprise SaaS',
-        'achievements': [
-            'Implemented user configurability features for enterprise clients',
-            'Designed multi-tenant database architecture',
-            'Integrated Google OR-Tools for complex scheduling optimisation',
-            'Deployed solutions for enterprise construction management'
-        ]
-    },
+        'skills_gained': 'Django, PostgreSQL, JavaScript, React, Full-Stack Development',
+        'achievements': []
+    }
 ]
 
 
-# Education
-
+# Education history
 EDUCATION = [
     {
         'degree_type': 'MSc',
@@ -122,8 +108,8 @@ EDUCATION = [
             {'name': 'Web Technologies', 'grade': 52}
         ],
         'description': """Comparison of Novel vs Standard CNN Architectures for Automated Skin Cancer Detection. 
-                         Developed an FDA-compliant evaluation framework comparing state-of-the-art deep learning 
-                         architectures for automated dermatological diagnosis.""",
+                         Built an FDA-compliant evaluation framework comparing deep learning models for 
+                         dermatological diagnosis.""",
         'technologies': 'PyTorch, Python, Machine Learning, CNN, Medical AI, TensorFlow, Statistical Validation'
     },
     {
@@ -142,22 +128,21 @@ EDUCATION = [
 ]
 
 
-# Projects
-
+# Project portfolio - keeping the most impressive ones featured
 PROJECTS = [
     {
         'title': 'Litigation Intelligence Platform',
         'short_description': 'AI-powered legal document analysis system processing 18,000+ documents in 48 hours.',
-        'detailed_description': """Engineered a production-grade legal AI system that analyses large-scale commercial litigation 
-                                documents using a 4-pass iterative architecture with Anthropic's Claude models. The system 
-                                intelligently triages thousands of documents, extracts structured legal intelligence including 
-                                breaches, contradictions and timeline events, conducts autonomous recursive investigations, and 
-                                generates tribunal-ready work products.""",
+        'detailed_description': """Production-grade legal AI system that analyses large-scale commercial litigation 
+                                using a 4-pass iterative architecture with Claude models. Intelligently triages 
+                                thousands of documents, extracts structured legal intelligence including breaches 
+                                and contradictions, conducts autonomous recursive investigations, and generates 
+                                tribunal-ready work products.""",
         'technologies': 'Python, Anthropic Claude API, ChromaDB, SQLite, RAG Architecture, Extended Thinking, BM25 Retrieval',
         'category': 'professional',
         'status': 'completed',
         'featured': True,
-        'github_url': None,
+        'github_url': None,  # NDA'd work
         'live_demo_url': None,
         'created_date': date(2025, 10, 1),
         'key_features': [
@@ -171,9 +156,9 @@ PROJECTS = [
         'title': 'Cryptocurrency Exchange Platform',
         'short_description': 'Custom order matching engine with price-time priority algorithm.',
         'detailed_description': """Built a cryptocurrency exchange from scratch focused on stablecoin trading. 
-                                  Implemented a custom order matching engine with price-time priority algorithm, designed 
-                                  RESTful API for account and trading, and created secure user authentication with bcrypt 
-                                  and JWT. The frontend uses React with real-time WebSocket updates for live order books.""",
+                                  Custom order matching engine with price-time priority, RESTful API for account 
+                                  management and trading, secure authentication with bcrypt and JWT. React frontend 
+                                  with real-time WebSocket updates for live order books.""",
         'technologies': 'Python, FastAPI, PostgreSQL, Redis, React, WebSocket',
         'category': 'personal',
         'status': 'completed',
@@ -190,9 +175,9 @@ PROJECTS = [
     {
         'title': 'Holiday Cluedo PWA',
         'short_description': 'Progressive Web App version of Cluedo for offline holiday entertainment.',
-        'detailed_description': """Built a Progressive Web App version of Cluedo optimised for holiday entertainment. 
-                                  Written in vanilla JavaScript for maximum performance and supports 20+ concurrent users. 
-                                  The Fisher-Yates shuffle algorithm ensures fair card distribution and collision detection 
+        'detailed_description': """Built a PWA version of Cluedo optimised for holiday entertainment. Written in 
+                                  vanilla JavaScript for maximum performance, supports 20+ concurrent users. 
+                                  Fisher-Yates shuffle ensures fair card distribution and collision detection 
                                   handles game piece movement. Service workers enable offline play.""",
         'technologies': 'JavaScript, PWA, Service Workers, WebSockets, Local Storage',
         'category': 'personal',
@@ -208,16 +193,36 @@ PROJECTS = [
         ]
     },
     {
+        'title': 'Medical AI Diagnostic System',
+        'short_description': 'MSc dissertation comparing CNN architectures for skin cancer detection.',
+        'detailed_description': """Research project comparing novel and standard CNN architectures for automated 
+                                  skin cancer detection. Built an FDA-compliant evaluation framework with transfer 
+                                  learning, ensemble methods, and clinical validation protocols. Focused on 
+                                  reproducibility and statistical rigour.""",
+        'technologies': 'PyTorch, Python, TensorFlow, CNN, Transfer Learning, Statistical Analysis',
+        'category': 'academic',
+        'status': 'completed',
+        'featured': False,
+        'github_url': None,
+        'live_demo_url': None,
+        'created_date': date(2025, 8, 1),
+        'key_features': [
+            'FDA-compliant evaluation framework',
+            'Transfer learning with EfficientNet and ResNet',
+            'Ensemble methods for improved accuracy'
+        ]
+    },
+    {
         'title': 'Bike Route Planning Application',
         'short_description': 'Full-stack cycling route app built with Flask, React and MongoDB.',
-        'detailed_description': """Collaborated in a 5-person team to build a cycling route application that scored 85%. 
-                                I developed the REST API endpoints for user authentication and route management. 
-                                We followed agile methodology with proper sprint planning and Git version control.""",
+        'detailed_description': """Team project building a cycling route application (scored 85%). Built REST API 
+                                  endpoints for user authentication and route management. Followed agile methodology 
+                                  with sprint planning and Git version control.""",
         'technologies': 'Python, Flask, React, MongoDB, HERE Maps API',
         'category': 'academic',
         'status': 'completed',
         'featured': False,
-        'github_url': 'https://github.com/JemAndrew/cycle_plan',  
+        'github_url': 'https://github.com/JemAndrew/cycle_plan',
         'live_demo_url': None,
         'created_date': date(2024, 3, 1),
         'key_features': [
@@ -229,16 +234,16 @@ PROJECTS = [
     {
         'title': 'Portfolio Website',
         'short_description': 'Professional Django portfolio with responsive design and modern UI.',
-        'detailed_description': """This portfolio website showcases my work through clean design and efficient code. 
+        'detailed_description': """This portfolio website showcasing my work through clean design and efficient code. 
                                   Built with Django and modern web technologies, focused on performance with minimal 
-                                  dependencies and fast load times.""",
-        'technologies': 'Django, CSS3, JavaScript, HTML5, WhiteNoise',
+                                  dependencies and fast load times. Each project is tested and documented properly.""",
+        'technologies': 'Django, CSS3, JavaScript, WhiteNoise',
         'category': 'personal',
-        'status': 'active',
+        'status': 'completed',
         'featured': False,
         'github_url': 'https://github.com/JemAndrew/portfolio',
         'live_demo_url': None,
-        'created_date': date(2024, 1, 15),
+        'created_date': date(2024, 11, 1),
         'key_features': [
             'Responsive modern design',
             'Optimised performance',
@@ -248,14 +253,7 @@ PROJECTS = [
 ]
 
 
-# Projects intro text
-PROJECTS_INTRO = """Projects ranging from academic to personal where I implement my own ideas or explore 
-                    concepts from others. Each one is a chance to test myself and write reproducible clean 
-                    code that's efficient and logical."""
-
-
-# Skills
-
+# Technical skills organised by category
 SKILLS = {
     'Programming Languages': [
         {'name': 'Python', 'proficiency': 5, 'years_experience': 3, 'description': 'Backend development, data science, automation'},
@@ -287,8 +285,7 @@ SKILLS = {
 }
 
 
-# Site Settings
-
+# Site-wide settings for meta tags and config
 SITE_SETTINGS = {
     'site_title': 'Jem Andrew - Software Engineer',
     'meta_description': 'Software Engineer passionate about backend development, machine learning, and building efficient code.',
@@ -298,40 +295,40 @@ SITE_SETTINGS = {
 }
 
 
-# Helper Functions 
+# Helper functions to fetch and format data for views
 
 def get_personal_info():
-    """Get personal info as an object"""
+    """Converts personal info dict into an object with dot notation"""
     info = SimpleObject(PERSONAL_INFO)
+    # JSON encoding the typing phrases for the JavaScript animation
     info.typing_phrases = json.dumps(PERSONAL_INFO['typing_phrases'])
     return info
 
 
 def get_all_projects():
-    """Get all projects sorted by date (newest first)"""
+    """Returns all projects sorted by date, newest first"""
     projects = []
     
     for i, project_data in enumerate(PROJECTS, 1):
-        # Create project object
         proj = SimpleObject(project_data)
         proj.id = i
+        # Split technologies string into list for easier template rendering
         proj.technology_list = project_data['technologies'].split(', ')
         projects.append(proj)
     
-    # Sort by date - newest first
     projects.sort(key=lambda x: x.created_date, reverse=True)
     return projects
 
 
 def get_featured_projects(limit=3):
-    """Get featured projects only"""
+    """Returns only featured projects for home page"""
     all_projects = get_all_projects()
     featured = [p for p in all_projects if p.featured]
     return featured[:limit]
 
 
 def get_current_experience():
-    """Get the primary current position"""
+    """Returns the primary current position for hero section"""
     for exp in EXPERIENCE:
         if exp.get('is_current') and exp.get('is_primary_focus'):
             return create_experience_object(exp)
@@ -339,22 +336,22 @@ def get_current_experience():
 
 
 def get_all_current_experience():
-    """Get all current positions"""
+    """Returns all current positions for about page"""
     current = [exp for exp in EXPERIENCE if exp.get('is_current')]
     return [create_experience_object(exp) for exp in current]
 
 
 def get_all_experience():
-    """Get all experience"""
+    """Returns complete work history"""
     return [create_experience_object(exp) for exp in EXPERIENCE]
 
 
 def create_experience_object(exp_data):
-    """Helper to create experience object with calculated fields"""
+    """Converts experience dict to object and calculates duration"""
     exp = SimpleObject(exp_data)
     exp.skills_list = exp_data['skills_gained'].split(', ')
     
-    # Calculate duration if we have dates
+    # Calculate how long this position lasted
     if exp.start_date:
         if exp.is_current:
             days = (date.today() - exp.start_date).days
@@ -375,14 +372,15 @@ def create_experience_object(exp_data):
 
 
 def get_all_education():
-    """Get all education"""
+    """Returns all education with calculated fields"""
     educations = []
     
     for edu_data in EDUCATION:
         edu = SimpleObject(edu_data)
+        # Split tech stack for template rendering
         edu.technologies_list = edu_data['technologies'].split(', ')
         
-        # Calculate duration in years
+        # Calculate how many years this degree took
         if edu.start_date and edu.end_date:
             edu.duration_years = round((edu.end_date - edu.start_date).days / 365.25, 1)
         elif edu.is_current and edu.start_date:
@@ -396,7 +394,7 @@ def get_all_education():
 
 
 def get_skills_by_category():
-    """Get skills organised by category"""
+    """Returns skills organised by category with extra calculated fields"""
     skills_dict = {}
     
     for category, skills_list in SKILLS.items():
@@ -404,10 +402,12 @@ def get_skills_by_category():
         
         for skill_data in skills_list:
             skill = SimpleObject(skill_data)
+            # Convert proficiency (1-5) to percentage for progress bars
             skill.proficiency_percentage = skill_data['proficiency'] * 20
+            # Clean category name for CSS classes
             skill.category = category.lower().replace(' ', '_').replace('&', 'and')
             
-            # Proficiency level names
+            # Proficiency level text for accessibility
             proficiency_levels = ['', 'Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert']
             skill.proficiency_level = proficiency_levels[skill_data['proficiency']]
             
@@ -419,11 +419,5 @@ def get_skills_by_category():
 
 
 def get_site_settings():
-    """Get site settings"""
+    """Returns site settings as object"""
     return SimpleObject(SITE_SETTINGS)
-
-
-
-
-
-

@@ -7,17 +7,15 @@
 
 <div class="about-split-container">
     
-    <!-- LEFT SIDEBAR (Sticky) -->
+    <!-- left sidebar stays fixed while right side scrolls -->
     <aside class="about-left">
-        <!-- Avatar -->
-        <div class="about-left-avatar" id="aboutLeftAvatar">
-            <!-- Avatar loads via JS -->
-        </div>
+        <!-- avatar loads from JS at bottom of page -->
+        <div class="about-left-avatar" id="aboutLeftAvatar"></div>
         
         <h1 class="about-left-name">Jem Andrew</h1>
         <p class="about-left-title">Software Engineer</p>
         
-        <!-- Navigation Links -->
+        <!-- jump links to scroll to sections on the right -->
         <div class="about-nav-links">
             <a href="#journey" class="about-nav-link">
                 <span>My Journey</span>
@@ -29,13 +27,12 @@
                 <span>Skills</span>
             </a>
         </div>
-        
     </aside>
     
-    <!-- RIGHT CONTENT (Scrolling) -->
+    <!-- main scrollable content on right side -->
     <main class="about-right">
         
-        <!-- Journey Section -->
+        <!-- personal story about how i got into coding -->
         <section class="about-journey" id="journey">
             <div class="about-journey-header">
                 <span class="section-label">// About Me</span>
@@ -74,23 +71,21 @@
             <p class="journey-paragraph">
                 This is just the beginning of my coding journey, but with every line of code I 
                 write, I feel more connected to the endless possibilities at my fingertips.
+            </p>
         </section>
         
-        <!-- Career Timeline Section - COMPACT SIDE TIMELINE -->
+        <!-- showing my current work experience in a compact timeline -->
         <section class="about-work-spotlight" id="career-path">
             <span class="section-label">// Career Path</span>
             <h2>Professional <span class="gradient-text">Experience</span></h2>
-
             
-            
-            <!-- Compact Timeline -->
+            <!-- loops through all current positions from data.py -->
             <div class="career-timeline-compact">
                 {% for position in current_positions %}
                 <div class="timeline-item-compact {% if position.is_primary_focus %}timeline-primary{% endif %}">
                     
-                    <!-- Content Column (now contains everything) -->
                     <div class="timeline-content-column">
-                        <!-- Date header inside box -->
+                        <!-- date range at top of each card -->
                         <div class="timeline-date-header">
                             {% if position.is_primary_focus %}
                                 <span class="date-range-inline">2025 → Now</span>
@@ -100,11 +95,11 @@
                             {% endif %}
                         </div>
                         
-                        <!-- Header with Icon -->
+                        <!-- company icon and job title -->
                         <div class="timeline-compact-header">
                             <div class="work-icon-small">
                                 {% if position.company == "BuildChorus.com" %}
-                                    <img src="{% static 'images/BuildChorus.jpg' %}" alt="BuildChorus">
+                                    <img src="{% static 'images/Buildchorus.jpg' %}" alt="BuildChorus">
                                 {% elif "Law Firm" in position.company or "Freelance" in position.position %}
                                     <img src="{% static 'images/Velitor.jpg' %}" alt="Velitor">
                                 {% else %}
@@ -117,27 +112,28 @@
                             </div>
                         </div>
                         
-                        <!-- Description -->
+                        <!-- job description -->
                         <p class="work-description-compact">{{ position.description }}</p>
                         
-                        <!-- Technologies -->
+                        <!-- tech stack pills -->
                         <div class="tech-pills-compact">
                             {% for skill in position.skills_list %}
                             <span class="tech-pill-small">{{ skill }}</span>
                             {% endfor %}
                         </div>
                     </div>
-                    
                 </div>
                 {% endfor %}
             </div>
+        </section>
         
-        <!-- Skills Section - CLEAN TAG CLOUDS -->
+        <!-- all my technical skills organised by category -->
         <section class="about-skills" id="skills">
             <span class="section-label">// Technical Skills</span>
             <h2>Core <span class="gradient-text">Technologies</span></h2>
             <p class="skills-subtitle">Languages, frameworks, and tools I work with</p>
             
+            <!-- skill cards grouped by category -->
             <div class="skills-tag-grid">
                 {% for category, skills in core_skills.items %}
                 <div class="skill-category-card">
@@ -151,12 +147,11 @@
                 {% endfor %}
             </div>
         </section>
-        
     </main>
 </div>
 
 <script>
-// Load sidebar avatar
+// fetches the avatar SVG and inserts it into the sidebar
 async function loadAboutAvatar() {
     try {
         const response = await fetch('/static/images/avatar.svg');

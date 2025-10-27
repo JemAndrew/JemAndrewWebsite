@@ -17,9 +17,8 @@ from . import data
 logger = logging.getLogger(__name__)
 
 
-# Helper to get common context for all pages
+# gets the basic site info that appears on every page
 def get_site_context():
-    """Gets the basic site info that appears on every page"""
     return {
         'personal_info': data.get_personal_info(),
         'site_settings': data.get_site_settings(),
@@ -29,7 +28,7 @@ def get_site_context():
 # Page Views
 
 def home_view(request):
-    """Home page - main hero section"""
+    """home page with hero section"""
     context = get_site_context()
     context.update({
         'current_positions': data.get_all_current_experience(),
@@ -41,10 +40,11 @@ def home_view(request):
 
 
 def about_view(request):
-    """About page - background and skills breakdown"""
+    """about page showing career path and skills"""
     context = get_site_context()
     context.update({
-        'current_positions': data.get_all_current_experience(),
+        # changed to show all experience not just current ones
+        'current_positions': data.get_all_experience(),
         'core_skills': data.get_skills_by_category(),
         'page_title': 'About Me - Jem Andrew',
         'meta_description': 'Learn more about Jem Andrew - software engineer passionate about backend development, AI, and clean code.',
@@ -53,7 +53,7 @@ def about_view(request):
 
 
 def projects_view(request):
-    """Projects page - all my work"""
+    """projects page showing all work"""
     context = get_site_context()
     context.update({
         'projects': data.get_all_projects(),
@@ -64,7 +64,7 @@ def projects_view(request):
 
 
 def education_view(request):
-    """Education page - academic stuff"""
+    """education page with degrees and dissertations"""
     context = get_site_context()
     context.update({
         'education_list': data.get_all_education(),
@@ -74,38 +74,34 @@ def education_view(request):
     return render(request, 'portfolio/education.html', context)
 
 
-# File Downloads - refactored to avoid duplication
+# File Downloads
 
 def serve_dissertation_file(request, degree_type):
-    """
-    Handles downloading dissertation PDFs
-    Refactored to handle both MSc and BSc with one function
-    """
-    # Map degree type to actual filename
+    """handles downloading dissertation DOCX files for both MSc and BSc"""
+    # map degree type to actual filename in static/documents
     file_mapping = {
-        'msc': ('msc_dissertation.pdf', 'Jem_Andrew_MSc_Dissertation.pdf'),
-        'bsc': ('bsc_dissertation.pdf', 'Jem_Andrew_BSc_Dissertation.pdf'),
+        'msc': 'MSc_Jem_Andrew_Dissertation.docx',
+        'bsc': 'BSc_Jem_Andrew_Dissertation.docx',
     }
     
     if degree_type not in file_mapping:
         raise Http404("Invalid dissertation type")
     
-    storage_filename, download_filename = file_mapping[degree_type]
-    file_path = Path(settings.MEDIA_ROOT) / 'cv' / storage_filename
+    filename = file_mapping[degree_type]
+    # dissertations are in static/documents not media
+    file_path = Path(settings.BASE_DIR) / 'static' / 'documents' / filename
     
-    # Check if file actually exists
+    # check if file actually exists
     if not file_path.exists():
         logger.warning(f"{degree_type.upper()} dissertation not found: {file_path}")
         raise Http404("Dissertation file not available")
     
     try:
-        # Use context manager to properly handle file closing
-        # This was causing a file handle leak before
         return FileResponse(
             open(file_path, 'rb'),
             as_attachment=True,
-            filename=download_filename,
-            content_type='application/pdf'
+            filename=filename,
+            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
     except IOError as e:
         logger.error(f"Error reading {degree_type.upper()} dissertation: {e}")
@@ -113,35 +109,51 @@ def serve_dissertation_file(request, degree_type):
 
 
 def download_msc_dissertation(request):
-    """Download MSc dissertation - uses the shared function now"""
+    """wrapper for downloading MSc dissertation"""
     return serve_dissertation_file(request, 'msc')
 
 
 def download_bsc_dissertation(request):
-    """Download BSc dissertation - uses the shared function now"""
+    """wrapper for downloading BSc dissertation"""
     return serve_dissertation_file(request, 'bsc')
 
 
-# Contact Form Handler
+def download_cv(request):
+    """serves the CV PDF file"""
+    cv_path = Path(settings.MEDIA_ROOT) / 'cv' / 'Jem_Andrew_CV.pdf'
+    
+    if not cv_path.exists():
+        logger.warning(f"CV not found: {cv_path}")
+        raise Http404("CV not available")
+    
+    try:
+        return FileResponse(
+            open(cv_path, 'rb'),
+            as_attachment=True,
+            filename='Jem_Andrew_CV.pdf',
+            content_type='application/pdf'
+        )
+    except IOError as e:
+        logger.error(f"Error reading CV: {e}")
+        return HttpResponse("Sorry, the file is temporarily unavailable.", status=500)
+
+
+# Contact Form
 
 @require_http_methods(["POST"])
 def ajax_contact_view(request):
-    """
-    Handles contact form submissions via AJAX
-    Now properly uses CSRF protection instead of @csrf_exempt
-    """
+    """handles contact form submissions"""
     try:
-        # Parse the JSON from the request
-        form_data = json.loads(request.body)
+        # parse the JSON data from request
+        data_received = json.loads(request.body)
         
-        # Pull out the fields
-        name = form_data.get('name', '').strip()
-        email = form_data.get('email', '').strip()
-        subject = form_data.get('subject', '').strip()
-        message = form_data.get('message', '').strip()
-        honeypot = form_data.get('honeypot', '').strip()
+        name = data_received.get('name', '').strip()
+        email = data_received.get('email', '').strip()
+        subject = data_received.get('subject', '').strip()
+        message = data_received.get('message', '').strip()
+        honeypot = data_received.get('honeypot', '').strip()
         
-        # Check honeypot first - if filled, it's spam
+        # check honeypot first - if filled it's a spam bot
         if honeypot:
             logger.warning(f"Spam attempt from: {email}")
             return JsonResponse({
@@ -149,7 +161,7 @@ def ajax_contact_view(request):
                 'message': 'Spam detected.'
             }, status=400)
         
-        # Validate all the fields
+        # validate all fields
         errors = validate_contact_form(name, email, subject, message)
         
         if errors:
@@ -158,31 +170,40 @@ def ajax_contact_view(request):
                 'errors': errors
             }, status=400)
         
-        # Log the submission
+        # log the submission
         logger.info(f"Contact form - Name: {name}, Email: {email}, Subject: {subject}")
         
-        # Try to send the email
+        # try to send the email
         try:
+            email_subject = f"Portfolio Contact: {subject}"
+            email_body = f"From: {name} ({email})\n\n{message}"
+            
             send_mail(
-                subject=f"Portfolio Contact: {subject}",
-                message=f"From: {name} ({email})\n\n{message}",
+                subject=email_subject,
+                message=email_body,
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[settings.EMAIL_HOST_USER],
                 fail_silently=False,
             )
+            
             logger.info("Contact email sent successfully")
             
+            return JsonResponse({
+                'success': True,
+                'message': "Thanks for reaching out! I'll get back to you soon."
+            })
+            
         except BadHeaderError:
-            logger.error("Bad header in email - possible injection attempt")
+            logger.error("Invalid header in contact form")
             return JsonResponse({
                 'success': False,
-                'message': 'Invalid email format.'
+                'message': 'Invalid email data. Please try again.'
             }, status=400)
             
         except Exception as e:
             logger.error(f"Failed to send email: {e}")
-            # Don't tell the user about email issues - still show success
-            # The message is logged, I can check it later
+            # don't tell the user about email issues - still show success
+            # the message is logged so i can check it later
         
         return JsonResponse({
             'success': True,
@@ -205,13 +226,10 @@ def ajax_contact_view(request):
 
 
 def validate_contact_form(name, email, subject, message):
-    """
-    Validates contact form fields
-    Returns dict of errors, or empty dict if all good
-    """
+    """validates contact form fields and returns dict of errors"""
     errors = {}
     
-    # Name validation
+    # name validation
     if not name:
         errors['name'] = ['Name is required.']
     elif len(name) < 2:
@@ -219,7 +237,7 @@ def validate_contact_form(name, email, subject, message):
     elif len(name) > 100:
         errors['name'] = ['Name is too long (max 100 characters).']
     
-    # Email validation - basic checks
+    # email validation
     if not email:
         errors['email'] = ['Email is required.']
     elif '@' not in email or '.' not in email.split('@')[-1]:
@@ -227,7 +245,7 @@ def validate_contact_form(name, email, subject, message):
     elif len(email) > 254:
         errors['email'] = ['Email is too long.']
     
-    # Subject validation
+    # subject validation
     if not subject:
         errors['subject'] = ['Subject is required.']
     elif len(subject) < 3:
@@ -235,7 +253,7 @@ def validate_contact_form(name, email, subject, message):
     elif len(subject) > 200:
         errors['subject'] = ['Subject is too long (max 200 characters).']
     
-    # Message validation
+    # message validation
     if not message:
         errors['message'] = ['Message is required.']
     elif len(message) < 10:
@@ -246,11 +264,9 @@ def validate_contact_form(name, email, subject, message):
     return errors
 
 
-# Optional API endpoint for skills data
-# Could be used for charts or visualisations later
-
+# API endpoint for skills data if i need it later for charts
 def api_skills_view(request):
-    """Returns skills data as JSON - might use this for charts later"""
+    """returns skills data as JSON"""
     skills_by_category = data.get_skills_by_category()
     
     skills_data = []
