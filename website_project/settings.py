@@ -39,16 +39,14 @@ ALLOWED_HOSTS = config(
 # Keeping this minimal - only what's actually needed
 
 INSTALLED_APPS = [
-    # Core Django - just the essentials for a static site
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Useful dev tools
-    'django_extensions',
-    
-    # My portfolio app
     'portfolio',
 ]
+
+# Add django_extensions only in development
+if DEBUG:
+    INSTALLED_APPS.append('django_extensions')
 
 
 # Middleware - order matters here!
@@ -254,3 +252,14 @@ if DEBUG:
     INTERNAL_IPS = ['127.0.0.1', 'localhost']
     if not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']:
         ALLOWED_HOSTS = ['*']
+
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME, 'localhost', '127.0.0.1']
+else:
+    ALLOWED_HOSTS = config(
+        'ALLOWED_HOSTS',
+        default='localhost,127.0.0.1',
+        cast=lambda v: [s.strip() for s in v.split(',')]
+    )
