@@ -29,3 +29,8 @@ Thumbs.db
 .env.*
 config.py
 secrets.py
+
+build.sh
+.sh
+*.sh
+*build.sh

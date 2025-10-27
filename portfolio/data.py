@@ -203,7 +203,7 @@ PROJECTS = [
         'category': 'academic',
         'status': 'completed',
         'featured': False,
-        'github_url': None,
+        'github_url':'https://github.com/JemAndrew/Skin-cancer-eval',
         'live_demo_url': None,
         'created_date': date(2025, 8, 1),
         'key_features': [
@@ -257,30 +257,50 @@ PROJECTS = [
 SKILLS = {
     'Programming Languages': [
         {'name': 'Python', 'proficiency': 5, 'years_experience': 3, 'description': 'Backend development, data science, automation'},
-        {'name': 'JavaScript', 'proficiency': 4, 'years_experience': 2, 'description': 'Frontend development, PWAs, async programming'},
+        {'name': 'JavaScript', 'proficiency': 4, 'years_experience': 2, 'description': 'Frontend development, async programming'},
         {'name': 'Java', 'proficiency': 4, 'years_experience': 1, 'description': 'Object-oriented programming, algorithms'},
         {'name': 'SQL', 'proficiency': 4, 'years_experience': 2, 'description': 'PostgreSQL, query optimisation, database design'},
         {'name': 'R', 'proficiency': 3, 'years_experience': 3, 'description': 'Statistical analysis, data visualisation'},
         {'name': 'HTML/CSS', 'proficiency': 5, 'years_experience': 3, 'description': 'Semantic markup, responsive design, modern CSS'},
     ],
-    'Frameworks & Libraries': [
+    
+    'Web Development': [
         {'name': 'Django', 'proficiency': 5, 'years_experience': 2, 'description': 'Full-stack web development, REST APIs'},
         {'name': 'Flask', 'proficiency': 3, 'years_experience': 1, 'description': 'Lightweight web applications, APIs'},
         {'name': 'React', 'proficiency': 3, 'years_experience': 1, 'description': 'Component-based UI development'},
-        {'name': 'PyTorch', 'proficiency': 3, 'years_experience': 1, 'description': 'Deep learning, CNN architectures'},
         {'name': 'Bootstrap', 'proficiency': 4, 'years_experience': 2, 'description': 'Responsive design, component libraries'},
+        {'name': 'RESTful API Design', 'proficiency': 4, 'years_experience': 2, 'description': 'API architecture, endpoint design, authentication'},
+        {'name': 'WebSockets', 'proficiency': 3, 'years_experience': 1, 'description': 'Real-time bidirectional communication'},
     ],
-    'Databases & Tools': [
-        {'name': 'PostgreSQL', 'proficiency': 4, 'years_experience': 2, 'description': 'Advanced queries, optimisation'},
-        {'name': 'MongoDB', 'proficiency': 3, 'years_experience': 1, 'description': 'NoSQL, document storage'},
-        {'name': 'Git', 'proficiency': 4, 'years_experience': 3, 'description': 'Version control, collaboration'},
-        {'name': 'Docker', 'proficiency': 3, 'years_experience': 1, 'description': 'Containerisation, deployment'},
-        {'name': 'Google OR-Tools', 'proficiency': 3, 'years_experience': 1, 'description': 'Optimisation algorithms'},
+    
+    'Machine Learning & AI': [
+        {'name': 'PyTorch', 'proficiency': 4, 'years_experience': 1, 'description': 'Deep learning, neural network development'},
+        {'name': 'TensorFlow', 'proficiency': 3, 'years_experience': 1, 'description': 'Machine learning models, neural networks'},
+        {'name': 'Hugging Face', 'proficiency': 3, 'years_experience': 1, 'description': 'Transformers, NLP models, pre-trained models'},
+        {'name': 'CNNs', 'proficiency': 4, 'years_experience': 1, 'description': 'Convolutional neural networks, image classification'},
+        {'name': 'Transfer Learning', 'proficiency': 3, 'years_experience': 1, 'description': 'Fine-tuning pre-trained models, domain adaptation'},
     ],
+    
+    'Databases': [
+        {'name': 'PostgreSQL', 'proficiency': 4, 'years_experience': 2, 'description': 'Advanced queries, optimisation, indexing'},
+        {'name': 'MongoDB', 'proficiency': 3, 'years_experience': 1, 'description': 'NoSQL, document storage, aggregation pipelines'},
+    ],
+    
+    'DevOps & Cloud': [
+        {'name': 'Git', 'proficiency': 4, 'years_experience': 3, 'description': 'Version control, branching strategies, collaboration'},
+        {'name': 'GitLab', 'proficiency': 3, 'years_experience': 2, 'description': 'CI/CD pipelines, repository management'},
+        {'name': 'Docker', 'proficiency': 4, 'years_experience': 1, 'description': 'Containerisation, Docker Compose, deployment'},
+        {'name': 'Google Cloud Platform', 'proficiency': 3, 'years_experience': 1, 'description': 'Cloud services, compute engine, storage'},
+    ],
+    
+    'Optimization & Algorithms': [
+        {'name': 'Google OR-Tools', 'proficiency': 3, 'years_experience': 1, 'description': 'Constraint programming, vehicle routing, scheduling'},
+    ],
+    
     'Cybersecurity': [
-        {'name': 'Wireshark', 'proficiency': 3, 'years_experience': 1, 'description': 'Network analysis, packet inspection'},
-        {'name': 'nmap', 'proficiency': 3, 'years_experience': 1, 'description': 'Network scanning, security auditing'},
-        {'name': 'PCAP Analysis', 'proficiency': 3, 'years_experience': 1, 'description': 'Traffic analysis, threat detection'},
+        {'name': 'Wireshark', 'proficiency': 3, 'years_experience': 1, 'description': 'Network analysis, packet inspection, protocol analysis'},
+        {'name': 'nmap', 'proficiency': 3, 'years_experience': 1, 'description': 'Network scanning, security auditing, port discovery'},
+        {'name': 'PCAP Analysis', 'proficiency': 3, 'years_experience': 1, 'description': 'Traffic analysis, threat detection, forensics'},
     ]
 }
 
