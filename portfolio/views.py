@@ -160,19 +160,11 @@ def ajax_contact_view(request):
         if errors:
             return JsonResponse({'success': False, 'errors': errors}, status=400)
         
-        logger.info(f"Contact form - Name: {name}, Email: {email}, Subject: {subject}")
+        # Log the message (you can see this in Railway logs)
+        logger.info(f"CONTACT RECEIVED - Name: {name}, Email: {email}, Subject: {subject}, Message: {message}")
         
-        if settings.EMAIL_HOST_USER:
-            try:
-                send_mail(
-                    subject=f"Portfolio Contact: {subject}",
-                    message=f"From: {name} ({email})\n\n{message}",
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[settings.EMAIL_HOST_USER],
-                    fail_silently=False,
-                )
-            except Exception as e:
-                logger.warning(f"Email failed: {e}")
+        # Skip email for now - it times out on Railway
+        # TODO: Set up email properly later
         
         return JsonResponse({
             'success': True,
