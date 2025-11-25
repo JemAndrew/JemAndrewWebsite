@@ -153,18 +153,30 @@ def ajax_contact_view(request):
         honeypot = data_received.get('honeypot', '').strip()
         
         if honeypot:
-            logger.warning(f"Spam attempt from: {email}")
             return JsonResponse({'success': False, 'message': 'Spam detected.'}, status=400)
         
         errors = validate_contact_form(name, email, subject, message)
         if errors:
             return JsonResponse({'success': False, 'errors': errors}, status=400)
         
-        # Log the message (you can see this in Railway logs)
-        logger.info(f"CONTACT RECEIVED - Name: {name}, Email: {email}, Subject: {subject}, Message: {message}")
+        logger.info(f"Contact form - Name: {name}, Email: {email}, Subject: {subject}")
+        logger.info(f"EMAIL_HOST_USER configured: {bool(settings.EMAIL_HOST_USER)}")
         
-        # Skip email for now - it times out on Railway
-        # TODO: Set up email properly later
+        if settings.EMAIL_HOST_USER:
+            try:
+                logger.info(f"Attempting to send email to {settings.EMAIL_HOST_USER}")
+                send_mail(
+                    subject=f"Portfolio Contact: {subject}",
+                    message=f"From: {name} ({email})\n\n{message}",
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[settings.EMAIL_HOST_USER],
+                    fail_silently=False,
+                )
+                logger.info("EMAIL SENT SUCCESSFULLY")
+            except Exception as e:
+                logger.error(f"EMAIL FAILED: {type(e).__name__}: {e}")
+        else:
+            logger.warning("EMAIL_HOST_USER is empty - skipping email")
         
         return JsonResponse({
             'success': True,
