@@ -144,7 +144,6 @@ def download_cv(request):
 def ajax_contact_view(request):
     """handles contact form submissions"""
     try:
-        # parse the JSON data from request
         data_received = json.loads(request.body)
         
         name = data_received.get('name', '').strip()
@@ -153,57 +152,27 @@ def ajax_contact_view(request):
         message = data_received.get('message', '').strip()
         honeypot = data_received.get('honeypot', '').strip()
         
-        # check honeypot first - if filled it's a spam bot
         if honeypot:
             logger.warning(f"Spam attempt from: {email}")
-            return JsonResponse({
-                'success': False,
-                'message': 'Spam detected.'
-            }, status=400)
+            return JsonResponse({'success': False, 'message': 'Spam detected.'}, status=400)
         
-        # validate all fields
         errors = validate_contact_form(name, email, subject, message)
-        
         if errors:
-            return JsonResponse({
-                'success': False,
-                'errors': errors
-            }, status=400)
+            return JsonResponse({'success': False, 'errors': errors}, status=400)
         
-        # log the submission
         logger.info(f"Contact form - Name: {name}, Email: {email}, Subject: {subject}")
         
-        # try to send the email
-        try:
-            email_subject = f"Portfolio Contact: {subject}"
-            email_body = f"From: {name} ({email})\n\n{message}"
-            
-            send_mail(
-                subject=email_subject,
-                message=email_body,
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[settings.EMAIL_HOST_USER],
-                fail_silently=False,
-            )
-            
-            logger.info("Contact email sent successfully")
-            
-            return JsonResponse({
-                'success': True,
-                'message': "Thanks for reaching out! I'll get back to you soon."
-            })
-            
-        except BadHeaderError:
-            logger.error("Invalid header in contact form")
-            return JsonResponse({
-                'success': False,
-                'message': 'Invalid email data. Please try again.'
-            }, status=400)
-            
-        except Exception as e:
-            logger.error(f"Failed to send email: {e}")
-            # don't tell the user about email issues - still show success
-            # the message is logged so i can check it later
+        if settings.EMAIL_HOST_USER:
+            try:
+                send_mail(
+                    subject=f"Portfolio Contact: {subject}",
+                    message=f"From: {name} ({email})\n\n{message}",
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[settings.EMAIL_HOST_USER],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                logger.warning(f"Email failed: {e}")
         
         return JsonResponse({
             'success': True,
@@ -211,18 +180,10 @@ def ajax_contact_view(request):
         })
         
     except json.JSONDecodeError:
-        logger.error("Invalid JSON in contact form")
-        return JsonResponse({
-            'success': False,
-            'message': 'Invalid request format.'
-        }, status=400)
-        
+        return JsonResponse({'success': False, 'message': 'Invalid request format.'}, status=400)
     except Exception as e:
-        logger.exception("Unexpected error in contact form")
-        return JsonResponse({
-            'success': False,
-            'message': 'Something went wrong. Please try again later.'
-        }, status=500)
+        logger.exception(f"Error: {e}")
+        return JsonResponse({'success': False, 'message': 'Something went wrong.'}, status=500)
 
 
 def validate_contact_form(name, email, subject, message):
