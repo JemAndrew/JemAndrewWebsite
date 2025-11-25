@@ -133,6 +133,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Email Setup (for contact form)
+# Resend API (for contact form)
+RESEND_API_KEY = config('RESEND_API_KEY', default='')
 
 # All credentials in .env file now - learned that lesson
 

@@ -11,7 +11,7 @@ from django.conf import settings
 from pathlib import Path
 import json
 import logging
-
+import resend
 from . import data
 
 logger = logging.getLogger(__name__)
@@ -160,23 +160,21 @@ def ajax_contact_view(request):
             return JsonResponse({'success': False, 'errors': errors}, status=400)
         
         logger.info(f"Contact form - Name: {name}, Email: {email}, Subject: {subject}")
-        logger.info(f"EMAIL_HOST_USER configured: {bool(settings.EMAIL_HOST_USER)}")
         
-        if settings.EMAIL_HOST_USER:
+        # Send email via Resend
+        if settings.RESEND_API_KEY:
             try:
-                logger.info(f"Attempting to send email to {settings.EMAIL_HOST_USER}")
-                send_mail(
-                    subject=f"Portfolio Contact: {subject}",
-                    message=f"From: {name} ({email})\n\n{message}",
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[settings.EMAIL_HOST_USER],
-                    fail_silently=False,
-                )
-                logger.info("EMAIL SENT SUCCESSFULLY")
+                resend.api_key = settings.RESEND_API_KEY
+                
+                resend.Emails.send({
+                    "from": "Portfolio Contact <onboarding@resend.dev>",
+                    "to": "andrewjem8@gmail.com",
+                    "subject": f"Portfolio Contact: {subject}",
+                    "text": f"From: {name}\nEmail: {email}\n\n{message}"
+                })
+                logger.info("Email sent via Resend")
             except Exception as e:
-                logger.error(f"EMAIL FAILED: {type(e).__name__}: {e}")
-        else:
-            logger.warning("EMAIL_HOST_USER is empty - skipping email")
+                logger.error(f"Resend failed: {e}")
         
         return JsonResponse({
             'success': True,
