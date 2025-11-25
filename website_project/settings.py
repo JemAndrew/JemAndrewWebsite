@@ -39,6 +39,8 @@ ALLOWED_HOSTS = config(
 # Keeping this minimal - only what's actually needed
 
 INSTALLED_APPS = [
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'portfolio',
@@ -54,9 +56,12 @@ if DEBUG:
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',  # Security headers
+    'django.contrib.sessions.middleware.SessionMiddleware', 
+    # Session management
     'whitenoise.middleware.WhiteNoiseMiddleware',     # Serve static files efficiently
     'django.middleware.common.CommonMiddleware',      # Common HTTP stuff
     'django.middleware.csrf.CsrfViewMiddleware',      # CSRF protection
+    'django.contrib.messages.middleware.MessageMiddleware',  # Flash messages
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Anti-clickjacking
 ]
 
